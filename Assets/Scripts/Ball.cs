@@ -1,14 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using UniRx;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+[Serializable]
+public class Ball
 {
     [SerializeField]
     private float _initialForce = 50f;
+    [SerializeField]
+    private int _power = 1;
 
-    private void Start()
+    public Ball()
     {
-        GetComponent<Rigidbody2D>().AddForce(new Vector2(_initialForce, _initialForce));
+        Active = new ReactiveProperty<bool>(true);
     }
+
+    public float InitialForce => _initialForce;
+
+    public int Power => _power;
+
+    public IReactiveProperty<bool> Active { get; private set; }
 }
