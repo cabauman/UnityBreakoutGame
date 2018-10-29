@@ -1,7 +1,4 @@
-﻿using System;
-using UniRx;
-
-public abstract class PowerUp
+﻿public abstract class PowerUp
 {
     public PowerUp(GameManager gameManager)
     {

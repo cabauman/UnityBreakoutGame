@@ -20,7 +20,7 @@ public class Brick
         RespondToBallCollision.Subscribe(ball => Hp.Value -= ball.Power);
 
         PowerUpCreated = RespondToBallCollision
-            .Where(_ => Helpers.Random.Next(0, 10) <= 4)
+            .Where(_ => RandomUtil.Random.Next(0, 10) <= 4)
             .Select(_ => CreateRandomPowerUp());
     }
 
@@ -38,7 +38,7 @@ public class Brick
 
     private PowerUp CreateRandomPowerUp()
     {
-        int randNum = Helpers.Random.Next(0, 2);
+        int randNum = RandomUtil.Random.Next(0, 2);
         switch (randNum)
         {
             case 0:

@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class Helpers
+public class RandomUtil
 {
     public static Random Random { get; } = new Random();
 }

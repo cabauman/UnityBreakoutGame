@@ -29,7 +29,9 @@ public class Game
             .Select(_ => Unit.Default);
 
         var noBallsInPlay = NumBallsInPlay
-            .Where(count => count == 0);
+            .Where(count => count == 0)
+            .Publish()
+            .RefCount();
 
         noBallsInPlay
             .Where(_ => NumLives.Value > 0)
