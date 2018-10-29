@@ -7,13 +7,13 @@ public class Hud : MonoBehaviour
     private const string NUM_LIVES_FMT = "Lives: {0}";
 
     [SerializeField]
-    private GameManager _gameManager;
+    private GamePresenter _gamePresenter;
     [SerializeField]
     private TextMeshProUGUI _numLivesLabel;
 
     private void Start()
     {
-        _gameManager
+        _gamePresenter.Game
             .NumLives
             .Subscribe(numLives => _numLivesLabel.text = string.Format(NUM_LIVES_FMT, numLives))
             .AddTo(this);

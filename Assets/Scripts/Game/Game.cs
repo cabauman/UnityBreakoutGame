@@ -5,17 +5,22 @@ using UniRx;
 
 public class Game
 {
-    private Ball _ball;
-    private int _defaultNumLives;
+    private uint _defaultNumLives;
     private bool _gameOver = false;
 
-    public Game(Paddle paddle, IList<Brick> bricks, int numLives)
+    public Game(Ball ball, Paddle paddle, IReadOnlyList<Brick> bricks, uint defaultNumLives)
     {
+        Ball = ball;
         Paddle = paddle;
         Bricks = bricks;
-        _defaultNumLives = numLives;
-        NumLives = new ReactiveProperty<int>(numLives);
+        _defaultNumLives = defaultNumLives > 0 ? defaultNumLives : 1;
+        NumLives = new ReactiveProperty<uint>(_defaultNumLives);
         BricksRemaining = new ReactiveProperty<int>(Bricks.Count);
+        NumBallsInPlay = new ReactiveProperty<int>(1);
+
+        Ball.Active
+            .Where(active => !_gameOver && !active)
+            .Subscribe(_ => NumBallsInPlay.Value -= 1);
 
         Bricks
             .ToObservable()
@@ -25,16 +30,18 @@ public class Game
 
         GameWon = BricksRemaining
             .Where(count => count == 0)
-            .Do(x => _ball.Active.Value = false)
+            .Do(x => { _gameOver = true; Ball.Active.Value = false; })
             .Select(_ => Unit.Default);
 
         var noBallsInPlay = NumBallsInPlay
             .Where(count => count == 0)
+            .Do(_ => NumLives.Value -= 1)
             .Publish()
             .RefCount();
 
         noBallsInPlay
             .Where(_ => NumLives.Value > 0)
+            .Delay(TimeSpan.FromMilliseconds(100))
             .Subscribe(_ => UseExtraLife());
 
         GameLost = noBallsInPlay
@@ -45,9 +52,11 @@ public class Game
         ResetGameCmd.Subscribe(_ => ResetGame());
     }
 
+    public Ball Ball { get; }
+
     public Paddle Paddle { get; }
 
-    public IList<Brick> Bricks { get; }
+    public IReadOnlyList<Brick> Bricks { get; }
 
     public IObservable<Unit> GameWon { get; }
 
@@ -57,7 +66,7 @@ public class Game
 
     public IReactiveProperty<int> BricksRemaining { get; }
 
-    public IReactiveProperty<int> NumLives { get; }
+    public IReactiveProperty<uint> NumLives { get; }
 
     public ReactiveCommand ResetGameCmd { get; }
 
@@ -65,7 +74,8 @@ public class Game
     {
         NumLives.Value = _defaultNumLives;
         Paddle.ResetBallPos.Execute(Unit.Default);
-        _ball.Active.Value = true;
+        Ball.Active.Value = true;
+        NumBallsInPlay.Value = 1;
         BricksRemaining.Value = Bricks.Count;
 
         foreach (var brick in Bricks)
@@ -79,16 +89,7 @@ public class Game
     private void UseExtraLife()
     {
         Paddle.ResetBallPos.Execute(Unit.Default);
-        _ball.Active.Value = true;
+        Ball.Active.Value = true;
         NumBallsInPlay.Value += 1;
-        NumLives.Value -= 1;
-    }
-
-    private IObservable<Ball> DetectWhenBallHitsDeadZone(Ball ball)
-    {
-        return ball.Active
-            .Where(x => x == false)
-            .Select(_ => ball)
-            .Take(1);
     }
 }

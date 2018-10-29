@@ -1,14 +1,6 @@
-﻿using System;
-using UniRx;
-
-public class ExtraBallPowerUp : PowerUp
+﻿public class ExtraBallPowerUp : PowerUp
 {
-    public ExtraBallPowerUp(GameManager gameManager)
-        : base(gameManager)
-    {
-    }
-
-    public override void ApplyEffect(Paddle paddle)
+    public override void ApplyEffect(Game game, Paddle paddle)
     {
         UnityEngine.Debug.Log("Extra ball!");
     }

@@ -75,12 +75,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1014296972457434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8b0fc8509e4ba4478801478712d3da4, type: 3}
+  m_Script: {fileID: 11500000, guid: 158059522dd73064bb0efbf2ae2295ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _initalHp: 1
-  _powerUpPrefab: {fileID: 114821190514771378, guid: 9cbefd7d72ae7f8438cbe4681ced6e17,
+  _powerUpPrefab: {fileID: 114291337129891598, guid: 21ac330a748308240bd5323deca95d02,
     type: 2}
+  _gamePresenter: {fileID: 0}
 --- !u!212 &212962683432279368
 SpriteRenderer:
   m_ObjectHideFlags: 1

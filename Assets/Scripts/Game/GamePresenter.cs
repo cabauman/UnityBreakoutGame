@@ -14,39 +14,27 @@ public class GamePresenter : MonoBehaviour
     [SerializeField]
     private List<BrickPresenter> _brickPresenters;
 
-    private int _numLives = 1;
-
-    private Game _game;
+    [Header("Parameters")]
+    [SerializeField]
+    private uint _defaultNumLives = 1;
 
     private void Awake()
     {
+        _ballPresenter.Init();
+        _paddlePresenter.Init();
+        _brickPresenters.ForEach(x => x.Init());
+
+        var ball = _ballPresenter.Ball;
         var paddle = _paddlePresenter.Paddle;
         var bricks = _brickPresenters.Select(x => x.Brick).ToList();
-        _game = new Game(paddle, bricks, _numLives);
-
-        //_game.BallsInPlay
-        //    .ObserveAdd()
-        //    .Select(addEvent => addEvent.Value)
-        //    .Subscribe(InstantiateBall)
-        //    .AddTo(this);
-
-        //_game.BallsInPlay
-        //    .ObserveRemove()
-        //    .Select(removeEvent => removeEvent.Index)
-        //    .Subscribe(index => BallPresenters.RemoveAt(index))
-        //    .AddTo(this);
-    }
-
-    public IList<BallPresenter> BallPresenters { get; private set; }
-
-    private void ResetGame()
-    {
+        Game = new Game(ball, paddle, bricks, _defaultNumLives);
     }
 
     private void InstantiateBall(Ball ball)
     {
         var ballPresenter = Instantiate<BallPresenter>(null, transform.position, Quaternion.identity);
         ballPresenter.Ball = ball;
-        BallPresenters.Add(ballPresenter);
     }
+
+    public Game Game { get; private set; }
 }

@@ -5,16 +5,14 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D))]
 public class BallPresenter : MonoBehaviour
 {
-    private const string TAG_DEAD_ZONE = "DeadZone";
-
     [SerializeField]
     private float _initialForce = 50f;
     [SerializeField]
     private int _power = 1;
 
-    private void Start()
+    public void Init()
     {
-        //Ball = new Ball(_initialForce, _power);
+        Ball = new Ball(_initialForce, _power);
 
         Observable
             .EveryUpdate()
@@ -24,21 +22,17 @@ public class BallPresenter : MonoBehaviour
 
         this
             .OnTriggerEnter2DAsObservable()
-            .Where(collider => collider.tag == TAG_DEAD_ZONE)
+            .Where(collider => collider.tag == Tags.DEAD_ZONE)
             .Subscribe(_ => DeactivateBall())
             .AddTo(this);
 
         Ball
             .Active
-            .Subscribe(
-                value =>
-                {
-                    gameObject.SetActive(value);
-                })
+            .Subscribe(value => gameObject.SetActive(value))
             .AddTo(this);
     }
 
-    public Ball Ball { get; set; } = new Ball(50, 1);
+    public Ball Ball { get; set; }
 
     private void DeactivateBall()
     {

@@ -1,16 +1,8 @@
-﻿using System;
-using UniRx;
-
-public class ExtraLifePowerUp : PowerUp
+﻿public class ExtraLifePowerUp : PowerUp
 {
-    public ExtraLifePowerUp(GameManager gameManager)
-        : base(gameManager)
-    {
-    }
-
-    public override void ApplyEffect(Paddle paddle)
+    public override void ApplyEffect(Game game, Paddle paddle)
     {
         UnityEngine.Debug.Log("Extra life!");
-        _gameManager.NumLives.Value += 1;
+        game.NumLives.Value += 1;
     }
 }

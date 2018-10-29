@@ -2,19 +2,17 @@
 using UniRx.Triggers;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider2D))]
 public class BrickPresenter : MonoBehaviour
 {
     [SerializeField]
     private int _initalHp = 1;
     [SerializeField]
     private PowerUpPresenter _powerUpPrefab;
-    [SerializeField]
-    private GameManager _gameManager;
 
-    private void Start()
+    public void Init()
     {
-        //Brick = new Brick(_initalHp);
-        Brick.GameManager = _gameManager;
+        Brick = new Brick(_initalHp);
 
         this
             .OnCollisionEnter2DAsObservable()
@@ -33,9 +31,7 @@ public class BrickPresenter : MonoBehaviour
             .AddTo(this);
     }
 
-    //public Brick Brick { get; private set; }
-
-    public Brick Brick { get; } = new Brick(1);
+    public Brick Brick { get; private set; }
 
     private void InstantiatePowerUp(PowerUp powerUp)
     {

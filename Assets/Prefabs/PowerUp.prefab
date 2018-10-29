@@ -22,9 +22,9 @@ GameObject:
   - component: {fileID: 212538846116020936}
   - component: {fileID: 58401200314826384}
   - component: {fileID: 50682446515051932}
-  - component: {fileID: 114507594038438232}
+  - component: {fileID: 114291337129891598}
   m_Layer: 0
-  m_Name: PaddleWidthPowerUp
+  m_Name: PowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.092
---- !u!114 &114507594038438232
+--- !u!114 &114291337129891598
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}

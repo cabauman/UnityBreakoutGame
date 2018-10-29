@@ -4,6 +4,7 @@ using UniRx;
 public class Brick
 {
     private int _initalHp = 1;
+    private Game _game;
 
     public Brick(int initialHp)
     {
@@ -24,8 +25,6 @@ public class Brick
             .Select(_ => CreateRandomPowerUp());
     }
 
-    public GameManager GameManager { get; set; }
-
     public IObservable<PowerUp> PowerUpCreated { get; }
 
     public IReactiveProperty<int> Hp { get; }
@@ -42,9 +41,9 @@ public class Brick
         switch (randNum)
         {
             case 0:
-                return new ExtraLifePowerUp(GameManager);
+                return new ExtraLifePowerUp();
             default:
-                return new PaddleSizePowerUp(GameManager);
+                return new PaddleSizePowerUp();
         }
     }
 }

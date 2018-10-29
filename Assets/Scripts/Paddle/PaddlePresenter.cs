@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class PaddlePresenter : MonoBehaviour
 {
-    private const string TAG_POWER_UP = "DeadZone";
-
     [SerializeField]
     private BallPresenter _ballPresenter;
     [SerializeField]
     private Transform _initialBallPosTrfm;
 
-    private void Start()
+    public void Init()
     {
+        Paddle = new Paddle();
+
         Observable
             .EveryUpdate()
             .Select(_ => Input.mousePosition)
@@ -29,7 +29,7 @@ public class PaddlePresenter : MonoBehaviour
             .AddTo(this);
     }
 
-    public Paddle Paddle { get; } = new Paddle();
+    public Paddle Paddle { get; private set; }
 
     private void UpdateXPosition(Vector3 mousePos)
     {

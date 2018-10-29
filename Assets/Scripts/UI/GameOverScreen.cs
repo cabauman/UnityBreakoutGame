@@ -8,7 +8,7 @@ public class GameOverScreen : MonoBehaviour
 {
     [Header("Object References")]
     [SerializeField]
-    private GameManager _gameManager;
+    private GamePresenter _gamePresenter;
     [SerializeField]
     private TextMeshProUGUI _gameWonLabel;
     [SerializeField]
@@ -22,23 +22,23 @@ public class GameOverScreen : MonoBehaviour
 
     private void Start()
     {
-        _gameManager
+        _gamePresenter.Game
             .GameWon
             .Subscribe(_ => _gameWonLabel.gameObject.SetActive(true))
             .AddTo(this);
 
-        _gameManager
+        _gamePresenter.Game
             .GameLost
             .Subscribe(_ => _gameLostLabel.gameObject.SetActive(true))
             .AddTo(this);
 
         Observable
-            .Merge(_gameManager.GameWon, _gameManager.GameLost)
+            .Merge(_gamePresenter.Game.GameWon, _gamePresenter.Game.GameLost)
             .Delay(TimeSpan.FromSeconds(_delayBeforeDisplayingPlayAgainButton))
             .Subscribe(_ => _playAgainButton.gameObject.SetActive(true))
             .AddTo(this);
 
-        _gameManager.ResetGameCmd.BindToOnClick(_playAgainButton, _ => HideUI());
+        _gamePresenter.Game.ResetGameCmd.BindToOnClick(_playAgainButton, _ => HideUI());
     }
 
     private void HideUI()

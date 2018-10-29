@@ -22,9 +22,9 @@ GameObject:
   - component: {fileID: 212538846116020936}
   - component: {fileID: 58401200314826384}
   - component: {fileID: 50682446515051932}
-  - component: {fileID: 114821190514771378}
+  - component: {fileID: 114951418656480832}
   m_Layer: 0
-  m_Name: PowerUp 1
+  m_Name: ExtraBallPowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.092
---- !u!114 &114821190514771378
+--- !u!114 &114951418656480832
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,7 +86,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1439413112383232}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94c78efe26b131b40b5281b7ccdced53, type: 3}
+  m_Script: {fileID: 11500000, guid: 5e0ee8c7009fd704d9741d9043efd390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212538846116020936
