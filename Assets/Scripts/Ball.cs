@@ -1,23 +1,17 @@
-﻿using System;
-using UniRx;
-using UnityEngine;
+﻿using UniRx;
 
-[Serializable]
 public class Ball
 {
-    [SerializeField]
-    private float _initialForce = 50f;
-    [SerializeField]
-    private int _power = 1;
-
-    public Ball()
+    public Ball(float initialForce, int power)
     {
+        InitialForce = initialForce;
+        Power = power;
         Active = new ReactiveProperty<bool>(true);
     }
 
-    public float InitialForce => _initialForce;
+    public float InitialForce { get; }
 
-    public int Power => _power;
+    public int Power { get; }
 
-    public IReactiveProperty<bool> Active { get; private set; }
+    public IReactiveProperty<bool> Active { get; }
 }

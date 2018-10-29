@@ -1,10 +1,11 @@
 ﻿using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 
 public class PaddlePresenter : MonoBehaviour
 {
-    [SerializeField]
-    private Paddle _paddle;
+    private const string TAG_POWER_UP = "DeadZone";
+
     [SerializeField]
     private BallPresenter _ballPresenter;
     [SerializeField]
@@ -14,34 +15,33 @@ public class PaddlePresenter : MonoBehaviour
     {
         Observable
             .EveryUpdate()
-            //.Select(_ => Input.GetAxis("Horizontal"))
-            //.Select(_paddle.GetHorizontalTranslation)
-            //.Subscribe(MoveHorizontally)
-            .Select(_ => Camera.main.ScreenToWorldPoint(Input.mousePosition).x)
+            .Select(_ => Input.mousePosition)
             .Subscribe(UpdateXPosition)
             .AddTo(this);
 
-        _paddle
+        Paddle
+            .Width
+            .Subscribe(xScale => transform.localScale = new Vector3(xScale, transform.localScale.y))
+            .AddTo(this);
+
+        Paddle
             .ResetBallPos
-            .Subscribe(
-                _ =>
-                {
-                    _ballPresenter.transform.parent = transform;
-                    _ballPresenter.transform.position = _initialBallPosTrfm.position;
-                })
+            .Subscribe(_ => ResetBallPos())
             .AddTo(this);
     }
 
-    public Paddle Paddle => _paddle;
+    public Paddle Paddle { get; } = new Paddle();
 
-    public void MoveHorizontally(float translation)
+    private void UpdateXPosition(Vector3 mousePos)
     {
-        translation *= Time.deltaTime;
-        transform.Translate(new Vector3(translation, 0, 0));
+        mousePos.x = Mathf.Clamp(mousePos.x, 0, Screen.width);
+        var xPos = Camera.main.ScreenToWorldPoint(mousePos).x;
+        transform.position = new Vector3(xPos, transform.position.y, transform.position.z);
     }
 
-    private void UpdateXPosition(float xPos)
+    private void ResetBallPos()
     {
-        transform.position = new Vector3(xPos, transform.position.y, transform.position.z);
+        _ballPresenter.transform.parent = transform;
+        _ballPresenter.transform.position = _initialBallPosTrfm.position;
     }
 }

@@ -2,36 +2,53 @@
 using UniRx.Triggers;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D))]
 public class BallPresenter : MonoBehaviour
 {
+    private const string TAG_DEAD_ZONE = "DeadZone";
+
     [SerializeField]
-    private Ball _ball;
+    private float _initialForce = 50f;
+    [SerializeField]
+    private int _power = 1;
 
     private void Start()
     {
+        //Ball = new Ball(_initialForce, _power);
+
         Observable
             .EveryUpdate()
             .Where(_ => Input.GetButtonDown("Fire1")/* && ballInPlay*/)
-            .Subscribe(
-                _ =>
-                {
-                    transform.parent = null;
-                    GetComponent<Rigidbody2D>().AddForce(new Vector2(_ball.InitialForce, _ball.InitialForce));
-                })
+            .Subscribe(_ => PutBallIntoPlay())
             .AddTo(this);
 
         this
             .OnTriggerEnter2DAsObservable()
-            .Where(collider => collider.tag == "DeadZone")
-            .Subscribe(_ => _ball.Active.Value = false)
+            .Where(collider => collider.tag == TAG_DEAD_ZONE)
+            .Subscribe(_ => DeactivateBall())
             .AddTo(this);
 
-        _ball
+        Ball
             .Active
-            .Subscribe(value => gameObject.SetActive(value))
+            .Subscribe(
+                value =>
+                {
+                    gameObject.SetActive(value);
+                })
             .AddTo(this);
     }
 
-    public Ball Ball => _ball;
+    public Ball Ball { get; set; } = new Ball(50, 1);
+
+    private void DeactivateBall()
+    {
+        Ball.Active.Value = false;
+        transform.position = new Vector3(-100f, -100f);
+    }
+
+    private void PutBallIntoPlay()
+    {
+        transform.parent = null;
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(Ball.InitialForce, Ball.InitialForce));
+    }
 }

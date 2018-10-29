@@ -1,7 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using UniRx;
 
-public class PowerUp : MonoBehaviour
+public abstract class PowerUp
 {
+    public PowerUp(GameManager gameManager)
+    {
+        _gameManager = gameManager;
+    }
+
+    protected GameManager _gameManager;
+
+    public abstract void ApplyEffect(Paddle paddle);
 }

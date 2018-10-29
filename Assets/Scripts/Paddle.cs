@@ -1,22 +1,14 @@
-﻿using System;
-using UniRx;
-using UnityEngine;
+﻿using UniRx;
 
-[Serializable]
 public class Paddle
 {
-    [SerializeField]
-    private float _speed = 10;
-
     public Paddle()
     {
+        Width = new ReactiveProperty<float>(15f);
         ResetBallPos = new ReactiveCommand<Unit>();
     }
 
-    public ReactiveCommand<Unit> ResetBallPos { get; }
+    public IReactiveProperty<float> Width { get; }
 
-    public float GetHorizontalTranslation(float normalizedValue)
-    {
-        return normalizedValue * _speed;
-    }
+    public ReactiveCommand<Unit> ResetBallPos { get; }
 }
