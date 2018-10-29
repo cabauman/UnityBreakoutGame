@@ -50,6 +50,12 @@ public class Game
 
         ResetGameCmd = new ReactiveCommand();
         ResetGameCmd.Subscribe(_ => ResetGame());
+
+        CreateBonusBall = new ReactiveCommand<Ball>(Observable.Defer(() => Observable.Return(!_gameOver)));
+        CreateBonusBall
+            .Do(_ => NumBallsInPlay.Value += 1)
+            .SelectMany(bonusBall => DetectWhenBonusBallBecomesInactive(bonusBall))
+            .Subscribe(_ => NumBallsInPlay.Value -= 1);
     }
 
     public Ball Ball { get; }
@@ -69,6 +75,8 @@ public class Game
     public IReactiveProperty<uint> NumLives { get; }
 
     public ReactiveCommand ResetGameCmd { get; }
+
+    public ReactiveCommand<Ball> CreateBonusBall { get; }
 
     private void ResetGame()
     {
@@ -90,6 +98,14 @@ public class Game
     {
         Paddle.ResetBallPos.Execute(Unit.Default);
         Ball.Active.Value = true;
-        NumBallsInPlay.Value += 1;
+        NumBallsInPlay.Value = 1;
+    }
+
+    private IObservable<Unit> DetectWhenBonusBallBecomesInactive(Ball ball)
+    {
+        return ball.Active
+            .Where(active => !active)
+            .Select(_ => Unit.Default)
+            .Take(1);
     }
 }

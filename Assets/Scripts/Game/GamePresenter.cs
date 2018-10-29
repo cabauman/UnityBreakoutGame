@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine;
@@ -13,6 +12,9 @@ public class GamePresenter : MonoBehaviour
     private PaddlePresenter _paddlePresenter;
     [SerializeField]
     private List<BrickPresenter> _brickPresenters;
+
+    [SerializeField]
+    private BallPresenter _ballPresenterPrefab;
 
     [Header("Parameters")]
     [SerializeField]
@@ -28,12 +30,18 @@ public class GamePresenter : MonoBehaviour
         var paddle = _paddlePresenter.Paddle;
         var bricks = _brickPresenters.Select(x => x.Brick).ToList();
         Game = new Game(ball, paddle, bricks, _defaultNumLives);
+
+        Game
+            .CreateBonusBall
+            .Subscribe(InstantiateBonusBall)
+            .AddTo(this);
     }
 
-    private void InstantiateBall(Ball ball)
+    private void InstantiateBonusBall(Ball ball)
     {
-        var ballPresenter = Instantiate<BallPresenter>(null, transform.position, Quaternion.identity);
-        ballPresenter.Ball = ball;
+        var ballPresenter = Instantiate(_ballPresenterPrefab, ball.StartPosition, Quaternion.identity);
+        ballPresenter.Init(ball);
+        ballPresenter.PutBallIntoPlay();
     }
 
     public Game Game { get; private set; }

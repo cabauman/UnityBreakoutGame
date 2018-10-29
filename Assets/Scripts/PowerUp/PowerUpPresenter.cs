@@ -10,7 +10,7 @@ public class PowerUpPresenter : MonoBehaviour
             .OnTriggerEnter2DAsObservable()
             .Select(collider => collider.GetComponent<PaddlePresenter>())
             .Where(x => x != null)
-            .Subscribe(ApplyAndDestroy)
+            .Subscribe(_ => ApplyAndDestroy())
             .AddTo(this);
 
         this
@@ -22,10 +22,10 @@ public class PowerUpPresenter : MonoBehaviour
 
     public PowerUp PowerUp { get; set; }
 
-    private void ApplyAndDestroy(PaddlePresenter paddlePresenter)
+    private void ApplyAndDestroy()
     {
         var gamePresenter = FindObjectOfType<GamePresenter>();
-        PowerUp.ApplyEffect(gamePresenter.Game, paddlePresenter.Paddle);
+        PowerUp.ApplyEffect(gamePresenter.Game, transform.position);
         Destroy(gameObject);
     }
 }

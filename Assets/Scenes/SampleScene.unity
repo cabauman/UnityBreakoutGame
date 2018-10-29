@@ -1011,6 +1011,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 50493159329988060, guid: 37191661d3a453e40a5df4f901c8fb48,
+        type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: cd80fa91cc22a074bb184259bbb77010, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37191661d3a453e40a5df4f901c8fb48, type: 2}
   m_IsPrefabAsset: 0
@@ -1239,16 +1244,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114053825654998382, guid: 3a1f9fc061536dd4d826c3affda54aba,
-        type: 2}
-      propertyPath: _gameManager
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114053825654998382, guid: 3a1f9fc061536dd4d826c3affda54aba,
-        type: 2}
-      propertyPath: _gamePresenter
-      value: 
-      objectReference: {fileID: 1688840148}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a1f9fc061536dd4d826c3affda54aba, type: 2}
   m_IsPrefabAsset: 0
@@ -2540,6 +2535,8 @@ MonoBehaviour:
   - {fileID: 1217239726}
   - {fileID: 484200241}
   - {fileID: 1804870414}
+  _ballPresenterPrefab: {fileID: 114606524586847714, guid: 7a55b66ede701e34d85554b5629b4543,
+    type: 2}
   _defaultNumLives: 3
 --- !u!4 &1688840149
 Transform:

@@ -1,4 +1,6 @@
-﻿public abstract class PowerUp
+﻿using UnityEngine;
+
+public abstract class PowerUp
 {
-    public abstract void ApplyEffect(Game game, Paddle paddle);
+    public abstract void ApplyEffect(Game game, Vector3 position);
 }

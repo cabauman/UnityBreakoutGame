@@ -4,11 +4,12 @@ using UniRx;
 public class Brick
 {
     private int _initalHp = 1;
-    private Game _game;
+    private int _powerUpSpawnOdds = 3; 
 
-    public Brick(int initialHp)
+    public Brick(int initialHp, int powerUpSpawnOdds)
     {
-        _initalHp = initialHp;
+        _initalHp = initialHp > 0 ? initialHp : 1;
+        _powerUpSpawnOdds = powerUpSpawnOdds;
 
         Hp = new ReactiveProperty<int>(_initalHp);
 
@@ -21,7 +22,7 @@ public class Brick
         RespondToBallCollision.Subscribe(ball => Hp.Value -= ball.Power);
 
         PowerUpCreated = RespondToBallCollision
-            .Where(_ => RandomUtil.Random.Next(0, 10) <= 4)
+            .Where(_ => RandomUtil.Random.Next(0, 10) < _powerUpSpawnOdds)
             .Select(_ => CreateRandomPowerUp());
     }
 
@@ -37,11 +38,13 @@ public class Brick
 
     private PowerUp CreateRandomPowerUp()
     {
-        int randNum = RandomUtil.Random.Next(0, 2);
+        int randNum = RandomUtil.Random.Next(0, 3);
         switch (randNum)
         {
             case 0:
                 return new ExtraLifePowerUp();
+            case 1:
+                return new ExtraBallPowerUp();
             default:
                 return new PaddleSizePowerUp();
         }

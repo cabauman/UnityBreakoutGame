@@ -10,13 +10,13 @@ public class BallPresenter : MonoBehaviour
     [SerializeField]
     private int _power = 1;
 
-    public void Init()
+    public void Init(Ball ball = null)
     {
-        Ball = new Ball(_initialForce, _power);
+        Ball = ball ?? new Ball(_initialForce, _power, Vector3.zero);
 
         Observable
             .EveryUpdate()
-            .Where(_ => Input.GetButtonDown("Fire1")/* && ballInPlay*/)
+            .Where(_ => Input.GetButtonDown("Fire1"))
             .Subscribe(_ => PutBallIntoPlay())
             .AddTo(this);
 
@@ -34,15 +34,15 @@ public class BallPresenter : MonoBehaviour
 
     public Ball Ball { get; set; }
 
+    public void PutBallIntoPlay()
+    {
+        transform.parent = null;
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(Ball.InitialForce, Ball.InitialForce));
+    }
+
     private void DeactivateBall()
     {
         Ball.Active.Value = false;
         transform.position = new Vector3(-100f, -100f);
-    }
-
-    private void PutBallIntoPlay()
-    {
-        transform.parent = null;
-        GetComponent<Rigidbody2D>().AddForce(new Vector2(Ball.InitialForce, Ball.InitialForce));
     }
 }

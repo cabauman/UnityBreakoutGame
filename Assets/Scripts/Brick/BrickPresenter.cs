@@ -8,11 +8,14 @@ public class BrickPresenter : MonoBehaviour
     [SerializeField]
     private int _initalHp = 1;
     [SerializeField]
+    [Range(0, 10)]
+    private int _powerUpSpawnOdds = 3;
+    [SerializeField]
     private PowerUpPresenter _powerUpPrefab;
 
     public void Init()
     {
-        Brick = new Brick(_initalHp);
+        Brick = new Brick(_initalHp, _powerUpSpawnOdds);
 
         this
             .OnCollisionEnter2DAsObservable()
