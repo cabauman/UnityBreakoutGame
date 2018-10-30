@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212962683432279368}
   - component: {fileID: 61303387145223984}
   - component: {fileID: 114053825654998382}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Brick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,8 +36,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1014296972457434}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3, y: 3, z: -0.003187871}
-  m_LocalScale: {x: 12, y: 4, z: 1}
+  m_LocalPosition: {x: -5, y: 3, z: -0.003187871}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -50,22 +50,22 @@ BoxCollider2D:
   m_GameObject: {fileID: 1014296972457434}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: cd80fa91cc22a074bb184259bbb77010, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.030185461}
   m_SpriteTilingProperty:
-    border: {x: 0.049999997, y: 0.049999997, z: 0.049999997, w: 0.049999997}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.16, y: 0.16}
+    oldSize: {x: 2.56, y: 2.56}
     newSize: {x: 0.16, y: 0.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 1.6803036, y: 0.4125061}
   m_EdgeRadius: 0
 --- !u!114 &114053825654998382
 MonoBehaviour:
@@ -79,9 +79,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _initalHp: 1
+  _powerUpSpawnOdds: 3
   _powerUpPrefab: {fileID: 114291337129891598, guid: 21ac330a748308240bd5323deca95d02,
     type: 2}
-  _gamePresenter: {fileID: 0}
 --- !u!212 &212962683432279368
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -117,7 +117,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: e74b518a65bc45f4cace9a2fef6af29d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

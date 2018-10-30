@@ -2,6 +2,8 @@
 
 public class ExtraBallPowerUp : PowerUp
 {
+    public override string SpriteName { get; } = "ExtraBall";
+
     public override void ApplyEffect(Game game, Vector3 position)
     {
         UnityEngine.Debug.Log("Extra ball!");

@@ -7,6 +7,8 @@ public class PaddlePresenter : MonoBehaviour
     private BallPresenter _ballPresenter;
     [SerializeField]
     private Transform _initialBallPosTrfm;
+    [SerializeField]
+    private Transform _graphicTrfm;
 
     public void Init()
     {
@@ -20,7 +22,7 @@ public class PaddlePresenter : MonoBehaviour
 
         Paddle
             .Width
-            .Subscribe(xScale => transform.localScale = new Vector3(xScale, transform.localScale.y))
+            .Subscribe(xScale => _graphicTrfm.localScale = new Vector3(xScale, _graphicTrfm.localScale.y))
             .AddTo(this);
 
         Paddle

@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 58401200314826384}
   - component: {fileID: 50682446515051932}
   - component: {fileID: 114507594038438232}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PaddleWidthPowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}

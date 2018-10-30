@@ -4,7 +4,7 @@ public class Paddle
 {
     public Paddle()
     {
-        Width = new ReactiveProperty<float>(15f);
+        Width = new ReactiveProperty<float>(1);
         ResetBallPos = new ReactiveCommand<Unit>();
     }
 

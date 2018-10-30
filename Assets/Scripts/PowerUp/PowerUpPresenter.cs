@@ -6,9 +6,15 @@ public class PowerUpPresenter : MonoBehaviour
 {
     private void Start()
     {
+        var sprite = Resources.Load<Sprite>(PowerUp.SpriteName);
+        if(sprite != null)
+        {
+            GetComponent<SpriteRenderer>().sprite = sprite;
+        }
+
         this
             .OnTriggerEnter2DAsObservable()
-            .Select(collider => collider.GetComponent<PaddlePresenter>())
+            .Select(collider => collider.transform.parent.GetComponent<PaddlePresenter>())
             .Where(x => x != null)
             .Subscribe(_ => ApplyAndDestroy())
             .AddTo(this);
