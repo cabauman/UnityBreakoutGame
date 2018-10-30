@@ -1,9 +1,7 @@
 fileFormatVersion: 2
-guid: 555975464417842748951a085f3cf3ba
+guid: ed5731195c102c94db313f5a5c6f5549
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: CatapultSprite_0
-    21300002: CatapultSprite_1
+  fileIDToRecycleName: {}
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -29,12 +27,12 @@ TextureImporter:
   generateCubemap: 6
   cubemapConvolution: 0
   seamlessCubemap: 0
-  textureFormat: -1
-  maxTextureSize: 1024
+  textureFormat: 1
+  maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
     filterMode: -1
-    aniso: 1
+    aniso: -1
     mipBias: -100
     wrapU: 1
     wrapV: 1
@@ -42,12 +40,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 50
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -62,7 +60,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 2
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -73,51 +71,11 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: CatapultSprite_0
-      rect:
-        serializedVersion: 2
-        x: 111
-        y: 29
-        width: 39
-        height: 195
-      alignment: 9
-      pivot: {x: 0.2981282, y: 0.8753225}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f2892390c1afdd34b9d4c36635608419
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: CatapultSprite_1
-      rect:
-        serializedVersion: 2
-        x: 63
-        y: 108
-        width: 48
-        height: 116
-      alignment: 9
-      pivot: {x: 0.20523627, y: 0.74426126}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d2b442f4bd9691a4cbcb77553ef5ee70
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 67761bc428521d64a85663eef99ef9bd
     vertices: []
     indices: 
     edges: []
