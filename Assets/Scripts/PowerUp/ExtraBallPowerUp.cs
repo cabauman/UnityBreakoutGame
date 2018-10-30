@@ -2,7 +2,7 @@
 
 public class ExtraBallPowerUp : PowerUp
 {
-    public override string SpriteName { get; } = "ExtraBall";
+    public override string SpriteName { get; } = "ExtraBallPowerUp";
 
     public override void ApplyEffect(Game game, Vector3 position)
     {

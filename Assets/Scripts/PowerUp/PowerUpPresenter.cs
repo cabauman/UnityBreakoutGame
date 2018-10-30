@@ -6,8 +6,8 @@ public class PowerUpPresenter : MonoBehaviour
 {
     private void Start()
     {
-        var sprite = Resources.Load<Sprite>(PowerUp.SpriteName);
-        if(sprite != null)
+        var sprite = Resources.Load<Sprite>(string.Format("Sprites/{0}", PowerUp.SpriteName));
+        if (sprite != null)
         {
             GetComponent<SpriteRenderer>().sprite = sprite;
         }

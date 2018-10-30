@@ -5,38 +5,39 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D))]
 public class BallPresenter : MonoBehaviour
 {
+    private const string PADDLE_COLLIDER_NAME = "PaddleGraphic";
+
     [SerializeField]
+    [Range(0f, 100f)]
     private float _initialForce = 50f;
     [SerializeField]
+    [Range(0f, 90f)]
+    private float _initialAngle = 45f;
+    [SerializeField]
+    [Tooltip("How much damage I can inflict on a brick per collision.")]
     private int _power = 1;
     [SerializeField]
     [Range(0f, 90f)]
     private float _maxPaddleBounceAngle = 75f;
 
-    private Rigidbody2D _rigidBody;
+    private Rigidbody2D _rigidbody;
     private float _maxPaddleBounceAngleInRadians;
 
     public void Init(Ball ball = null)
     {
         Ball = ball ?? new Ball(_initialForce, _power, Vector3.zero);
-        _rigidBody = GetComponent<Rigidbody2D>();
+        _rigidbody = GetComponent<Rigidbody2D>();
         _maxPaddleBounceAngleInRadians = _maxPaddleBounceAngle * Mathf.Deg2Rad;
-
-        Observable
-            .EveryUpdate()
-            .Where(_ => Input.GetButtonDown("Fire1"))
-            .Subscribe(_ => PutBallIntoPlay())
-            .AddTo(this);
 
         this
             .OnTriggerEnter2DAsObservable()
             .Where(collider => collider.tag == Tags.DEAD_ZONE)
-            .Subscribe(_ => DeactivateBall())
+            .Subscribe(_ => Ball.Active.Value = false)
             .AddTo(this);
 
         this
             .OnCollisionEnter2DAsObservable()
-            .Where(collision => collision.gameObject.name.StartsWith("Graphic"))
+            .Where(collision => collision.gameObject.name == PADDLE_COLLIDER_NAME)
             .Subscribe(CalculateBounceVelocity)
             .AddTo(this);
 
@@ -48,16 +49,19 @@ public class BallPresenter : MonoBehaviour
 
     public Ball Ball { get; set; }
 
-    public void PutBallIntoPlay()
+    public Vector2 Velocity => _rigidbody.velocity;
+
+    public void AddInitialForce()
     {
         transform.parent = null;
-        GetComponent<Rigidbody2D>().AddForce(new Vector2(Ball.InitialForce * Mathf.Sin(45f * Mathf.Deg2Rad), Ball.InitialForce * Mathf.Cos(45f * Mathf.Deg2Rad)));
-    }
 
-    private void DeactivateBall()
-    {
-        Ball.Active.Value = false;
-        transform.position = new Vector3(-100f, -100f);
+        var force = new Vector2
+        {
+            x = Mathf.Sin(_initialAngle * Mathf.Deg2Rad) * Ball.InitialForce,
+            y = Mathf.Cos(_initialAngle * Mathf.Deg2Rad) * Ball.InitialForce
+        };
+
+        _rigidbody.AddForce(force);
     }
 
     private void CalculateBounceVelocity(Collision2D collision)
@@ -73,7 +77,7 @@ public class BallPresenter : MonoBehaviour
             y = Mathf.Cos(bounceAngle) * Ball.InitialForce
         };
 
-        _rigidBody.velocity = Vector2.zero;
-        _rigidBody.AddForce(bounceForce);
+        _rigidbody.velocity = Vector2.zero;
+        _rigidbody.AddForce(bounceForce);
     }
 }
