@@ -4,7 +4,7 @@
 using System;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Experimental.LowLevel;
+
 using UniRx.Async.Internal;
 
 namespace UniRx.Async
@@ -40,15 +40,15 @@ namespace UniRx.Async
     {
         static PlayerLoopRunner[] runners;
 
-        static PlayerLoopSystem[] InsertRunner(Type type, PlayerLoopSystem loopSystem, PlayerLoopRunner runner)
+        static UnityEngine.LowLevel.PlayerLoopSystem[] InsertRunner(Type type, UnityEngine.LowLevel.PlayerLoopSystem loopSystem, PlayerLoopRunner runner)
         {
-            var runnerLoop = new PlayerLoopSystem
+            var runnerLoop = new UnityEngine.LowLevel.PlayerLoopSystem
             {
                 type = type,
                 updateDelegate = runner.Run
             };
 
-            var dest = new PlayerLoopSystem[loopSystem.subSystemList.Length + 1];
+            var dest = new UnityEngine.LowLevel.PlayerLoopSystem[loopSystem.subSystemList.Length + 1];
             Array.Copy(loopSystem.subSystemList, 0, dest, 1, loopSystem.subSystemList.Length);
             dest[0] = runnerLoop;
             return dest;
@@ -59,11 +59,11 @@ namespace UniRx.Async
         {
             if (runners != null) return; // already initialized
 
-            var playerLoop = PlayerLoop.GetDefaultPlayerLoop();
+            var playerLoop = UnityEngine.LowLevel.PlayerLoop.GetDefaultPlayerLoop();
             Initialize(ref playerLoop);
         }
 
-        public static void Initialize(ref PlayerLoopSystem playerLoop)
+        public static void Initialize(ref UnityEngine.LowLevel.PlayerLoopSystem playerLoop)
         {
             runners = new PlayerLoopRunner[7];
 
@@ -78,7 +78,7 @@ namespace UniRx.Async
             copyList[6].subSystemList = InsertRunner(typeof(UniTaskLoopRunners.UniTaskLoopRunnerPostLateUpdate), copyList[6], runners[6] = new PlayerLoopRunner());
 
             playerLoop.subSystemList = copyList;
-            PlayerLoop.SetPlayerLoop(playerLoop);
+            UnityEngine.LowLevel.PlayerLoop.SetPlayerLoop(playerLoop);
         }
 
 
