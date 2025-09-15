@@ -10,9 +10,13 @@ public class PaddlePresenter : MonoBehaviour
     [SerializeField]
     private Transform _graphicTrfm;
 
+    private float _screenWidth;
+
     public void Init()
     {
         Paddle = new Paddle();
+
+        _screenWidth = Screen.width;
 
         Observable
             .EveryUpdate()
@@ -35,7 +39,7 @@ public class PaddlePresenter : MonoBehaviour
 
     private void UpdateXPosition(Vector3 mousePos)
     {
-        mousePos.x = Mathf.Clamp(mousePos.x, 0, Screen.width);
+        mousePos.x = Mathf.Clamp(mousePos.x, 0, _screenWidth);
         var xPos = Camera.main.ScreenToWorldPoint(mousePos).x;
         transform.position = new Vector3(xPos, transform.position.y, transform.position.z);
     }
