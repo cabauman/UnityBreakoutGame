@@ -21,7 +21,7 @@ public class PowerUpPresenter : MonoBehaviour
 
         this
             .OnTriggerEnter2DAsObservable()
-            .Where(collider => collider.tag == Tags.DEAD_ZONE)
+            .Where(collider => collider.CompareTag(Tags.DEAD_ZONE))
             .Subscribe(_ => Destroy(gameObject))
             .AddTo(this);
     }
@@ -30,7 +30,7 @@ public class PowerUpPresenter : MonoBehaviour
 
     private void ApplyAndDestroy()
     {
-        var gamePresenter = FindObjectOfType<GamePresenter>();
+        var gamePresenter = FindAnyObjectByType<GamePresenter>();
         PowerUp.ApplyEffect(gamePresenter.Game, transform.position);
         Destroy(gameObject);
     }

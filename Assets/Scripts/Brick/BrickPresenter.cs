@@ -6,7 +6,7 @@ using UnityEngine;
 public class BrickPresenter : MonoBehaviour
 {
     [SerializeField]
-    private int _initalHp = 1;
+    private int _initialHp = 1;
     [SerializeField]
     [Range(0, 10)]
     private int _powerUpSpawnOdds = 3;
@@ -15,7 +15,7 @@ public class BrickPresenter : MonoBehaviour
 
     public void Init()
     {
-        Brick = new Brick(_initalHp, _powerUpSpawnOdds);
+        Brick = new Brick(_initialHp, _powerUpSpawnOdds);
 
         this
             .OnCollisionEnter2DAsObservable()

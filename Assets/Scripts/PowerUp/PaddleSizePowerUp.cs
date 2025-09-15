@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PaddleSizePowerUp : PowerUp
 {
-    private float _widthMultiplier = 1.5f;
-    private float _effectDuration = 5f;
+    private readonly float _widthMultiplier = 1.5f;
+    private readonly float _effectDuration = 5f;
 
     public override string SpriteName { get; } = "PaddleWidthPowerUp";
 
     public override void ApplyEffect(Game game, Vector3 position)
     {
-        UnityEngine.Debug.Log("Paddle size increased!");
+        Debug.Log("Paddle size increased!");
         game.Paddle.Width.Value *= _widthMultiplier;
         Observable
             .Timer(TimeSpan.FromSeconds(_effectDuration))

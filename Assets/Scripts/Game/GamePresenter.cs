@@ -19,7 +19,7 @@ public class GamePresenter : MonoBehaviour
     [SerializeField]
     private uint _defaultNumLives = 1;
 
-    private List<GameObject> _bonusBalls = new List<GameObject>();
+    private readonly List<GameObject> _bonusBalls = new();
 
     private void Awake()
     {

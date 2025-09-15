@@ -5,7 +5,7 @@ using UniRx;
 
 public class Game
 {
-    private uint _defaultNumLives;
+    private readonly uint _defaultNumLives;
     private bool _gameOver = false;
 
     public Game(Ball ball, Paddle paddle, IReadOnlyList<Brick> bricks, uint defaultNumLives)
