@@ -18,6 +18,7 @@ public class BallPresenter : MonoBehaviour
     private int _power = 1;
     [SerializeField]
     [Range(0f, 90f)]
+    [Tooltip("0: completely vertical, 90: +/- 90degrees from the up vector")]
     private float _maxPaddleBounceAngle = 75f;
 
     private Rigidbody2D _rigidbody;
@@ -31,7 +32,7 @@ public class BallPresenter : MonoBehaviour
 
         this
             .OnTriggerEnter2DAsObservable()
-            .Where(collider => collider.tag == Tags.DEAD_ZONE)
+            .Where(collider => collider.CompareTag(Tags.DEAD_ZONE))
             .Subscribe(_ => Ball.Active.Value = false)
             .AddTo(this);
 
@@ -64,17 +65,30 @@ public class BallPresenter : MonoBehaviour
         _rigidbody.AddForce(force);
     }
 
+    /// <summary>
+    /// Allows the player to control bounce angle regardless of the incoming ball angle.
+    /// Contact on the left side of the paddle makes the ball go left.
+    /// Contact on the right side of the paddle makes the ball go right.
+    /// Angle is scaled based on how close to the paddle edge it hits.
+    /// </summary>
     private void CalculateBounceVelocity(Collision2D collision)
     {
         var localContact = collision.transform.InverseTransformPoint(collision.contacts[0].point);
         var paddleWidth = collision.collider.GetComponent<SpriteRenderer>().bounds.size.x;
-        var normalizedLocalContactX = localContact.x / (paddleWidth / 2);
-        var bounceAngle = normalizedLocalContactX * _maxPaddleBounceAngleInRadians;
+
+        // Map the horizontal contact point to the (0, 1) range.
+        // Input is in the range (-paddleWidth/2, paddleWidth/2)
+        var normalizedLocalContactX = localContact.x / paddleWidth + 0.5f;
+        var bounceAngle = Mathf.Lerp(
+            Mathf.PI / 2 + _maxPaddleBounceAngleInRadians,
+            Mathf.PI / 2 - _maxPaddleBounceAngleInRadians,
+            normalizedLocalContactX
+        );
 
         var bounceForce = new Vector2
         {
-            x = Mathf.Sin(bounceAngle) * Ball.InitialForce,
-            y = Mathf.Cos(bounceAngle) * Ball.InitialForce
+            x = Mathf.Cos(bounceAngle) * Ball.InitialForce,
+            y = Mathf.Sin(bounceAngle) * Ball.InitialForce
         };
 
         _rigidbody.linearVelocity = Vector2.zero;
