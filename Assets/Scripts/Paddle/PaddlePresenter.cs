@@ -1,4 +1,5 @@
 ﻿using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 
 public class PaddlePresenter : MonoBehaviour
@@ -33,6 +34,12 @@ public class PaddlePresenter : MonoBehaviour
             .ResetBallPos
             .Subscribe(_ => ResetBallPos())
             .AddTo(this);
+
+        //this
+        //    .OnCollisionEnter2DAsObservable()
+        //    .Where(collision => collision.gameObject.name == PADDLE_COLLIDER_NAME)
+        //    .Subscribe(CalculateBounceVelocity)
+        //    .AddTo(this);
     }
 
     public Paddle Paddle { get; private set; }
