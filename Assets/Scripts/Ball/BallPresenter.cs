@@ -49,7 +49,7 @@ public class BallPresenter : MonoBehaviour
 
     public Ball Ball { get; set; }
 
-    public Vector2 Velocity => _rigidbody.velocity;
+    public Vector2 Velocity => _rigidbody.linearVelocity;
 
     public void AddInitialForce()
     {
@@ -77,7 +77,7 @@ public class BallPresenter : MonoBehaviour
             y = Mathf.Cos(bounceAngle) * Ball.InitialForce
         };
 
-        _rigidbody.velocity = Vector2.zero;
+        _rigidbody.linearVelocity = Vector2.zero;
         _rigidbody.AddForce(bounceForce);
     }
 }
