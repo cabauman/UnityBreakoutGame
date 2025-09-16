@@ -14,10 +14,10 @@ namespace BreakoutGame
             var paddle = new Paddle();
             var bricks = new[]
             {
-            new Brick(1, 3),
-            new Brick(2, 3),
-            new Brick(3, 3)
-        };
+                new Brick(1, 3),
+                new Brick(2, 3),
+                new Brick(3, 3)
+            };
             var sut = new Game(ball, paddle, bricks, 1);
 
             // Assert
@@ -37,10 +37,10 @@ namespace BreakoutGame
             var paddle = new Paddle();
             var bricks = new[]
             {
-            new Brick(1, 3),
-            new Brick(2, 3),
-            new Brick(3, 3)
-        };
+                new Brick(1, 3),
+                new Brick(2, 3),
+                new Brick(3, 3)
+            };
             var sut = new Game(ball, paddle, bricks, 1);
 
             var gameWonTriggered = false;
@@ -66,8 +66,8 @@ namespace BreakoutGame
             var paddle = new Paddle();
             var bricks = new[]
             {
-            new Brick(1, 3),
-        };
+                new Brick(1, 3),
+            };
             var sut = new Game(ball, paddle, bricks, 1);
 
             var gameWonTriggered = false;
@@ -76,15 +76,66 @@ namespace BreakoutGame
             sut.GameLost.Subscribe(_ => gameLostTriggered = true);
 
             // Act
-            foreach (var brick in bricks)
-            {
-                brick.RespondToBallCollision.Execute(ball);
-            }
+            bricks[0].RespondToBallCollision.Execute(ball);
 
             // Assert
             Assert.That(sut.BricksRemaining.Value, Is.EqualTo(0));
             Assert.That(gameWonTriggered, Is.True);
             Assert.That(gameLostTriggered, Is.False);
+        }
+
+        [Test]
+        public void ResetGameTest()
+        {
+            // Arrange
+            var ball = new Ball(5, 2, Vector3.zero);
+            var paddle = new Paddle();
+            var bricks = new[]
+            {
+                new Brick(1, 3),
+            };
+
+            var sut = new Game(ball, paddle, bricks, 1);
+
+            ball.Active.Value = false;
+            Assert.That(sut.NumLives.Value, Is.EqualTo(0));
+            Assert.That(sut.NumBallsInPlay.Value, Is.EqualTo(0));
+
+            // Act
+            sut.ResetGameCmd.Execute();
+
+            // Assert
+            Assert.That(sut.NumLives.Value, Is.EqualTo(1));
+            Assert.That(sut.NumBallsInPlay.Value, Is.EqualTo(1));
+            Assert.That(sut.BricksRemaining.Value, Is.EqualTo(1));
+
+            Assert.That(bricks[0].Hp.Value, Is.EqualTo(1));
+            Assert.That(bricks[0].Active.Value, Is.True);
+            Assert.That(ball.Active.Value, Is.True);
+        }
+
+        [Test]
+        public void CreateBonusBallTest()
+        {
+            // Arrange
+            var ball = new Ball(5, 1, Vector3.zero);
+            var paddle = new Paddle();
+            var bricks = new[] { new Brick(1, 3) };
+            var sut = new Game(ball, paddle, bricks, 1);
+
+            var bonusBall = new Ball(5, 1, Vector3.zero);
+
+            // Act
+            sut.CreateBonusBall.Execute(bonusBall);
+
+            // Assert
+            Assert.That(sut.NumBallsInPlay.Value, Is.EqualTo(2));
+
+            // Act - Deactivate the bonus ball
+            bonusBall.Active.Value = false;
+
+            // Assert
+            Assert.That(sut.NumBallsInPlay.Value, Is.EqualTo(1));
         }
     }
 }
