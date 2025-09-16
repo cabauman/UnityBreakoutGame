@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 
-public class MagnetPowerUp : PowerUp
+namespace BreakoutGame
 {
-    public override string SpriteName { get; } = "MagnetPowerUp";
-
-    public override void ApplyEffect(Game game, Vector3 position)
+    public class MagnetPowerUp : PowerUp
     {
-        Debug.Log("MagnetPowerUp");
+        public override string SpriteName { get; } = "MagnetPowerUp";
+
+        public override void ApplyEffect(Game game, Vector3 position)
+        {
+            Debug.Log("MagnetPowerUp");
+        }
     }
 }

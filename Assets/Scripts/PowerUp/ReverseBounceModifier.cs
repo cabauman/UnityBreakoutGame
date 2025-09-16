@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 
-public class ReverseBounceModifier : PowerUp
+namespace BreakoutGame
 {
-    public override string SpriteName { get; } = "ReverseBounceModifier";
-
-    public override void ApplyEffect(Game game, Vector3 position)
+    public class ReverseBounceModifier : PowerUp
     {
-        Debug.Log("ReverseBounceModifier");
+        public override string SpriteName { get; } = "ReverseBounceModifier";
+
+        public override void ApplyEffect(Game game, Vector3 position)
+        {
+            Debug.Log("ReverseBounceModifier");
+            //
+        }
     }
 }

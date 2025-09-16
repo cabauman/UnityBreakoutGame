@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 
-public class ExtraBallPowerUp : PowerUp
+namespace BreakoutGame
 {
-    public override string SpriteName { get; } = "ExtraBallPowerUp";
-
-    public override void ApplyEffect(Game game, Vector3 position)
+    public class ExtraBallPowerUp : PowerUp
     {
-        Debug.Log("Extra ball!");
-        game.CreateBonusBall.Execute(new Ball(50, 1, position));
+        public override string SpriteName { get; } = "ExtraBallPowerUp";
+
+        public override void ApplyEffect(Game game, Vector3 position)
+        {
+            Debug.Log("Extra ball!");
+            game.CreateBonusBall.Execute(new Ball(50, 1, position));
+        }
     }
 }

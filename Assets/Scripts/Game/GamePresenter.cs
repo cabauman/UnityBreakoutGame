@@ -3,69 +3,72 @@ using System.Linq;
 using UniRx;
 using UnityEngine;
 
-public class GamePresenter : MonoBehaviour
+namespace BreakoutGame
 {
-    [Header("Object References")]
-    [SerializeField]
-    private BallPresenter _ballPresenter;
-    [SerializeField]
-    private PaddlePresenter _paddlePresenter;
-    [SerializeField]
-    private List<BrickPresenter> _brickPresenters;
-    [SerializeField]
-    private BallPresenter _ballPresenterPrefab;
-
-    [Header("Parameters")]
-    [SerializeField]
-    private uint _defaultNumLives = 1;
-
-    private readonly List<GameObject> _bonusBalls = new();
-
-    private void Awake()
+    public class GamePresenter : MonoBehaviour
     {
-        _ballPresenter.Init();
-        _paddlePresenter.Init();
-        _brickPresenters.ForEach(x => x.Init());
+        [Header("Object References")]
+        [SerializeField]
+        private BallPresenter _ballPresenter;
+        [SerializeField]
+        private PaddlePresenter _paddlePresenter;
+        [SerializeField]
+        private List<BrickPresenter> _brickPresenters;
+        [SerializeField]
+        private BallPresenter _ballPresenterPrefab;
 
-        var ball = _ballPresenter.Ball;
-        var paddle = _paddlePresenter.Paddle;
-        var bricks = _brickPresenters.Select(x => x.Brick).ToList();
-        Game = new Game(ball, paddle, bricks, _defaultNumLives);
+        [Header("Parameters")]
+        [SerializeField]
+        private uint _defaultNumLives = 1;
 
-        Game
-            .CreateBonusBall
-            .Subscribe(InstantiateBonusBall)
-            .AddTo(this);
+        private readonly List<GameObject> _bonusBalls = new();
 
-        Game
-            .GameWon
-            .Subscribe(_ => ClearBonusBalls())
-            .AddTo(this);
-
-        Observable
-            .EveryUpdate()
-            .Where(_ => Input.GetButtonDown("Fire1") && Mathf.Abs(_ballPresenter.Velocity.y) < Mathf.Epsilon)
-            .Subscribe(_ => _ballPresenter.AddInitialForce())
-            .AddTo(this);
-    }
-
-    public Game Game { get; private set; }
-
-    private void InstantiateBonusBall(Ball ball)
-    {
-        var ballPresenter = Instantiate(_ballPresenterPrefab, ball.StartPosition, Quaternion.identity);
-        ballPresenter.Init(ball);
-        ballPresenter.AddInitialForce();
-        _bonusBalls.Add(ballPresenter.gameObject);
-    }
-
-    private void ClearBonusBalls()
-    {
-        foreach (var ball in _bonusBalls)
+        private void Awake()
         {
-            Destroy(ball);
+            _ballPresenter.Init();
+            _paddlePresenter.Init();
+            _brickPresenters.ForEach(x => x.Init());
+
+            var ball = _ballPresenter.Ball;
+            var paddle = _paddlePresenter.Paddle;
+            var bricks = _brickPresenters.Select(x => x.Brick).ToList();
+            Game = new Game(ball, paddle, bricks, _defaultNumLives);
+
+            Game
+                .CreateBonusBall
+                .Subscribe(InstantiateBonusBall)
+                .AddTo(this);
+
+            Game
+                .GameWon
+                .Subscribe(_ => ClearBonusBalls())
+                .AddTo(this);
+
+            Observable
+                .EveryUpdate()
+                .Where(_ => Input.GetButtonDown("Fire1") && Mathf.Abs(_ballPresenter.Velocity.y) < Mathf.Epsilon)
+                .Subscribe(_ => _ballPresenter.AddInitialForce())
+                .AddTo(this);
         }
 
-        _bonusBalls.Clear();
+        public Game Game { get; private set; }
+
+        private void InstantiateBonusBall(Ball ball)
+        {
+            var ballPresenter = Instantiate(_ballPresenterPrefab, ball.StartPosition, Quaternion.identity);
+            ballPresenter.Init(ball);
+            ballPresenter.AddInitialForce();
+            _bonusBalls.Add(ballPresenter.gameObject);
+        }
+
+        private void ClearBonusBalls()
+        {
+            foreach (var ball in _bonusBalls)
+            {
+                Destroy(ball);
+            }
+
+            _bonusBalls.Clear();
+        }
     }
 }

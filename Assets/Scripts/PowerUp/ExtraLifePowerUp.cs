@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 
-public class ExtraLifePowerUp : PowerUp
+namespace BreakoutGame
 {
-    public override string SpriteName { get; } = "ExtraLifePowerUp";
-
-    public override void ApplyEffect(Game game, Vector3 position)
+    public class ExtraLifePowerUp : PowerUp
     {
-        Debug.Log("Extra life!");
-        game.NumLives.Value += 1;
+        public override string SpriteName { get; } = "ExtraLifePowerUp";
+
+        public override void ApplyEffect(Game game, Vector3 position)
+        {
+            Debug.Log("Extra life!");
+            game.NumLives.Value += 1;
+        }
     }
 }

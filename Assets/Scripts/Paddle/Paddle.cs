@@ -1,26 +1,29 @@
 ﻿using UniRx;
 
-public class Paddle
+namespace BreakoutGame
 {
-    private IBallPaddleCollisionStrategy _collisionStrategy;
-
-    public Paddle()
+    public class Paddle
     {
-        Width = new ReactiveProperty<float>(1);
-        ResetBallPos = new ReactiveCommand<Unit>();
-    }
+        private IBallPaddleCollisionStrategy _collisionStrategy;
 
-    public IReactiveProperty<float> Width { get; }
+        public Paddle()
+        {
+            Width = new ReactiveProperty<float>(1);
+            ResetBallPos = new ReactiveCommand<Unit>();
+        }
 
-    public ReactiveCommand<Unit> ResetBallPos { get; }
+        public IReactiveProperty<float> Width { get; }
 
-    public void SetCollisionStrategy(IBallPaddleCollisionStrategy strategy)
-    {
-        _collisionStrategy = strategy;
-    }
+        public ReactiveCommand<Unit> ResetBallPos { get; }
 
-    public void OnBallCollision(Ball ball)
-    {
-        _collisionStrategy.HandleCollision(ball, this);
+        public void SetCollisionStrategy(IBallPaddleCollisionStrategy strategy)
+        {
+            _collisionStrategy = strategy;
+        }
+
+        public void OnBallCollision(Ball ball)
+        {
+            _collisionStrategy.HandleCollision(ball, this);
+        }
     }
 }

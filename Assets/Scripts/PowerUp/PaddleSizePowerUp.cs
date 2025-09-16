@@ -2,19 +2,22 @@
 using UniRx;
 using UnityEngine;
 
-public class PaddleSizePowerUp : PowerUp
+namespace BreakoutGame
 {
-    private readonly float _widthMultiplier = 1.5f;
-    private readonly float _effectDuration = 5f;
-
-    public override string SpriteName { get; } = "PaddleWidthPowerUp";
-
-    public override void ApplyEffect(Game game, Vector3 position)
+    public class PaddleSizePowerUp : PowerUp
     {
-        Debug.Log("Paddle size increased!");
-        game.Paddle.Width.Value *= _widthMultiplier;
-        Observable
-            .Timer(TimeSpan.FromSeconds(_effectDuration))
-            .Subscribe(_ => game.Paddle.Width.Value /= _widthMultiplier);
+        private readonly float _widthMultiplier = 1.5f;
+        private readonly float _effectDuration = 5f;
+
+        public override string SpriteName { get; } = "PaddleWidthPowerUp";
+
+        public override void ApplyEffect(Game game, Vector3 position)
+        {
+            Debug.Log("Paddle size increased!");
+            game.Paddle.Width.Value *= _widthMultiplier;
+            Observable
+                .Timer(TimeSpan.FromSeconds(_effectDuration))
+                .Subscribe(_ => game.Paddle.Width.Value /= _widthMultiplier);
+        }
     }
 }
