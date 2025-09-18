@@ -11,7 +11,7 @@ namespace BreakoutGame
         {
             // Arrange
             var ball = new Ball(5, 2, Vector3.zero);
-            var paddle = new Paddle();
+            var paddle = new Paddle(null, null);
             var bricks = new[]
             {
                 new Brick(1, 3),
@@ -34,7 +34,7 @@ namespace BreakoutGame
         {
             // Arrange
             var ball = new Ball(5, 2, Vector3.zero);
-            var paddle = new Paddle();
+            var paddle = new Paddle(null, null);
             var bricks = new[]
             {
                 new Brick(1, 3),
@@ -63,7 +63,7 @@ namespace BreakoutGame
         {
             // Arrange
             var ball = new Ball(5, 2, Vector3.zero);
-            var paddle = new Paddle();
+            var paddle = new Paddle(null, null);
             var bricks = new[]
             {
                 new Brick(1, 3),
@@ -89,7 +89,7 @@ namespace BreakoutGame
         {
             // Arrange
             var ball = new Ball(5, 2, Vector3.zero);
-            var paddle = new Paddle();
+            var paddle = new Paddle(null, null);
             var bricks = new[]
             {
                 new Brick(1, 3),
@@ -119,7 +119,7 @@ namespace BreakoutGame
         {
             // Arrange
             var ball = new Ball(5, 1, Vector3.zero);
-            var paddle = new Paddle();
+            var paddle = new Paddle(null, null);
             var bricks = new[] { new Brick(1, 3) };
             var sut = new Game(ball, paddle, bricks, 1);
 
@@ -139,3 +139,15 @@ namespace BreakoutGame
         }
     }
 }
+
+
+
+// Either yield return null or call InputSystem.Update() to update the state of the input system.
+
+
+            InputSystem.QueueStateEvent(mouse, new MouseState() { position = Vector2.zero }.WithButton(MouseButton.Right, true));
+            yield return null;
+            InputSystem.QueueDeltaStateEvent(mouse.position, new Vector2(100f, 0f));
+            yield return null;
+            InputSystem.QueueStateEvent(mouse, new MouseState() { position = Vector2.right * 100f }.WithButton(MouseButton.Right, false));
+            yield return new WaitForSeconds(3f);

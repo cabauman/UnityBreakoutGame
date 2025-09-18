@@ -1,5 +1,6 @@
-using System.Collections;
 using NUnit.Framework;
+using System.Collections;
+using UniRx;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -12,12 +13,19 @@ namespace BreakoutGame
         {
             // Arrange
             var startPos = new Vector3(startPosX, 0, 0);
-            var sut = new Ball(initialForce, power, startPos);
+            var view = new GameObject();
+            var config = new BallPresenter.Config
+            {
+                _initialForce = initialForce,
+                _power = power,
+                _initialAngle = 45f,
+                _maxPaddleBounceAngle = 75f
+            };
+            var sut = new Ball(view, config);
 
             // Assert
             Assert.That(sut.InitialForce, Is.EqualTo(initialForce));
             Assert.That(sut.Power, Is.EqualTo(power));
-            Assert.That(sut.StartPosition, Is.EqualTo(startPos));
             Assert.That(sut.Active.Value, Is.True);
         }
 
@@ -58,7 +66,20 @@ namespace BreakoutGame
         [UnityTest]
         public IEnumerator NewTestScriptWithEnumeratorPasses()
         {
+            var o = Observable
+                .EveryUpdate()
+                .Subscribe(x => Debug.Log(x));
+
             yield return null;
+            yield return null;
+
+            o.Dispose();
+
+            //var sut = new GameObject().AddComponent<PlayingField>();
+            //yield return null;
+            //yield return null;
+            //yield return null;
+            //sut.DoSomething();
         }
     }
 }

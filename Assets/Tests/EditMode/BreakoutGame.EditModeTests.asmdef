@@ -1,12 +1,17 @@
 {
-    "name": "PlayMode",
-    "rootNamespace": "",
+    "name": "BreakoutGame.EditModeTests",
+    "rootNamespace": "BreakoutGame",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "BreakoutGame"
+        "BreakoutGame",
+        "UniRx",
+        "Unity.InputSystem",
+        "Unity.InputSystem.TestFramework"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,

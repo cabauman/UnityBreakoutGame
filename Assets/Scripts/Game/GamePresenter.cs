@@ -46,18 +46,19 @@ namespace BreakoutGame
 
             Observable
                 .EveryUpdate()
-                .Where(_ => Input.GetButtonDown("Fire1") && Mathf.Abs(_ballPresenter.Velocity.y) < Mathf.Epsilon)
-                .Subscribe(_ => _ballPresenter.AddInitialForce())
+                .Where(_ =>
+                    UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
+                .Subscribe(_ => _ballPresenter.Ball.AddInitialForce())
                 .AddTo(this);
         }
 
         public Game Game { get; private set; }
 
-        private void InstantiateBonusBall(Ball ball)
+        private void InstantiateBonusBall(Vector3 spawnPosition)
         {
-            var ballPresenter = Instantiate(_ballPresenterPrefab, ball.StartPosition, Quaternion.identity);
-            ballPresenter.Init(ball);
-            ballPresenter.AddInitialForce();
+            var ballPresenter = Instantiate(_ballPresenterPrefab, spawnPosition, Quaternion.identity);
+            ballPresenter.Init();
+            ballPresenter.Ball.AddInitialForce();
             _bonusBalls.Add(ballPresenter.gameObject);
         }
 

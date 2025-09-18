@@ -1,4 +1,4 @@
-﻿using UniRx;
+﻿using System;
 using UnityEngine;
 
 namespace BreakoutGame
@@ -6,35 +6,27 @@ namespace BreakoutGame
     public class PaddlePresenter : MonoBehaviour
     {
         [SerializeField]
-        private BallPresenter _ballPresenter;
-        [SerializeField]
-        private Transform _initialBallPosTrfm;
-        [SerializeField]
-        private Transform _graphicTrfm;
+        private Config _config;
 
-        private float _screenWidth;
+        public class Dummy
+        {
+            public Dummy(PaddlePresenter view)
+            {
+                Debug.Log(view._config);
+            }
+        }
+
+        private void Update() => Paddle.Tick(Time.deltaTime);
 
         public void Init()
         {
-            Paddle = new Paddle();
+            Paddle = new Paddle(this, _config);
 
-            _screenWidth = Screen.width;
-
-            Observable
-                .EveryUpdate()
-                .Select(_ => Input.mousePosition)
-                .Subscribe(UpdateXPosition)
-                .AddTo(this);
-
-            Paddle
-                .Width
-                .Subscribe(xScale => _graphicTrfm.localScale = new Vector3(xScale, _graphicTrfm.localScale.y))
-                .AddTo(this);
-
-            Paddle
-                .ResetBallPos
-                .Subscribe(_ => ResetBallPos())
-                .AddTo(this);
+            //Observable
+            //    .EveryUpdate()
+            //    .Select(_ => Input.mousePosition)
+            //    .Subscribe(UpdateXPosition)
+            //    .AddTo(_view);
 
             //this
             //    .OnCollisionEnter2DAsObservable()
@@ -45,17 +37,12 @@ namespace BreakoutGame
 
         public Paddle Paddle { get; private set; }
 
-        private void UpdateXPosition(Vector3 mousePos)
+        [Serializable]
+        public sealed class Config
         {
-            mousePos.x = Mathf.Clamp(mousePos.x, 0, _screenWidth);
-            var xPos = Camera.main.ScreenToWorldPoint(mousePos).x;
-            transform.position = new Vector3(xPos, transform.position.y, transform.position.z);
-        }
-
-        private void ResetBallPos()
-        {
-            _ballPresenter.transform.parent = transform;
-            _ballPresenter.transform.position = _initialBallPosTrfm.position;
+            public BallPresenter _ballPresenter;
+            public Transform _initialBallPosTrfm;
+            public Transform _graphicTrfm;
         }
     }
 }

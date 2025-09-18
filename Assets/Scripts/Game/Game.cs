@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;
+using UnityEngine;
 
 namespace BreakoutGame
 {
@@ -53,7 +54,7 @@ namespace BreakoutGame
             ResetGameCmd = new ReactiveCommand();
             ResetGameCmd.Subscribe(_ => ResetGame());
 
-            CreateBonusBall = new ReactiveCommand<Ball>(Observable.Defer(() => Observable.Return(!_gameOver)));
+            CreateBonusBall = new ReactiveCommand<Vector3>(Observable.Defer(() => Observable.Return(!_gameOver)));
             CreateBonusBall
                 .Do(_ => NumBallsInPlay.Value += 1)
                 .SelectMany(DetectWhenBonusBallBecomesInactive)
@@ -78,7 +79,7 @@ namespace BreakoutGame
 
         public ReactiveCommand ResetGameCmd { get; }
 
-        public ReactiveCommand<Ball> CreateBonusBall { get; }
+        public ReactiveCommand<Vector3> CreateBonusBall { get; }
 
         private void ResetGame()
         {
