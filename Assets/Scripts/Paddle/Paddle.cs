@@ -1,11 +1,10 @@
-﻿using System;
-using UniRx;
+﻿using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public class Paddle
+    public sealed class Paddle
     {
         private IBallPaddleCollisionStrategy _collisionStrategy;
 

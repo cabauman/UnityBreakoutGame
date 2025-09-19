@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    public class Brick
+    public sealed class Brick
     {
         private readonly GameObject _view;
         private readonly BrickPresenter.Config _config;

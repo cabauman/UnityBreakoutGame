@@ -1,11 +1,9 @@
-﻿using UniRx;
-using UniRx.Triggers;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace BreakoutGame
 {
     [RequireComponent(typeof(BoxCollider2D))]
-    public class BrickPresenter : MonoBehaviour
+    public sealed class BrickPresenter : MonoBehaviour
     {
         [SerializeField]
         private Config _config;

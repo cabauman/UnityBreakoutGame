@@ -1,15 +1,12 @@
 ﻿using System;
-using UniRx;
-using UniRx.Triggers;
+using System.ComponentModel;
 using UnityEngine;
 
 namespace BreakoutGame
 {
     [RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D))]
-    public class BallPresenter : MonoBehaviour
+    public sealed class BallPresenter : MonoBehaviour, IView
     {
-        private const string PADDLE_COLLIDER_NAME = "PaddleGraphic";
-
         [SerializeField]
         private Config _config;
 
@@ -20,11 +17,15 @@ namespace BreakoutGame
 
         public Ball Ball { get; set; }
 
+        public GameObject GameObject => gameObject;
+
         [Serializable]
         public sealed class Config
         {
             [Range(0f, 100f)]
             public float _initialForce = 50f;
+            //[field: SerializeField]
+            //public float _initialForce { get; init; } = 50f;
 
             // TODO: Rename to _initialAngleDeg
             [Range(-90f, 90f)]
@@ -38,4 +39,10 @@ namespace BreakoutGame
             public float _maxPaddleBounceAngle = 75f;
         }
     }
+}
+
+namespace System.Runtime.CompilerServices
+{
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public record IsExternalInit;
 }

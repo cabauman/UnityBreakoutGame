@@ -3,11 +3,12 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    public class PaddlePresenter : MonoBehaviour
+    public sealed class PaddlePresenter : MonoBehaviour
     {
         [SerializeField]
         private Config _config;
 
+        // TODO: Remove this
         public class Dummy
         {
             public Dummy(PaddlePresenter view)

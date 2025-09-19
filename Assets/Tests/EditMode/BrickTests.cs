@@ -32,11 +32,13 @@ namespace BreakoutGame
         public void RespondToBallCollisionTest(int initialHp, int ballPower, int expectedRemainingHp)
         {
             // Arrange
+            var powerUpPrefab = new GameObject().AddComponent<PowerUpPresenter>();
             var view = new GameObject();
             var config = new BrickPresenter.Config
             {
                 _initialHp = initialHp,
                 _powerUpSpawnOdds = 3,
+                _powerUpPrefab = powerUpPrefab,
             };
             var sut = new Brick(view, config);
 
@@ -62,11 +64,13 @@ namespace BreakoutGame
         public void ActiveTest()
         {
             // Arrange
+            var powerUpPrefab = new GameObject().AddComponent<PowerUpPresenter>();
             var view = new GameObject();
             var config = new BrickPresenter.Config
             {
                 _initialHp = 2,
                 _powerUpSpawnOdds = 3,
+                _powerUpPrefab = powerUpPrefab,
             };
             var sut = new Brick(view, config);
 
@@ -124,7 +128,10 @@ namespace BreakoutGame
         [UnityTest]
         public IEnumerator NewTestScriptWithEnumeratorPasses()
         {
-            yield return null;
+            var sut = new GameObject().AddComponent<TestMono>();
+            sut.DoSomething();
+            //yield return null;
+            yield return new WaitForSeconds(1f);
         }
     }
 }

@@ -146,9 +146,11 @@ namespace BreakoutGame
 
         private BallPresenter InstantiateBonusBall(Vector3 spawnPosition)
         {
+            //IView v = null;
+            //var result = v.Instantiate<BallPresenter, Ball>(_config._ballPresenterPrefab, spawnPosition, Quaternion.identity);
             var ballPresenter = GameObject.Instantiate(_config._ballPresenterPrefab, spawnPosition, Quaternion.identity);
-            ballPresenter.Ball.AddInitialForce();
-            _bonusBalls.Add(ballPresenter.gameObject);
+            //ballPresenter.Ball.AddInitialForce();
+            //_bonusBalls.Add(ballPresenter.gameObject);
             return ballPresenter;
         }
 

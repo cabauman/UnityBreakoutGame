@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    public class Ball
+    public sealed class Ball
     {
         private const string PADDLE_COLLIDER_NAME = "PaddleGraphic";
 

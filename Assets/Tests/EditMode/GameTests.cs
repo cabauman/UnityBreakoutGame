@@ -174,7 +174,7 @@ namespace BreakoutGame
                 _initialForce = 5,
                 _power = 2,
                 _initialAngle = 45f,
-                _maxPaddleBounceAngle = 75f
+                _maxPaddleBounceAngle = 75f,
             };
             var bonusBall = new Ball(bonusBallView, bonusBallConfig);
 
@@ -199,7 +199,7 @@ namespace BreakoutGame
                 _initialForce = 5,
                 _power = 2,
                 _initialAngle = 45f,
-                _maxPaddleBounceAngle = 75f
+                _maxPaddleBounceAngle = 75f,
             };
             var ball = new Ball(ballView, ballConfig);
             var ballPresenter = ballView.AddComponent<BallPresenter>();
