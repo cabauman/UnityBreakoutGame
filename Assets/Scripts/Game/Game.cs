@@ -9,27 +9,20 @@ namespace BreakoutGame
     public class Game
     {
         private readonly uint _defaultNumLives;
+        private readonly List<GameObject> _bonusBalls = new();
+        private readonly GamePresenter.Config _config;
         private bool _gameOver = false;
 
-        public Game(Ball ball, Paddle paddle, IReadOnlyList<Brick> bricks, uint defaultNumLives)
+        public Game(GameObject view, GamePresenter.Config config)
         {
-            Ball = ball;
-            Paddle = paddle;
-            Bricks = bricks;
-            _defaultNumLives = defaultNumLives > 0 ? defaultNumLives : 1;
+            _config = config ?? throw new ArgumentNullException(nameof(config));
+            Ball = config._ballPresenter.Ball;
+            Paddle = config._paddlePresenter.Paddle;
+            _defaultNumLives = config._defaultNumLives > 0 ? config._defaultNumLives : 1;
+
             NumLives = new ReactiveProperty<uint>(_defaultNumLives);
-            BricksRemaining = new ReactiveProperty<int>(Bricks.Count);
+            BricksRemaining = new ReactiveProperty<int>(config._brickPresenters.Count);
             NumBallsInPlay = new ReactiveProperty<int>(1);
-
-            Ball.Active
-                .Where(active => !_gameOver && !active)
-                .Subscribe(_ => NumBallsInPlay.Value -= 1);
-
-            Bricks
-                .ToObservable()
-                .SelectMany(x => x.Active)
-                .Where(active => active == false)
-                .Subscribe(_ => BricksRemaining.Value -= 1);
 
             GameWon = BricksRemaining
                 .Where(count => count == 0)
@@ -57,15 +50,46 @@ namespace BreakoutGame
             CreateBonusBall = new ReactiveCommand<Vector3>(Observable.Defer(() => Observable.Return(!_gameOver)));
             CreateBonusBall
                 .Do(_ => NumBallsInPlay.Value += 1)
+                .Select(InstantiateBonusBall)
                 .SelectMany(DetectWhenBonusBallBecomesInactive)
                 .Subscribe(_ => NumBallsInPlay.Value -= 1);
+
+            this
+                .GameWon
+                .Subscribe(_ => ClearBonusBalls())
+                .AddTo(view);
+
+            Observable
+                .EveryUpdate()
+                .Where(_ =>
+                    UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
+                .Subscribe(_ => _config._ballPresenter.Ball.AddInitialForce())
+                .AddTo(view);
+        }
+
+        public void Start()
+        {
+            Bricks = _config._brickPresenters.Select(x => x.Brick).ToList();
+            Ball
+                .Active
+                .Where(active => !_gameOver && !active)
+                .Subscribe(_ => NumBallsInPlay.Value -= 1);
+
+            Bricks
+                .ToObservable()
+                .SelectMany(x =>
+                {
+                    return x.Active;
+                })
+                .Where(active => active == false)
+                .Subscribe(_ => BricksRemaining.Value -= 1);
         }
 
         public Ball Ball { get; }
 
         public Paddle Paddle { get; }
 
-        public IReadOnlyList<Brick> Bricks { get; }
+        public IReadOnlyList<Brick> Bricks { get; private set; }
 
         public IObservable<Unit> GameWon { get; }
 
@@ -80,6 +104,14 @@ namespace BreakoutGame
         public ReactiveCommand ResetGameCmd { get; }
 
         public ReactiveCommand<Vector3> CreateBonusBall { get; }
+
+        //public void Tick(float deltaTime)
+        //{
+        //    if (UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
+        //    {
+        //        Ball.AddInitialForce();
+        //    }
+        //}
 
         private void ResetGame()
         {
@@ -104,12 +136,30 @@ namespace BreakoutGame
             NumBallsInPlay.Value = 1;
         }
 
-        private IObservable<Unit> DetectWhenBonusBallBecomesInactive(Ball ball)
+        private IObservable<Unit> DetectWhenBonusBallBecomesInactive(BallPresenter ball)
         {
-            return ball.Active
+            return ball.Ball.Active
                 .Where(active => !active)
                 .Select(_ => Unit.Default)
                 .Take(1);
+        }
+
+        private BallPresenter InstantiateBonusBall(Vector3 spawnPosition)
+        {
+            var ballPresenter = GameObject.Instantiate(_config._ballPresenterPrefab, spawnPosition, Quaternion.identity);
+            ballPresenter.Ball.AddInitialForce();
+            _bonusBalls.Add(ballPresenter.gameObject);
+            return ballPresenter;
+        }
+
+        private void ClearBonusBalls()
+        {
+            foreach (var ball in _bonusBalls)
+            {
+                GameObject.Destroy(ball);
+            }
+
+            _bonusBalls.Clear();
         }
     }
 }

@@ -12,7 +12,6 @@ namespace BreakoutGame
         public void InitTest(int initialForce, int power, int startPosX)
         {
             // Arrange
-            var startPos = new Vector3(startPosX, 0, 0);
             var view = new GameObject();
             var config = new BallPresenter.Config
             {
@@ -35,7 +34,15 @@ namespace BreakoutGame
         public void GetInitialForceTest(float angle, float expectedX, float expectedY)
         {
             // Arrange
-            var sut = new Ball(5, 2, Vector3.zero);
+            var view = new GameObject();
+            var config = new BallPresenter.Config
+            {
+                _initialForce = 5,
+                _power = 2,
+                _initialAngle = 45f,
+                _maxPaddleBounceAngle = 75f
+            };
+            var sut = new Ball(view, config);
 
             // Act
             var force = sut.GetInitialForce(angle);
@@ -51,7 +58,15 @@ namespace BreakoutGame
         public void CalculatePaddleBounceForceTest(float contactX, float expectedX, float expectedY)
         {
             // Arrange
-            var sut = new Ball(5, 2, Vector3.zero);
+            var view = new GameObject();
+            var config = new BallPresenter.Config
+            {
+                _initialForce = 5,
+                _power = 2,
+                _initialAngle = 45f,
+                _maxPaddleBounceAngle = 75f
+            };
+            var sut = new Ball(view, config);
             var paddleWidth = 4f;
             var maxBounceAngleRad = 75f * Mathf.Deg2Rad;
 

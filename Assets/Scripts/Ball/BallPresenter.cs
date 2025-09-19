@@ -13,7 +13,7 @@ namespace BreakoutGame
         [SerializeField]
         private Config _config;
 
-        public void Init()
+        private void Awake()
         {
             Ball = new Ball(gameObject, _config);
         }
@@ -26,6 +26,7 @@ namespace BreakoutGame
             [Range(0f, 100f)]
             public float _initialForce = 50f;
 
+            // TODO: Rename to _initialAngleDeg
             [Range(-90f, 90f)]
             public float _initialAngle = 45f;
 

@@ -18,29 +18,22 @@ namespace BreakoutGame
 
         private void Update() => Paddle.Tick(Time.deltaTime);
 
-        public void Init()
+        private void Awake()
         {
-            Paddle = new Paddle(this, _config);
-
-            //Observable
-            //    .EveryUpdate()
-            //    .Select(_ => Input.mousePosition)
-            //    .Subscribe(UpdateXPosition)
-            //    .AddTo(_view);
-
-            //this
-            //    .OnCollisionEnter2DAsObservable()
-            //    .Where(collision => collision.gameObject.name == PADDLE_COLLIDER_NAME)
-            //    .Subscribe(CalculateBounceVelocity)
-            //    .AddTo(this);
+            Paddle = new Paddle(gameObject, _config);
         }
 
-        public Paddle Paddle { get; private set; }
+        //private void OnCollisionEnter2D(Collision2D collision)
+        //{
+        //    Paddle.OnCollisionEnter2D(collision);
+        //}
+
+        public Paddle Paddle { get; set; }
 
         [Serializable]
         public sealed class Config
         {
-            public BallPresenter _ballPresenter;
+            public GameObject _ballPresenter;
             public Transform _initialBallPosTrfm;
             public Transform _graphicTrfm;
         }

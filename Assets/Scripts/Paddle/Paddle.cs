@@ -1,4 +1,6 @@
-﻿using UniRx;
+﻿using System;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 
 namespace BreakoutGame
@@ -8,10 +10,14 @@ namespace BreakoutGame
         private IBallPaddleCollisionStrategy _collisionStrategy;
 
         private float _screenWidth;
-        private PaddlePresenter _view;
+        private GameObject _view;
         private PaddlePresenter.Config _config;
 
-        public Paddle(PaddlePresenter view, PaddlePresenter.Config config)
+        public IReactiveProperty<float> Width { get; }
+
+        public ReactiveCommand<Unit> ResetBallPos { get; }
+
+        public Paddle(GameObject view, PaddlePresenter.Config config)
         {
             _view = view;
             _config = config;
@@ -28,6 +34,18 @@ namespace BreakoutGame
                 .ResetBallPos
                 .Subscribe(_ => ResetBallPos_())
                 .AddTo(_view);
+
+            //Observable
+            //    .EveryUpdate()
+            //    .Select(_ => Input.mousePosition)
+            //    .Subscribe(UpdateXPosition)
+            //    .AddTo(_view);
+
+            //_view
+            //    .OnCollisionEnter2DAsObservable()
+            //    .Where(collision => collision.gameObject.name == PADDLE_COLLIDER_NAME)
+            //    .Subscribe(CalculateBounceVelocity)
+            //    .AddTo(_view);
         }
 
         public void Tick(float deltaTime)
@@ -35,10 +53,6 @@ namespace BreakoutGame
             var mousePos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
             UpdateXPosition(new Vector3(mousePos.x, mousePos.y, 10f));
         }
-
-        public IReactiveProperty<float> Width { get; }
-
-        public ReactiveCommand<Unit> ResetBallPos { get; }
 
         public void SetCollisionStrategy(IBallPaddleCollisionStrategy strategy)
         {
@@ -49,6 +63,14 @@ namespace BreakoutGame
         {
             _collisionStrategy.HandleCollision(ball, this);
         }
+
+        //public void OnCollisionEnter2D(Collision2D collision)
+        //{
+        //    if (collision.gameObject.name == PADDLE_COLLIDER_NAME)
+        //    {
+        //        CalculateBounceVelocity();
+        //    }
+        //}
 
         private void UpdateXPosition(Vector3 mousePos)
         {

@@ -8,40 +8,21 @@ namespace BreakoutGame
     public class BrickPresenter : MonoBehaviour
     {
         [SerializeField]
-        private int _initialHp = 1;
-        [SerializeField]
-        [Range(0, 10)]
-        private int _powerUpSpawnOdds = 3;
-        [SerializeField]
-        private PowerUpPresenter _powerUpPrefab;
+        private Config _config;
 
-        public void Init()
+        private void Awake()
         {
-            Brick = new Brick(_initialHp, _powerUpSpawnOdds);
-
-            this
-                .OnCollisionEnter2DAsObservable()
-                .Select(collision => collision.collider.GetComponent<BallPresenter>().Ball)
-                .Subscribe(ball => Brick.RespondToBallCollision.Execute(ball))
-                .AddTo(this);
-
-            Brick
-                .PowerUpCreated
-                .Subscribe(InstantiatePowerUp)
-                .AddTo(this);
-
-            Brick
-                .Active
-                .Subscribe(value => gameObject.SetActive(value))
-                .AddTo(this);
+            Brick = new Brick(gameObject, _config);
         }
 
         public Brick Brick { get; private set; }
 
-        private void InstantiatePowerUp(PowerUp powerUp)
+        public sealed class Config
         {
-            var powerUpPresenter = Instantiate(_powerUpPrefab, transform.position, Quaternion.identity);
-            powerUpPresenter.PowerUp = powerUp;
+            public int _initialHp = 1;
+            [Range(0, 10)]
+            public int _powerUpSpawnOdds = 3;
+            public PowerUpPresenter _powerUpPrefab;
         }
     }
 }

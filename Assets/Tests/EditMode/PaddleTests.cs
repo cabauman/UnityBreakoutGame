@@ -17,9 +17,9 @@ namespace BreakoutGame
             {
                 _graphicTrfm = new GameObject().transform,
                 _initialBallPosTrfm = new GameObject().transform,
-                _ballPresenter = new GameObject().AddComponent<BallPresenter>()
+                _ballPresenter = new GameObject(),
             };
-            var view = new GameObject().AddComponent<PaddlePresenter>();
+            var view = new GameObject();
             var sut = new Paddle(view, config);
 
             var mouse = InputSystem.AddDevice<Mouse>();
