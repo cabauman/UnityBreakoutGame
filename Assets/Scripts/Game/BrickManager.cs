@@ -2,25 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;
+using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class BrickManager
+    public sealed class BrickManager : MonoBehaviour
     {
-        public BrickManager(IReadOnlyList<Brick> bricks)
-        {
-            Bricks = bricks;
-            BricksRemaining = new ReactiveProperty<int>(Bricks.Count);
+        [SerializeField]
+        private BrickPresenter[] _bricks;
 
-            Bricks
+        public IReactiveProperty<int> BricksRemaining { get; private set; }
+
+        private void Awake()
+        {
+            BricksRemaining = new ReactiveProperty<int>(_bricks.Length);
+
+            _bricks
                 .ToObservable()
-                .SelectMany(x => x.Active)
+                .SelectMany(x => x.Brick.Active)
                 .Where(active => active == false)
                 .Subscribe(_ => BricksRemaining.Value -= 1);
         }
 
-        public IReadOnlyList<Brick> Bricks { get; }
+        private void ResetGame()
+        {
+            BricksRemaining.Value = _bricks.Length;
 
-        public IReactiveProperty<int> BricksRemaining { get; }
+            foreach (var brick in _bricks)
+            {
+                brick.Brick.ResetHp.Execute(Unit.Default);
+            }
+        }
     }
 }

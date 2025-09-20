@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BreakoutGame
 {
     [RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D))]
-    public sealed class BallPresenter : MonoBehaviour, IView
+    public sealed class BallPresenter : MonoBehaviour, IView, ITestable<BallPresenter.Config>
     {
         [SerializeField]
         private Config _config;
@@ -14,6 +14,8 @@ namespace BreakoutGame
         {
             Ball = new Ball(gameObject, _config);
         }
+
+        void ITestable<Config>.SetConfig(Config config) => _config = config;
 
         public Ball Ball { get; set; }
 
@@ -24,8 +26,6 @@ namespace BreakoutGame
         {
             [Range(0f, 100f)]
             public float _initialForce = 50f;
-            //[field: SerializeField]
-            //public float _initialForce { get; init; } = 50f;
 
             // TODO: Rename to _initialAngleDeg
             [Range(-90f, 90f)]
@@ -39,10 +39,4 @@ namespace BreakoutGame
             public float _maxPaddleBounceAngle = 75f;
         }
     }
-}
-
-namespace System.Runtime.CompilerServices
-{
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public record IsExternalInit;
 }

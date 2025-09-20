@@ -17,6 +17,11 @@ namespace BreakoutGame
         T Value { get; } 
     }
 
+    public interface ITestable<T>
+    {
+        void SetConfig(T config);
+    }
+
     public interface IView
     {
         GameObject GameObject { get; }

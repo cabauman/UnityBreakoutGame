@@ -10,22 +10,15 @@ namespace BreakoutGame
         private readonly uint _defaultNumLives;
         private bool _gameOver = false;
 
-        public Game2(Ball ball, Paddle paddle, IReadOnlyList<Brick> bricks, uint defaultNumLives)
+        public Game2(Paddle paddle, uint defaultNumLives)
         {
             var ballManager = new BallManager();
+            var brickManager = new BrickManager();
             Paddle = paddle;
-            Bricks = bricks;
             _defaultNumLives = defaultNumLives > 0 ? defaultNumLives : 1;
             NumLives = new ReactiveProperty<uint>(_defaultNumLives);
-            BricksRemaining = new ReactiveProperty<int>(Bricks.Count);
 
-            Bricks
-                .ToObservable()
-                .SelectMany(x => x.Active)
-                .Where(active => active == false)
-                .Subscribe(_ => BricksRemaining.Value -= 1);
-
-            GameWon = BricksRemaining
+            GameWon = brickManager.BricksRemaining
                 .Where(count => count == 0)
                 .Do(x => { _gameOver = true; /*Ball.Active.Value = false;*/ })
                 .Select(_ => Unit.Default);
@@ -51,13 +44,9 @@ namespace BreakoutGame
 
         public Paddle Paddle { get; }
 
-        public IReadOnlyList<Brick> Bricks { get; }
-
         public IObservable<Unit> GameWon { get; }
 
         public IObservable<Unit> GameLost { get; }
-
-        public IReactiveProperty<int> BricksRemaining { get; }
 
         public IReactiveProperty<uint> NumLives { get; }
 
@@ -67,13 +56,6 @@ namespace BreakoutGame
         {
             NumLives.Value = _defaultNumLives;
             Paddle.ResetBallPos.Execute(Unit.Default);
-            BricksRemaining.Value = Bricks.Count;
-
-            foreach (var brick in Bricks)
-            {
-                brick.ResetHp.Execute(Unit.Default);
-            }
-
             _gameOver = false;
         }
 

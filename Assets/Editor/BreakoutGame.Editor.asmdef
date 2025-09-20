@@ -1,0 +1,18 @@
+{
+    "name": "BreakoutGame.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:82075e50b751602488f6f86b253dca77"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

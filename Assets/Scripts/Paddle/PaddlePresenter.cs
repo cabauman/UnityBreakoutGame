@@ -5,6 +5,7 @@ namespace BreakoutGame
 {
     public sealed class PaddlePresenter : MonoBehaviour
     {
+        [MyConfig]
         [SerializeField]
         private Config _config;
 

@@ -235,15 +235,3 @@ namespace BreakoutGame
         }
     }
 }
-
-
-
-// Either yield return null or call InputSystem.Update() to update the state of the input system.
-
-
-// InputSystem.QueueStateEvent(mouse, new MouseState() { position = Vector2.zero }.WithButton(MouseButton.Right, true));
-// yield return null;
-// InputSystem.QueueDeltaStateEvent(mouse.position, new Vector2(100f, 0f));
-// yield return null;
-// InputSystem.QueueStateEvent(mouse, new MouseState() { position = Vector2.right * 100f }.WithButton(MouseButton.Right, false));
-// yield return new WaitForSeconds(3f);

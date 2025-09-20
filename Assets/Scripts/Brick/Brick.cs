@@ -12,7 +12,7 @@ namespace BreakoutGame
 
         public Brick(GameObject view, BrickPresenter.Config config)
         {
-            _view = view ?? throw new ArgumentNullException(nameof(view));
+            _view = view != null ? view : throw new ArgumentNullException(nameof(view));
             // TODO: Validate config values
             _config = config ?? throw new ArgumentNullException(nameof(config));
 

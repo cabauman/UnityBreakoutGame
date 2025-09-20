@@ -124,14 +124,5 @@ namespace BreakoutGame
             Assert.That(sut.Hp.Value, Is.EqualTo(2));
             Assert.That(sut.Active.Value, Is.True);
         }
-
-        [UnityTest]
-        public IEnumerator NewTestScriptWithEnumeratorPasses()
-        {
-            var sut = new GameObject().AddComponent<TestMono>();
-            sut.DoSomething();
-            //yield return null;
-            yield return new WaitForSeconds(1f);
-        }
     }
 }

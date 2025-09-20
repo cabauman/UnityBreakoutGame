@@ -77,24 +77,5 @@ namespace BreakoutGame
             Assert.That(actual.x, Is.EqualTo(expectedX).Within(0.0001));
             Assert.That(actual.y, Is.EqualTo(expectedY).Within(0.0001));
         }
-
-        [UnityTest]
-        public IEnumerator NewTestScriptWithEnumeratorPasses()
-        {
-            var o = Observable
-                .EveryUpdate()
-                .Subscribe(x => Debug.Log(x));
-
-            yield return null;
-            yield return null;
-
-            o.Dispose();
-
-            //var sut = new GameObject().AddComponent<PlayingField>();
-            //yield return null;
-            //yield return null;
-            //yield return null;
-            //sut.DoSomething();
-        }
     }
 }

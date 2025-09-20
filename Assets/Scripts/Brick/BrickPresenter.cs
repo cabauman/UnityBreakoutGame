@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace BreakoutGame
 {
@@ -15,6 +16,7 @@ namespace BreakoutGame
 
         public Brick Brick { get; private set; }
 
+        [Serializable]
         public sealed class Config
         {
             public int _initialHp = 1;
