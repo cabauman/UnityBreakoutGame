@@ -9,6 +9,10 @@ namespace BreakoutGame
         [SerializeField]
         private Config _config;
 
+        public Paddle Paddle { get; set; }
+
+        public Transform InitialBallPosTrfm => _config._initialBallPosTrfm;
+
         // TODO: Remove this
         public class Dummy
         {
@@ -29,8 +33,6 @@ namespace BreakoutGame
         //{
         //    Paddle.OnCollisionEnter2D(collision);
         //}
-
-        public Paddle Paddle { get; set; }
 
         [Serializable]
         public sealed class Config

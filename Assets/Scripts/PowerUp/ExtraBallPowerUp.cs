@@ -1,15 +1,16 @@
-﻿using UnityEngine;
+﻿using UniDig;
+using UnityEngine;
 
 namespace BreakoutGame
 {
-    public class ExtraBallPowerUp : PowerUp
+    public sealed partial class ExtraBallPowerUp : PowerUp
     {
-        public override string SpriteName { get; } = "ExtraBallPowerUp";
+        [Inject] private BallManager _ballManager;
 
-        public override void ApplyEffect(Game game, Vector3 position)
+        public override void ApplyEffect(PaddlePresenter paddle)
         {
             Debug.Log("Extra ball!");
-            game.CreateBonusBall.Execute(position);
+            _ballManager.CreateBonusBall.Execute(paddle.InitialBallPosTrfm.position);
         }
     }
 }

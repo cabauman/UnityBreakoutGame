@@ -6,18 +6,18 @@ namespace BreakoutGame
 {
     public class PaddleSizePowerUp : PowerUp
     {
-        private readonly float _widthMultiplier = 1.5f;
-        private readonly float _effectDuration = 5f;
+        [SerializeField]
+        private float _widthMultiplier = 1.5f;
+        [SerializeField]
+        private float _effectDuration = 5f;
 
-        public override string SpriteName { get; } = "PaddleWidthPowerUp";
-
-        public override void ApplyEffect(Game game, Vector3 position)
+        public override void ApplyEffect(PaddlePresenter paddle)
         {
             Debug.Log("Paddle size increased!");
-            game.Paddle.Width.Value *= _widthMultiplier;
+            paddle.Paddle.Width.Value *= _widthMultiplier;
             Observable
                 .Timer(TimeSpan.FromSeconds(_effectDuration))
-                .Subscribe(_ => game.Paddle.Width.Value /= _widthMultiplier);
+                .Subscribe(_ => paddle.Paddle.Width.Value /= _widthMultiplier);
         }
     }
 }

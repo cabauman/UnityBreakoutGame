@@ -129,6 +129,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1728431713}
   - component: {fileID: 1728431712}
+  - component: {fileID: 1728431715}
+  - component: {fileID: 1728431714}
   m_Layer: 0
   m_Name: GCDemo
   m_TagString: Untagged
@@ -148,6 +150,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 854b0cefed0a4ba4abf1f211a1bee327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BreakoutGame::BreakoutGame.TestMono
+  data: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!4 &1728431713
 Transform:
   m_ObjectHideFlags: 0
@@ -163,6 +169,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1728431714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728431711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b65525b126750fd49905695aa03c74f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BreakoutGame::CompositionRoot
+  _registrar: {fileID: 0}
+  _dependencies: []
+  _testMono: {fileID: 1728431712}
+--- !u!114 &1728431715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728431711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521f4c08184ae614693e6b436f52250d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BreakoutGame::GameCtor.DevToolbox.BaseSceneBootstrapper
+  _compositionRoot: {fileID: 1728431714}
+  monoInjectObjects: []
 --- !u!1 &1907692807
 GameObject:
   m_ObjectHideFlags: 0

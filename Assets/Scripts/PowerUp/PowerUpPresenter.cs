@@ -6,19 +6,18 @@ namespace BreakoutGame
 {
     public class PowerUpPresenter : MonoBehaviour
     {
+        public PowerUp PowerUp { get; set; }
+
         private void Start()
         {
-            var sprite = Resources.Load<Sprite>(string.Format("Sprites/{0}", PowerUp.SpriteName));
-            if (sprite != null)
+            if (PowerUp.Sprite != null)
             {
-                GetComponent<SpriteRenderer>().sprite = sprite;
+                GetComponent<SpriteRenderer>().sprite = PowerUp.Sprite;
             }
 
             this
                 .OnTriggerEnter2DAsObservable()
-                .Select(collider => collider.transform.parent.GetComponent<PaddlePresenter>())
-                .Where(x => x != null)
-                .Subscribe(_ => ApplyAndDestroy())
+                .Subscribe(ApplyAndDestroy)
                 .AddTo(this);
 
             this
@@ -28,12 +27,14 @@ namespace BreakoutGame
                 .AddTo(this);
         }
 
-        public PowerUp PowerUp { get; set; }
-
-        private void ApplyAndDestroy()
+        private void ApplyAndDestroy(Collider2D collider)
         {
-            var gamePresenter = FindAnyObjectByType<GamePresenter>();
-            PowerUp.ApplyEffect(gamePresenter.Game, transform.position);
+            if (!collider.TryGetComponent<PaddlePresenter>(out var paddle))
+            {
+                return;
+            }
+
+            PowerUp.ApplyEffect(paddle);
             Destroy(gameObject);
         }
     }

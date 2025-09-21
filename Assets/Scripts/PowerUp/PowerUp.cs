@@ -2,10 +2,10 @@
 
 namespace BreakoutGame
 {
-    public abstract class PowerUp
+    public abstract class PowerUp : ScriptableObject
     {
-        public abstract string SpriteName { get; }
+        public Sprite Sprite;
 
-        public abstract void ApplyEffect(Game game, Vector3 position);
+        public abstract void ApplyEffect(PaddlePresenter paddle);
     }
 }

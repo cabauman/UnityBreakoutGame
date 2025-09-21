@@ -4,9 +4,7 @@ namespace BreakoutGame
 {
     public class MagnetPowerUp : PowerUp
     {
-        public override string SpriteName { get; } = "MagnetPowerUp";
-
-        public override void ApplyEffect(Game game, Vector3 position)
+        public override void ApplyEffect(PaddlePresenter paddle)
         {
             Debug.Log("MagnetPowerUp");
         }
