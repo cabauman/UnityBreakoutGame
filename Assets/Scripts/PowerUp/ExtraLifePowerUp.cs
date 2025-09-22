@@ -3,11 +3,12 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed partial class ExtraLifePowerUp : PowerUp
+    public sealed partial class ExtraLifePowerUp : PowerUpPresenter
     {
-        [Inject] Game2 _game;
+        [Inject]
+        private Game2 _game;
 
-        public override void ApplyEffect(PaddlePresenter paddle)
+        protected override void ApplyEffect(PaddlePresenter paddle)
         {
             Debug.Log("Extra life!");
             _game.NumLives.Value += 1;

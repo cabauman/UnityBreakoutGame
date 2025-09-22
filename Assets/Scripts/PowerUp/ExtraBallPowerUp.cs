@@ -3,11 +3,12 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed partial class ExtraBallPowerUp : PowerUp
+    public sealed partial class ExtraBallPowerUp : PowerUpPresenter
     {
-        [Inject] private BallManager _ballManager;
+        [Inject]
+        private BallManager _ballManager;
 
-        public override void ApplyEffect(PaddlePresenter paddle)
+        protected override void ApplyEffect(PaddlePresenter paddle)
         {
             Debug.Log("Extra ball!");
             _ballManager.CreateBonusBall.Execute(paddle.InitialBallPosTrfm.position);

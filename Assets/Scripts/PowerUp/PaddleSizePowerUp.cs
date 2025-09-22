@@ -4,14 +4,15 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    public class PaddleSizePowerUp : PowerUp
+    public class PaddleSizePowerUp : PowerUpPresenter
     {
         [SerializeField]
         private float _widthMultiplier = 1.5f;
+
         [SerializeField]
         private float _effectDuration = 5f;
 
-        public override void ApplyEffect(PaddlePresenter paddle)
+        protected override void ApplyEffect(PaddlePresenter paddle)
         {
             Debug.Log("Paddle size increased!");
             paddle.Paddle.Width.Value *= _widthMultiplier;

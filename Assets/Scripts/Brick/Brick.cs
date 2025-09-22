@@ -47,7 +47,7 @@ namespace BreakoutGame
                 .AddTo(view);
         }
 
-        public IObservable<PowerUp> PowerUpCreated { get; }
+        public IObservable<PowerUpPresenter> PowerUpCreated { get; }
 
         public IReactiveProperty<int> Hp { get; }
 
@@ -57,13 +57,13 @@ namespace BreakoutGame
 
         public IReactiveCommand<Ball> RespondToBallCollision { get; }
 
-        private void InstantiatePowerUp(PowerUp powerUp)
+        private void InstantiatePowerUp(PowerUpPresenter powerUp)
         {
             var powerUpPresenter = GameObject.Instantiate(_config._powerUpPrefab, _view.transform.position, Quaternion.identity);
-            powerUpPresenter.PowerUp = powerUp;
+            //powerUpPresenter.PowerUpPresenter = powerUp;
         }
 
-        private PowerUp CreateRandomPowerUp()
+        private PowerUpPresenter CreateRandomPowerUp()
         {
             int randNum = RandomUtil.Random.Next(0, 3);
             return randNum switch

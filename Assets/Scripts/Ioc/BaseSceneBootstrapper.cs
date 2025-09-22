@@ -21,7 +21,9 @@ namespace GameCtor.DevToolbox
         private void Awake()
         {
 #if UNITY_EDITOR
-            monoInjectObjects = FindObjectsOfType<MonoBehaviour>(true).Where(x => x is UniDig.IMonoInject).ToArray();
+            monoInjectObjects = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .Where(x => x is UniDig.IMonoInject)
+                .ToArray();
 #endif
             InjectSceneDependencies(monoInjectObjects);
         }

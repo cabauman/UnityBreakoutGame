@@ -2,9 +2,9 @@
 
 namespace BreakoutGame
 {
-    public class MagnetPowerUp : PowerUp
+    public class MagnetPowerUp : PowerUpPresenter
     {
-        public override void ApplyEffect(PaddlePresenter paddle)
+        protected override void ApplyEffect(PaddlePresenter paddle)
         {
             Debug.Log("MagnetPowerUp");
         }

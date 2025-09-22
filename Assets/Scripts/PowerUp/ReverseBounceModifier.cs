@@ -2,9 +2,9 @@
 
 namespace BreakoutGame
 {
-    public class ReverseBounceModifier : PowerUp
+    public class ReverseBounceModifier : PowerUpPresenter
     {
-        public override void ApplyEffect(Vector3 position)
+        protected override void ApplyEffect(PaddlePresenter paddle)
         {
             Debug.Log("ReverseBounceModifier");
         }

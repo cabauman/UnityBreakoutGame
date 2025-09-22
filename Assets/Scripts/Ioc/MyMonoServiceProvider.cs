@@ -19,6 +19,11 @@ namespace BreakoutGame
         public object TheInt { get; } = 42;
         public int GetInt2() => 45;
         public TestMono GetTestMono() => _testMono;
+
+        public ExtraLifePowerUpFactory GetExtraLifePowerUpFactory(Game2 game)
+        {
+            return new ExtraLifePowerUpFactory(game);
+        }
     }
 }
 
