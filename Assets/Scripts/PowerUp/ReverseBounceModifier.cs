@@ -2,11 +2,11 @@
 
 namespace BreakoutGame
 {
-    public class ReverseBounceModifier : PowerUpPresenter
+    public sealed class ReverseBounceModifier : PowerUpAction
     {
-        //protected override void ApplyEffect(PaddlePresenter paddle)
-        //{
-        //    Debug.Log("ReverseBounceModifier");
-        //}
+        public override void ApplyEffect(Paddle paddle)
+        {
+            Debug.Log("ReverseBounceModifier");
+        }
     }
 }

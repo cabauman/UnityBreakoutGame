@@ -1,6 +1,5 @@
 ﻿//using UnityEngine;
 ////using Jab;
-using BreakoutGame;
 using GameCtor.DevToolbox;
 using System;
 using System.Collections.Generic;
@@ -19,33 +18,34 @@ namespace BreakoutGame
     [Singleton(typeof(TestMono), Factory = nameof(GetTestMono))]
     [Singleton(typeof(PowerUpSpawner), Factory = nameof(GetPowerUpSpawner))]
     [Scoped(typeof(IRandom), typeof(UnityRandom))]
+    [Singleton(typeof(Game2))]
+    [Singleton(typeof(Paddle), Instance = nameof(_paddle))]
     [Singleton(typeof(PowerUpAction), typeof(ExtraLifePowerUpAction), Key = nameof(PowerUpKind.ExtraLife))]
     public partial class CompositionRoot : BaseCompositionRoot
     {
         public TestMono _testMono;
         public PowerUpTable _powerUpTable;
+
+        [SerializeField]
+        private Paddle _paddle;
+
         public object TheInt { get; } = 42;
         public uint GetInt2() => 45;
         public TestMono GetTestMono() => _testMono;
 
-        public ExtraLifePowerUpFactory GetExtraLifePowerUpFactory(Game2 game)
-        {
-            return new ExtraLifePowerUpFactory(game);
-        }
-
         private PowerUpSpawner GetPowerUpSpawner()
         {
-            var wrappers = new List<PowerUpConfigWrapper>();
+            var dataList = new List<PowerUpData>();
             foreach (var config in _powerUpTable.Configs)
             {
-                var action = Resolve<PowerUpAction>(config.Kind.ToString());
-                var configWrapper = new PowerUpConfigWrapper(config, action);
-                wrappers.Add(configWrapper);
+                var command = Resolve<PowerUpAction>(config.Kind.ToString());
+                var data = new PowerUpData(config, command);
+                dataList.Add(data);
                 //InjectDependencies(config);
             }
 
             return new PowerUpSpawner(
-                _powerUpTable, //wrappers
+                dataList,
                 new PowerUpFactory(),
                 GetService<IRandom>());
         }

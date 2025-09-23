@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using UniRx;
+﻿using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public class PowerUpPresenter : MonoBehaviour
+    public sealed class PowerUp : MonoBehaviour
     {
-        private PowerUpConfig _config;
+        private PowerUpData _data;
 
         private void Start()
         {
@@ -18,8 +16,6 @@ namespace BreakoutGame
                 .AddTo(this);
         }
 
-        //protected abstract void ApplyEffect(PaddlePresenter paddle);
-
         private void ApplyAndDestroy(Collider2D collider)
         {
             if (collider.CompareTag(Tags.DEAD_ZONE))
@@ -28,17 +24,16 @@ namespace BreakoutGame
                 return;
             }
 
-            if (collider.TryGetComponent<PaddlePresenter>(out var paddle))
+            if (collider.TryGetComponent<Paddle>(out var paddle))
             {
-                //ApplyEffect(paddle);
-                _config.ApplyEffect();
+                _data.Action.ApplyEffect(paddle);
                 Destroy(gameObject);
             }
         }
 
-        public void Init(PowerUpConfig config)
+        public void Init(PowerUpData data)
         {
-            _config = config;
+            _data = data;
         }
     }
 }

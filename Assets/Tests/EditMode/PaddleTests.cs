@@ -13,14 +13,14 @@ namespace BreakoutGame
         public void InitTest()
         {
             // Arrange
-            var config = new PaddlePresenter.Config
+            var config = new Paddle.Config
             {
                 _graphicTrfm = new GameObject().transform,
                 _initialBallPosTrfm = new GameObject().transform,
                 _ballPresenter = new GameObject(),
             };
             var view = new GameObject();
-            var sut = new Paddle(view, config);
+            var sut = new PaddlePresenter(view, config);
 
             var mouse = InputSystem.AddDevice<Mouse>();
             Set(mouse.position, new Vector2(Screen.width * 0.4f, Screen.height * 0.4f));

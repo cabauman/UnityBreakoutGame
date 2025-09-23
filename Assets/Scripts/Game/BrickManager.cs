@@ -9,7 +9,7 @@ namespace BreakoutGame
     public sealed class BrickManager : MonoBehaviour
     {
         [SerializeField]
-        private BrickPresenter[] _bricks;
+        private Brick[] _bricks;
 
         public IReactiveProperty<int> BricksRemaining { get; private set; }
 
@@ -19,7 +19,7 @@ namespace BreakoutGame
 
             _bricks
                 .ToObservable()
-                .SelectMany(x => x.Brick.Active)
+                .SelectMany(x => x.Presenter.Active)
                 .Where(active => active == false)
                 .Subscribe(_ => BricksRemaining.Value -= 1);
         }
@@ -30,7 +30,7 @@ namespace BreakoutGame
 
             foreach (var brick in _bricks)
             {
-                brick.Brick.ResetHp.Execute(Unit.Default);
+                brick.Presenter.ResetHp.Execute(Unit.Default);
             }
         }
     }

@@ -11,28 +11,31 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 342a33d9750f7504cb5d38462c0a430b, type: 3}
   m_Name: PowerUpTable
-  m_EditorClassIdentifier: BreakoutGame::PowerUpTable
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.PowerUpTable
   _configs:
-  - rid: 5484576728371429440
-  - rid: 5484576728371429444
+  - rid: 8432942456068374587
+  - rid: 8432942456068374588
+  - rid: 8432942458344309047
   references:
     version: 2
     RefIds:
-    - rid: 5484576728371429440
-      type: {class: ExtraLifePowerUpConfig, ns: , asm: BreakoutGame}
+    - rid: 8432942456068374587
+      type: {class: ExtraLifePowerUpConfig, ns: BreakoutGame, asm: BreakoutGame}
       data:
-        Name: A
         Kind: 1
         Prefab: {fileID: 329374770883220387, guid: 21ac330a748308240bd5323deca95d02,
           type: 3}
         Weight: 1
-        ExtraLives: 1
-    - rid: 5484576728371429444
-      type: {class: ExtraBallPowerUpConfig, ns: , asm: BreakoutGame}
+    - rid: 8432942456068374588
+      type: {class: ExtraBallPowerUpConfig, ns: BreakoutGame, asm: BreakoutGame}
       data:
-        Name: C
         Kind: 2
         Prefab: {fileID: 329374770883220387, guid: 21ac330a748308240bd5323deca95d02,
           type: 3}
         Weight: 1
-        ExtraBalls: 1
+    - rid: 8432942458344309047
+      type: {class: ReverseBouncePowerUpConfig, ns: BreakoutGame, asm: BreakoutGame}
+      data:
+        Kind: 4
+        Prefab: {fileID: 0}
+        Weight: 6

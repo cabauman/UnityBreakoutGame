@@ -10,12 +10,11 @@ namespace BreakoutGame
         private readonly uint _defaultNumLives;
         private bool _gameOver = false;
 
-        public Game2(Paddle paddle, uint defaultNumLives)
+        public Game2()
         {
             var ballManager = new BallManager();
             var brickManager = new BrickManager();
-            Paddle = paddle;
-            _defaultNumLives = defaultNumLives > 0 ? defaultNumLives : 1;
+            _defaultNumLives = 1;
             NumLives = new ReactiveProperty<uint>(_defaultNumLives);
 
             GameWon = brickManager.BricksRemaining
@@ -42,7 +41,7 @@ namespace BreakoutGame
             ResetGameCmd.Subscribe(_ => ResetGame());
         }
 
-        public Paddle Paddle { get; }
+        public PaddlePresenter Paddle { get; }
 
         public IObservable<Unit> GameWon { get; }
 
@@ -55,13 +54,13 @@ namespace BreakoutGame
         private void ResetGame()
         {
             NumLives.Value = _defaultNumLives;
-            Paddle.ResetBallPos.Execute(Unit.Default);
+            //Paddle.ResetBallPos.Execute(Unit.Default);
             _gameOver = false;
         }
 
         private void UseExtraLife()
         {
-            Paddle.ResetBallPos.Execute(Unit.Default);
+            //Paddle.ResetBallPos.Execute(Unit.Default);
         }
     }
 }

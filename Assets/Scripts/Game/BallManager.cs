@@ -9,9 +9,9 @@ namespace BreakoutGame
     public sealed class BallManager : MonoBehaviour
     {
         [SerializeField]
-        private BallPresenter _ballPrefab;
+        private Ball _ballPrefab;
         [SerializeField]
-        private BallPresenter _mainBall;
+        private Ball _mainBall;
 
         private bool _gameOver = false;
         private readonly List<GameObject> _bonusBalls = new();
@@ -32,24 +32,24 @@ namespace BreakoutGame
                 .Subscribe(_ => NumBallsInPlay.Value -= 1);
         }
 
-        public Ball Ball => _mainBall.Ball;
+        public BallPresenter Ball => _mainBall.Presenter;
 
         public IReactiveProperty<int> NumBallsInPlay { get; private set; }
 
         public ReactiveCommand<Vector3> CreateBonusBall { get; private set; }
 
-        private IObservable<Unit> DetectWhenBonusBallBecomesInactive(BallPresenter ball)
+        private IObservable<Unit> DetectWhenBonusBallBecomesInactive(Ball ball)
         {
-            return ball.Ball.Active
+            return ball.Presenter.Active
                 .Where(active => !active)
                 .Select(_ => Unit.Default)
                 .Take(1);
         }
 
-        private BallPresenter InstantiateBonusBall(Vector3 spawnPosition)
+        private Ball InstantiateBonusBall(Vector3 spawnPosition)
         {
             var ballPresenter = GameObject.Instantiate(_ballPrefab, spawnPosition, Quaternion.identity);
-            ballPresenter.Ball.AddInitialForce();
+            ballPresenter.Presenter.AddInitialForce();
             _bonusBalls.Add(ballPresenter.gameObject);
             return ballPresenter;
         }

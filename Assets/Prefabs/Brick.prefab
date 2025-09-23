@@ -147,11 +147,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1014296972457434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 158059522dd73064bb0efbf2ae2295ea, type: 3}
+  m_Script: {fileID: 11500000, guid: d5528d2af47d78346aaa5b1874018aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _config:
     _initialHp: 1
     _powerUpSpawnOdds: 3
-    _powerUpPrefab: {fileID: 114291337129891598, guid: 21ac330a748308240bd5323deca95d02,
-      type: 3}
+    _powerUpPrefab: {fileID: 0}

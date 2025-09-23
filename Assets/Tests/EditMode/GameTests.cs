@@ -11,8 +11,8 @@ namespace BreakoutGame
         public void InitTest()
         {
             // Arrange
-            BallPresenter ballPresenter = CreateBall();
-            PaddlePresenter paddlePresenter = CreatePaddle(ballPresenter.gameObject);
+            Ball ballPresenter = CreateBall();
+            Paddle paddlePresenter = CreatePaddle(ballPresenter.gameObject);
 
             // TODO: Set brick presenters
             var bricks = new[]
@@ -26,7 +26,7 @@ namespace BreakoutGame
             {
                 _ballPresenter = ballPresenter,
                 _paddlePresenter = paddlePresenter,
-                _brickPresenters = new List<BrickPresenter>(),
+                _brickPresenters = new List<Brick>(),
                 _defaultNumLives = 1,
                 _ballPresenterPrefab = ballPresenter,
             };
@@ -36,8 +36,8 @@ namespace BreakoutGame
             Assert.That(sut.NumLives.Value, Is.EqualTo(1));
             Assert.That(sut.NumBallsInPlay.Value, Is.EqualTo(1));
             Assert.That(sut.BricksRemaining.Value, Is.EqualTo(3));
-            Assert.That(sut.Ball, Is.EqualTo(ballPresenter.Ball));
-            Assert.That(sut.Paddle, Is.EqualTo(paddlePresenter.Paddle));
+            Assert.That(sut.Ball, Is.EqualTo(ballPresenter.Presenter));
+            Assert.That(sut.Paddle, Is.EqualTo(paddlePresenter.Presenter));
             Assert.That(sut.Bricks, Is.EqualTo(bricks));
         }
 
@@ -45,8 +45,8 @@ namespace BreakoutGame
         public void GameLostTest()
         {
             // Arrange
-            BallPresenter ballPresenter = CreateBall();
-            PaddlePresenter paddlePresenter = CreatePaddle(ballPresenter.gameObject);
+            Ball ballPresenter = CreateBall();
+            Paddle paddlePresenter = CreatePaddle(ballPresenter.gameObject);
 
             var bricks = new[]
             {
@@ -59,7 +59,7 @@ namespace BreakoutGame
             {
                 _ballPresenter = ballPresenter,
                 _paddlePresenter = paddlePresenter,
-                _brickPresenters = new List<BrickPresenter>(),
+                _brickPresenters = new List<Brick>(),
                 _defaultNumLives = 1,
                 _ballPresenterPrefab = ballPresenter,
             };
@@ -71,7 +71,7 @@ namespace BreakoutGame
             sut.GameLost.Subscribe(_ => gameLostTriggered = true);
 
             // Act
-            ballPresenter.Ball.Active.Value = false;
+            ballPresenter.Presenter.Active.Value = false;
 
             // Assert
             Assert.That(sut.NumLives.Value, Is.EqualTo(0));
@@ -84,8 +84,8 @@ namespace BreakoutGame
         public void GameWonTest()
         {
             // Arrange
-            BallPresenter ballPresenter = CreateBall();
-            PaddlePresenter paddlePresenter = CreatePaddle(ballPresenter.gameObject);
+            Ball ballPresenter = CreateBall();
+            Paddle paddlePresenter = CreatePaddle(ballPresenter.gameObject);
 
             var bricks = new[] { CreateBrick(1) };
             var gameView = new GameObject();
@@ -93,7 +93,7 @@ namespace BreakoutGame
             {
                 _ballPresenter = ballPresenter,
                 _paddlePresenter = paddlePresenter,
-                _brickPresenters = new List<BrickPresenter>(),
+                _brickPresenters = new List<Brick>(),
                 _defaultNumLives = 1,
                 _ballPresenterPrefab = ballPresenter,
             };
@@ -105,7 +105,7 @@ namespace BreakoutGame
             sut.GameLost.Subscribe(_ => gameLostTriggered = true);
 
             // Act
-            bricks[0].RespondToBallCollision.Execute(ballPresenter.Ball);
+            bricks[0].RespondToBallCollision.Execute(ballPresenter.Presenter);
 
             // Assert
             Assert.That(sut.BricksRemaining.Value, Is.EqualTo(0));
@@ -117,8 +117,8 @@ namespace BreakoutGame
         public void ResetGameTest()
         {
             // Arrange
-            BallPresenter ballPresenter = CreateBall();
-            PaddlePresenter paddlePresenter = CreatePaddle(ballPresenter.gameObject);
+            Ball ballPresenter = CreateBall();
+            Paddle paddlePresenter = CreatePaddle(ballPresenter.gameObject);
 
             var bricks = new[] { CreateBrick(1) };
             var gameView = new GameObject();
@@ -126,13 +126,13 @@ namespace BreakoutGame
             {
                 _ballPresenter = ballPresenter,
                 _paddlePresenter = paddlePresenter,
-                _brickPresenters = new List<BrickPresenter>(),
+                _brickPresenters = new List<Brick>(),
                 _defaultNumLives = 1,
                 _ballPresenterPrefab = ballPresenter,
             };
             var sut = new Game(gameView, gameConfig);
 
-            ballPresenter.Ball.Active.Value = false;
+            ballPresenter.Presenter.Active.Value = false;
             Assert.That(sut.NumLives.Value, Is.EqualTo(0));
             Assert.That(sut.NumBallsInPlay.Value, Is.EqualTo(0));
 
@@ -146,15 +146,15 @@ namespace BreakoutGame
 
             Assert.That(bricks[0].Hp.Value, Is.EqualTo(1));
             Assert.That(bricks[0].Active.Value, Is.True);
-            Assert.That(ballPresenter.Ball.Active.Value, Is.True);
+            Assert.That(ballPresenter.Presenter.Active.Value, Is.True);
         }
 
         [Test]
         public void CreateBonusBallTest()
         {
             // Arrange
-            BallPresenter ballPresenter = CreateBall();
-            PaddlePresenter paddlePresenter = CreatePaddle(ballPresenter.gameObject);
+            Ball ballPresenter = CreateBall();
+            Paddle paddlePresenter = CreatePaddle(ballPresenter.gameObject);
 
             var bricks = new[] { CreateBrick(1) };
             var gameView = new GameObject();
@@ -162,21 +162,21 @@ namespace BreakoutGame
             {
                 _ballPresenter = ballPresenter,
                 _paddlePresenter = paddlePresenter,
-                _brickPresenters = new List<BrickPresenter>(),
+                _brickPresenters = new List<Brick>(),
                 _defaultNumLives = 1,
                 _ballPresenterPrefab = ballPresenter,
             };
             var sut = new Game(gameView, gameConfig);
 
             var bonusBallView = new GameObject();
-            var bonusBallConfig = new BallPresenter.Config
+            var bonusBallConfig = new Ball.Config
             {
                 _initialForce = 5,
                 _power = 2,
                 _initialAngle = 45f,
                 _maxPaddleBounceAngle = 75f,
             };
-            var bonusBall = new Ball(bonusBallView, bonusBallConfig);
+            var bonusBall = new BallPresenter(bonusBallView, bonusBallConfig);
 
             // Act
             sut.CreateBonusBall.Execute(new Vector3(5, 5, 0));
@@ -191,47 +191,47 @@ namespace BreakoutGame
             Assert.That(sut.NumBallsInPlay.Value, Is.EqualTo(1));
         }
 
-        private static BallPresenter CreateBall()
+        private static Ball CreateBall()
         {
             var ballView = new GameObject();
-            var ballConfig = new BallPresenter.Config
+            var ballConfig = new Ball.Config
             {
                 _initialForce = 5,
                 _power = 2,
                 _initialAngle = 45f,
                 _maxPaddleBounceAngle = 75f,
             };
-            var ball = new Ball(ballView, ballConfig);
-            var ballPresenter = ballView.AddComponent<BallPresenter>();
-            ballPresenter.Ball = ball;
+            var ball = new BallPresenter(ballView, ballConfig);
+            var ballPresenter = ballView.AddComponent<Ball>();
+            ballPresenter.Presenter = ball;
             return ballPresenter;
         }
 
-        private static PaddlePresenter CreatePaddle(GameObject ballView)
+        private static Paddle CreatePaddle(GameObject ballView)
         {
             var paddleView = new GameObject();
-            var paddleConfig = new PaddlePresenter.Config
+            var paddleConfig = new Paddle.Config
             {
                 _ballPresenter = ballView,
                 _graphicTrfm = paddleView.transform,
                 _initialBallPosTrfm = paddleView.transform,
             };
-            var paddle = new Paddle(paddleView, paddleConfig);
-            var paddlePresenter = paddleView.AddComponent<PaddlePresenter>();
-            paddlePresenter.Paddle = paddle;
+            var paddle = new PaddlePresenter(paddleView, paddleConfig);
+            var paddlePresenter = paddleView.AddComponent<Paddle>();
+            paddlePresenter.Presenter = paddle;
             return paddlePresenter;
         }
 
-        private static Brick CreateBrick(int initialHp)
+        private static BrickPresenter CreateBrick(int initialHp)
         {
             var brickView = new GameObject();
-            var brickConfig = new BrickPresenter.Config
+            var brickConfig = new Brick.Config
             {
                 _initialHp = initialHp,
                 _powerUpSpawnOdds = 3,
                 _powerUpPrefab = null,
             };
-            return new Brick(brickView, brickConfig);
+            return new BrickPresenter(brickView, brickConfig);
         }
     }
 }

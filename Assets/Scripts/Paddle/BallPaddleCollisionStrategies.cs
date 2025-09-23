@@ -2,12 +2,12 @@
 {
     public interface IBallPaddleCollisionStrategy
     {
-        void HandleCollision(Ball ball, Paddle paddle);
+        void HandleCollision(BallPresenter ball, PaddlePresenter paddle);
     }
 
     public class NormalBounceStrategy : IBallPaddleCollisionStrategy
     {
-        public void HandleCollision(Ball ball, Paddle paddle)
+        public void HandleCollision(BallPresenter ball, PaddlePresenter paddle)
         {
             //var localContact = collision.transform.InverseTransformPoint(collision.contacts[0].point);
             //var paddleWidth = collision.collider.GetComponent<SpriteRenderer>().bounds.size.x;
@@ -34,7 +34,7 @@
 
     public class ReverseBounceStrategy : IBallPaddleCollisionStrategy
     {
-        public void HandleCollision(Ball ball, Paddle paddle)
+        public void HandleCollision(BallPresenter ball, PaddlePresenter paddle)
         {
             //ball.ReverseBounce();
         }
@@ -42,7 +42,7 @@
 
     public class MagnetBounceStrategy : IBallPaddleCollisionStrategy
     {
-        public void HandleCollision(Ball ball, Paddle paddle)
+        public void HandleCollision(BallPresenter ball, PaddlePresenter paddle)
         {
             //ball.StickToPaddle(paddle);
         }

@@ -32,10 +32,10 @@ namespace BreakoutGame
         public sealed class Config
         {
             [Header("Object References")]
-            public BallPresenter _ballPresenter;
-            public PaddlePresenter _paddlePresenter;
-            public List<BrickPresenter> _brickPresenters;
-            public BallPresenter _ballPresenterPrefab;
+            public Ball _ballPresenter;
+            public Paddle _paddlePresenter;
+            public List<Brick> _brickPresenters;
+            public Ball _ballPresenterPrefab;
 
             [Header("Parameters")]
             public uint _defaultNumLives = 1;

@@ -13,12 +13,12 @@ namespace BreakoutGame
         {
             // Arrange
             var view = new GameObject();
-            var config = new BrickPresenter.Config
+            var config = new Brick.Config
             {
                 _initialHp = 1,
                 _powerUpSpawnOdds = 3,
             };
-            var sut = new Brick(view, config);
+            var sut = new BrickPresenter(view, config);
 
             // Assert
             Assert.That(sut.Hp.Value, Is.EqualTo(1));
@@ -32,25 +32,25 @@ namespace BreakoutGame
         public void RespondToBallCollisionTest(int initialHp, int ballPower, int expectedRemainingHp)
         {
             // Arrange
-            var powerUpPrefab = new GameObject().AddComponent<PowerUpPresenter>();
+            var powerUpPrefab = new GameObject().AddComponent<PowerUp>();
             var view = new GameObject();
-            var config = new BrickPresenter.Config
+            var config = new Brick.Config
             {
                 _initialHp = initialHp,
                 _powerUpSpawnOdds = 3,
                 _powerUpPrefab = powerUpPrefab,
             };
-            var sut = new Brick(view, config);
+            var sut = new BrickPresenter(view, config);
 
             var ballView = new GameObject();
-            var ballConfig = new BallPresenter.Config
+            var ballConfig = new Ball.Config
             {
                 _initialForce = 5,
                 _initialAngle = 45,
                 _power = ballPower,
                 _maxPaddleBounceAngle = 75,
             };
-            var ball = new Ball(ballView, ballConfig);
+            var ball = new BallPresenter(ballView, ballConfig);
 
             // Act
             sut.RespondToBallCollision.Execute(ball);
@@ -64,25 +64,25 @@ namespace BreakoutGame
         public void ActiveTest()
         {
             // Arrange
-            var powerUpPrefab = new GameObject().AddComponent<PowerUpPresenter>();
+            var powerUpPrefab = new GameObject().AddComponent<PowerUp>();
             var view = new GameObject();
-            var config = new BrickPresenter.Config
+            var config = new Brick.Config
             {
                 _initialHp = 2,
                 _powerUpSpawnOdds = 3,
                 _powerUpPrefab = powerUpPrefab,
             };
-            var sut = new Brick(view, config);
+            var sut = new BrickPresenter(view, config);
 
             var ballView = new GameObject();
-            var ballConfig = new BallPresenter.Config
+            var ballConfig = new Ball.Config
             {
                 _initialForce = 5,
                 _initialAngle = 45,
                 _power = 2,
                 _maxPaddleBounceAngle = 75,
             };
-            var ball = new Ball(ballView, ballConfig);
+            var ball = new BallPresenter(ballView, ballConfig);
 
             // Act
             sut.RespondToBallCollision.Execute(ball);
@@ -96,22 +96,22 @@ namespace BreakoutGame
         {
             // Arrange
             var view = new GameObject();
-            var config = new BrickPresenter.Config
+            var config = new Brick.Config
             {
                 _initialHp = 2,
                 _powerUpSpawnOdds = 3,
             };
-            var sut = new Brick(view, config);
+            var sut = new BrickPresenter(view, config);
 
             var ballView = new GameObject();
-            var ballConfig = new BallPresenter.Config
+            var ballConfig = new Ball.Config
             {
                 _initialForce = 5,
                 _initialAngle = 45,
                 _power = 2,
                 _maxPaddleBounceAngle = 75,
             };
-            var ball = new Ball(ballView, ballConfig);
+            var ball = new BallPresenter(ballView, ballConfig);
             //sut.RespondToBallCollision.Execute(ball);
 
             sut.Hp.Value = 0;

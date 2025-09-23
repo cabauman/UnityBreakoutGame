@@ -1,45 +1,87 @@
-﻿using System;
+﻿using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class PaddlePresenter : MonoBehaviour
+    public sealed class PaddlePresenter
     {
-        [MyConfig]
-        [SerializeField]
-        private Config _config;
+        private IBallPaddleCollisionStrategy _collisionStrategy;
 
-        public Paddle Paddle { get; set; }
+        private float _screenWidth;
+        private GameObject _view;
+        private Paddle.Config _config;
 
-        public Transform InitialBallPosTrfm => _config._initialBallPosTrfm;
+        public IReactiveProperty<float> Width { get; }
 
-        // TODO: Remove this
-        public class Dummy
+        public ReactiveCommand<Unit> ResetBallPos { get; }
+
+        public PaddlePresenter(GameObject view, Paddle.Config config)
         {
-            public Dummy(PaddlePresenter view)
-            {
-                Debug.Log(view._config);
-            }
+            _view = view;
+            _config = config;
+            _screenWidth = Screen.width;
+            Width = new ReactiveProperty<float>(1);
+            ResetBallPos = new ReactiveCommand<Unit>();
+
+            this
+                .Width
+                .Subscribe(xScale => _config._graphicTrfm.localScale = new Vector3(xScale, _config._graphicTrfm.localScale.y))
+                .AddTo(_view);
+
+            this
+                .ResetBallPos
+                .Subscribe(_ => ResetBallPos_())
+                .AddTo(_view);
+
+            //Observable
+            //    .EveryUpdate()
+            //    .Select(_ => Input.mousePosition)
+            //    .Subscribe(UpdateXPosition)
+            //    .AddTo(_view);
+
+            //_view
+            //    .OnCollisionEnter2DAsObservable()
+            //    .Where(collision => collision.gameObject.name == PADDLE_COLLIDER_NAME)
+            //    .Subscribe(CalculateBounceVelocity)
+            //    .AddTo(_view);
         }
 
-        private void Update() => Paddle.Tick(Time.deltaTime);
-
-        private void Awake()
+        public void Tick(float deltaTime)
         {
-            Paddle = new Paddle(gameObject, _config);
+            var mousePos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
+            UpdateXPosition(new Vector3(mousePos.x, mousePos.y, 10f));
         }
 
-        //private void OnCollisionEnter2D(Collision2D collision)
+        public void SetCollisionStrategy(IBallPaddleCollisionStrategy strategy)
+        {
+            _collisionStrategy = strategy;
+        }
+
+        public void OnBallCollision(BallPresenter ball)
+        {
+            _collisionStrategy.HandleCollision(ball, this);
+        }
+
+        //public void OnCollisionEnter2D(Collision2D collision)
         //{
-        //    Paddle.OnCollisionEnter2D(collision);
+        //    if (collision.gameObject.name == PADDLE_COLLIDER_NAME)
+        //    {
+        //        CalculateBounceVelocity();
+        //    }
         //}
 
-        [Serializable]
-        public sealed class Config
+        private void UpdateXPosition(Vector3 mousePos)
         {
-            public GameObject _ballPresenter;
-            public Transform _initialBallPosTrfm;
-            public Transform _graphicTrfm;
+            mousePos.x = Mathf.Clamp(mousePos.x, 0, _screenWidth);
+            var xPos = Camera.main.ScreenToWorldPoint(mousePos).x;
+            _view.transform.position = new Vector3(xPos, _view.transform.position.y, _view.transform.position.z);
+        }
+
+        private void ResetBallPos_()
+        {
+            _config._ballPresenter.transform.parent = _view.transform;
+            _config._ballPresenter.transform.position = _config._initialBallPosTrfm.position;
         }
     }
 }

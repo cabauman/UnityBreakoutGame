@@ -13,14 +13,14 @@ namespace BreakoutGame
         {
             // Arrange
             var view = new GameObject();
-            var config = new BallPresenter.Config
+            var config = new Ball.Config
             {
                 _initialForce = initialForce,
                 _power = power,
                 _initialAngle = 45f,
                 _maxPaddleBounceAngle = 75f
             };
-            var sut = new Ball(view, config);
+            var sut = new BallPresenter(view, config);
 
             // Assert
             Assert.That(sut.InitialForce, Is.EqualTo(initialForce));
@@ -35,14 +35,14 @@ namespace BreakoutGame
         {
             // Arrange
             var view = new GameObject();
-            var config = new BallPresenter.Config
+            var config = new Ball.Config
             {
                 _initialForce = 5,
                 _power = 2,
                 _initialAngle = 45f,
                 _maxPaddleBounceAngle = 75f
             };
-            var sut = new Ball(view, config);
+            var sut = new BallPresenter(view, config);
 
             // Act
             var force = sut.GetInitialForce(angle);
@@ -59,14 +59,14 @@ namespace BreakoutGame
         {
             // Arrange
             var view = new GameObject();
-            var config = new BallPresenter.Config
+            var config = new Ball.Config
             {
                 _initialForce = 5,
                 _power = 2,
                 _initialAngle = 45f,
                 _maxPaddleBounceAngle = 75f
             };
-            var sut = new Ball(view, config);
+            var sut = new BallPresenter(view, config);
             var paddleWidth = 4f;
             var maxBounceAngleRad = 75f * Mathf.Deg2Rad;
 

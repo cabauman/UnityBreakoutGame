@@ -1,17 +1,18 @@
-﻿using UniDig;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed partial class ExtraLifePowerUp : PowerUpPresenter
+    public sealed class ExtraLifePowerUpAction : PowerUpAction
     {
-        [Inject]
-        private Game2 _game;
-
-        //protected override void ApplyEffect(PaddlePresenter paddle)
-        //{
-        //    Debug.Log("Extra life!");
-        //    _game.NumLives.Value += 1;
-        //}
+        private readonly Game2 _game;
+        public ExtraLifePowerUpAction(Game2 game)
+        {
+            _game = game;
+        }
+        public override void ApplyEffect(Paddle paddle)
+        {
+            Debug.Log("Extra life!");
+            _game.NumLives.Value += 1;
+        }
     }
 }

@@ -1,10 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PowerUpTable", menuName = "BreakoutGame/PowerUpTable")]
-public sealed class PowerUpTable : ScriptableObject
+namespace BreakoutGame
 {
-    [SerializeReference]
-    private PowerUpConfig[] _configs;
-    public IReadOnlyList<PowerUpConfig> Configs => _configs;
+    [CreateAssetMenu(fileName = "PowerUpTable", menuName = "BreakoutGame/PowerUpTable")]
+    public sealed class PowerUpTable : ScriptableObject
+    {
+        //[MyConfig]
+        [SerializeReference]
+        private PowerUpConfig[] _configs;
+        public IReadOnlyList<PowerUpConfig> Configs => _configs;
+    }
 }

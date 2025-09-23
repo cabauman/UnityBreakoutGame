@@ -16,8 +16,8 @@ namespace BreakoutGame
         public Game(GameObject view, GamePresenter.Config config)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
-            Ball = config._ballPresenter.Ball;
-            Paddle = config._paddlePresenter.Paddle;
+            Ball = config._ballPresenter.Presenter;
+            Paddle = config._paddlePresenter.Presenter;
             _defaultNumLives = config._defaultNumLives > 0 ? config._defaultNumLives : 1;
 
             NumLives = new ReactiveProperty<uint>(_defaultNumLives);
@@ -63,13 +63,13 @@ namespace BreakoutGame
                 .EveryUpdate()
                 .Where(_ =>
                     UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
-                .Subscribe(_ => _config._ballPresenter.Ball.AddInitialForce())
+                .Subscribe(_ => _config._ballPresenter.Presenter.AddInitialForce())
                 .AddTo(view);
         }
 
         public void Start()
         {
-            Bricks = _config._brickPresenters.Select(x => x.Brick).ToList();
+            Bricks = _config._brickPresenters.Select(x => x.Presenter).ToList();
             Ball
                 .Active
                 .Where(active => !_gameOver && !active)
@@ -85,11 +85,11 @@ namespace BreakoutGame
                 .Subscribe(_ => BricksRemaining.Value -= 1);
         }
 
-        public Ball Ball { get; }
+        public BallPresenter Ball { get; }
 
-        public Paddle Paddle { get; }
+        public PaddlePresenter Paddle { get; }
 
-        public IReadOnlyList<Brick> Bricks { get; private set; }
+        public IReadOnlyList<BrickPresenter> Bricks { get; private set; }
 
         public IObservable<Unit> GameWon { get; }
 
@@ -136,15 +136,15 @@ namespace BreakoutGame
             NumBallsInPlay.Value = 1;
         }
 
-        private IObservable<Unit> DetectWhenBonusBallBecomesInactive(BallPresenter ball)
+        private IObservable<Unit> DetectWhenBonusBallBecomesInactive(Ball ball)
         {
-            return ball.Ball.Active
+            return ball.Presenter.Active
                 .Where(active => !active)
                 .Select(_ => Unit.Default)
                 .Take(1);
         }
 
-        private BallPresenter InstantiateBonusBall(Vector3 spawnPosition)
+        private Ball InstantiateBonusBall(Vector3 spawnPosition)
         {
             //IView v = null;
             //var result = v.Instantiate<BallPresenter, Ball>(_config._ballPresenterPrefab, spawnPosition, Quaternion.identity);
