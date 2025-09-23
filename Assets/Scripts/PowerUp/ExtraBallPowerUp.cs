@@ -8,10 +8,10 @@ namespace BreakoutGame
         [Inject]
         private BallManager _ballManager;
 
-        protected override void ApplyEffect(PaddlePresenter paddle)
-        {
-            Debug.Log("Extra ball!");
-            _ballManager.CreateBonusBall.Execute(paddle.InitialBallPosTrfm.position);
-        }
+        //protected override void ApplyEffect(PaddlePresenter paddle)
+        //{
+        //    Debug.Log("Extra ball!");
+        //    _ballManager.CreateBonusBall.Execute(paddle.InitialBallPosTrfm.position);
+        //}
     }
 }

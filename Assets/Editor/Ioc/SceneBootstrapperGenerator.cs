@@ -107,7 +107,7 @@ namespace GameCtor.DevToolbox.Editor
                 }
                 writer.AppendLine("resolving.Clear();");
                 writer.AppendLine("resolving.Add(new TypeKey(behaviour.GetType(), key));");
-                writer.AppendLine($"var arg{i} = _compositionRoot.GetService<{parameters[i].ParameterType.FullName}>(key, resolving);");
+                writer.AppendLine($"var arg{i} = _compositionRoot.Resolve<{parameters[i].ParameterType.FullName}>(key);");
             }
 
             var argString = string.Join(", ", parameters.Select((x, i) => $"arg{i}"));

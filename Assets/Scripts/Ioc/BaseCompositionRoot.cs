@@ -34,18 +34,20 @@ namespace GameCtor.DevToolbox
                 _registrar.Remove(this);
             }
 
-            Dispose();
+            Dispose1();
         }
 
-        public T GetService<T>(string key, HashSet<TypeKey> resolving)
+        public abstract void Dispose1();
+
+        public T Resolve<T>(string key)
         {
-            var service = GetServiceShallow<T>(key, resolving);
+            var service = GetServiceShallow<T>(key);
             if (service == null)
             {
                 //ULog.Debug($"{typeof(T).Name} is not registered in {this.name}. Checking dependent providers...");
                 foreach (var compositionRoot in _dependencies)
                 {
-                    service = compositionRoot.GetService<T>(key, resolving);
+                    service = compositionRoot.GetService<T>(key);
                     if (service != null)
                     {
                         break;
@@ -56,13 +58,8 @@ namespace GameCtor.DevToolbox
             return service == null ? throw new Exception($"{typeof(T).Name} is not registered.") : service;
         }
 
-        public T GetServiceShallow<T>(string key, HashSet<TypeKey> resolving)
+        public T GetServiceShallow<T>(string key)
         {
-            if (!resolving.Add(new(typeof(T), key)))
-            {
-                throw new Exception("Circular dependency detected: " + string.Join(" -> ", resolving.Append(new(typeof(T), key))));
-            }
-
             var service = this is IServiceProvider<T> provider
                 ? provider.GetService()
                 : default;
@@ -74,34 +71,9 @@ namespace GameCtor.DevToolbox
                     : default;
             }
 
-            //if (typeof(T).IsGenericType)
-            //{
-            //    var service2 = this is IServiceProvider<object> provider2
-            //        ? provider2.GetService()
-            //        : default;
-            //    if (service2 is T t)
-            //    {
-            //        service = t;
-            //    }
-            //}
-
-            resolving.Remove(new(typeof(T), key));
             return service;
         }
-
-        protected virtual void Dispose()
-        {
-        }
     }
-
-    //public interface IServiceProvider<T>
-    //{
-    //    T GetService(string key, HashSet<TypeKey> resolving);
-    //}
-
-    //public interface IMonoInject
-    //{
-    //}
 
     public readonly struct TypeKey : IEquatable<TypeKey>
     {

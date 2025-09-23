@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 342a33d9750f7504cb5d38462c0a430b, type: 3}
+  m_Name: PowerUpTable
+  m_EditorClassIdentifier: BreakoutGame::PowerUpTable
+  _configs:
+  - rid: 5484576728371429440
+  - rid: 5484576728371429444
+  references:
+    version: 2
+    RefIds:
+    - rid: 5484576728371429440
+      type: {class: ExtraLifePowerUpConfig, ns: , asm: BreakoutGame}
+      data:
+        Name: A
+        Kind: 1
+        Prefab: {fileID: 329374770883220387, guid: 21ac330a748308240bd5323deca95d02,
+          type: 3}
+        Weight: 1
+        ExtraLives: 1
+    - rid: 5484576728371429444
+      type: {class: ExtraBallPowerUpConfig, ns: , asm: BreakoutGame}
+      data:
+        Name: C
+        Kind: 2
+        Prefab: {fileID: 329374770883220387, guid: 21ac330a748308240bd5323deca95d02,
+          type: 3}
+        Weight: 1
+        ExtraBalls: 1

@@ -23,7 +23,7 @@ namespace GameCtor.DevToolbox
             _instance = null;
         }
 
-        public T GetService<T>(string key, HashSet<TypeKey> resolving)
+        public T GetService<T>(string key)
         {
             if (_instance == null)
             {
@@ -31,7 +31,7 @@ namespace GameCtor.DevToolbox
                 return default;
             }
 
-            var service = _instance.GetServiceShallow<T>(key, resolving);
+            var service = _instance.GetServiceShallow<T>(key);
             return service;
         }
     }

@@ -12,13 +12,13 @@ namespace BreakoutGame
         [SerializeField]
         private float _effectDuration = 5f;
 
-        protected override void ApplyEffect(PaddlePresenter paddle)
-        {
-            Debug.Log("Paddle size increased!");
-            paddle.Paddle.Width.Value *= _widthMultiplier;
-            Observable
-                .Timer(TimeSpan.FromSeconds(_effectDuration))
-                .Subscribe(_ => paddle.Paddle.Width.Value /= _widthMultiplier);
-        }
+        //protected override void ApplyEffect(PaddlePresenter paddle)
+        //{
+        //    Debug.Log("Paddle size increased!");
+        //    paddle.Paddle.Width.Value *= _widthMultiplier;
+        //    Observable
+        //        .Timer(TimeSpan.FromSeconds(_effectDuration))
+        //        .Subscribe(_ => paddle.Paddle.Width.Value /= _widthMultiplier);
+        //}
     }
 }

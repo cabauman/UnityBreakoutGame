@@ -30,7 +30,7 @@ namespace GameCtor.DevToolbox
 
         protected virtual void InjectSceneDependencies(MonoBehaviour[] monos)
         {
-            var getServiceMethodBase = typeof(BaseCompositionRoot).GetMethod("GetService");
+            var getServiceMethodBase = typeof(BaseCompositionRoot).GetMethod("Resolve");
             var resolving = new HashSet<TypeKey>();
             foreach (var m in monos)
             {
@@ -69,7 +69,7 @@ namespace GameCtor.DevToolbox
                     resolving.Add(new TypeKey(monoType, key));
                     try
                     {
-                        injectArgs[i] = getServiceMethod.Invoke(_compositionRoot, new object[] { key, resolving });
+                        injectArgs[i] = getServiceMethod.Invoke(_compositionRoot, new object[] { key });
                     }
                     catch (Exception ex)
                     {

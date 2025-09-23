@@ -184,6 +184,7 @@ MonoBehaviour:
   _registrar: {fileID: 0}
   _dependencies: []
   _testMono: {fileID: 1728431712}
+  _powerUpTable: {fileID: 11400000, guid: 2f50c639c84a8ab408ae3314eb93e679, type: 2}
 --- !u!114 &1728431715
 MonoBehaviour:
   m_ObjectHideFlags: 0

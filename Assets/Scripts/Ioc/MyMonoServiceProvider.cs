@@ -2,28 +2,97 @@
 ////using Jab;
 using BreakoutGame;
 using GameCtor.DevToolbox;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UniDig;
 using UnityEngine;
 
 namespace BreakoutGame
 {
     [ServiceProvider]
-    [Transient(typeof(int), Factory = nameof(GetInt2))]
+    [Singleton(typeof(uint), Factory = nameof(GetInt2))]
     [Singleton(typeof(object), Instance = nameof(TheInt))]
     [Singleton(typeof(ServiceA))]
     //[Singleton(typeof(ServiceB))]
     [Singleton(typeof(TestMono), Factory = nameof(GetTestMono))]
+    [Singleton(typeof(PowerUpSpawner), Factory = nameof(GetPowerUpSpawner))]
+    [Scoped(typeof(IRandom), typeof(UnityRandom))]
+    [Singleton(typeof(PowerUpAction), typeof(ExtraLifePowerUpAction), Key = nameof(PowerUpKind.ExtraLife))]
     public partial class CompositionRoot : BaseCompositionRoot
     {
         public TestMono _testMono;
+        public PowerUpTable _powerUpTable;
         public object TheInt { get; } = 42;
-        public int GetInt2() => 45;
+        public uint GetInt2() => 45;
         public TestMono GetTestMono() => _testMono;
 
         public ExtraLifePowerUpFactory GetExtraLifePowerUpFactory(Game2 game)
         {
             return new ExtraLifePowerUpFactory(game);
         }
+
+        private PowerUpSpawner GetPowerUpSpawner()
+        {
+            var wrappers = new List<PowerUpConfigWrapper>();
+            foreach (var config in _powerUpTable.Configs)
+            {
+                var action = Resolve<PowerUpAction>(config.Kind.ToString());
+                var configWrapper = new PowerUpConfigWrapper(config, action);
+                wrappers.Add(configWrapper);
+                //InjectDependencies(config);
+            }
+
+            return new PowerUpSpawner(
+                _powerUpTable, //wrappers
+                new PowerUpFactory(),
+                GetService<IRandom>());
+        }
+
+        private void InjectDependencies(object obj)
+        {
+            var getServiceMethodBase = typeof(BaseCompositionRoot).GetMethod("Resolve");
+            var targetType = obj.GetType();
+            var allMethods = targetType.GetMethods();
+            var injectMethodsList = new List<MethodInfo>();
+            foreach (var method in allMethods)
+            {
+                if (method.Name == "Inject")
+                {
+                    injectMethodsList.Add(method);
+                }
+            }
+            var injectMethods = injectMethodsList;
+            if (injectMethods.Count == 0)
+            {
+                UnityEngine.Debug.Log($"No Inject method found for {targetType.FullName}");
+                return;
+            }
+
+            var currentType = targetType;
+            MethodInfo injectMethod = null;
+            while (injectMethod is null)
+            {
+                injectMethod = injectMethods.FirstOrDefault(x => x.DeclaringType == currentType);
+                currentType = currentType.BaseType;
+            }
+
+            var parameters = injectMethod.GetParameters();
+            var injectArgs = new object[parameters.Length];
+            for (int i = 0; i < parameters.Length; ++i)
+            {
+                var parameter = parameters[i];
+                var parameterType = parameter.ParameterType;
+                var getServiceMethod = getServiceMethodBase.MakeGenericMethod(parameterType);
+                string key = null;
+                injectArgs[i] = getServiceMethod.Invoke(this, new object[] { key });
+            }
+
+            injectMethod.Invoke(obj, injectArgs);
+        }
+
+        public override void Dispose1() => Dispose();
     }
 }
 

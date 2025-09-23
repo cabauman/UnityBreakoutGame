@@ -1,43 +1,147 @@
 using BreakoutGame;
-using System.Collections.Generic;
+using GameCtor.DevToolbox;
 using System.Linq;
 using UnityEngine;
 
-public abstract class PowerUpFactory
+public class PowerUpFactory
 {
-    public abstract PowerUpPresenter Create(Vector3 position);
+    public virtual PowerUpPresenter Create(PowerUpConfig config, Vector3 position)
+    {
+        var instance = Object.Instantiate(config.Prefab, position, Quaternion.identity);
+        instance.Init(config);
+        return instance;
+    }
+}
+
+public enum PowerUpKind
+{
+    None,
+    ExtraLife,
+    ExtraBall,
+}
+
+public class PowerUpConfigWrapper
+{
+    public PowerUpConfig Config;
+    public PowerUpAction Action;
+
+    public PowerUpConfigWrapper(PowerUpConfig config, PowerUpAction action)
+    {
+        Config = config;
+        Action = action;
+    }
+}
+
+public abstract class PowerUpAction
+{
+    public abstract void ApplyEffect();
+}
+public class ExtraLifePowerUpAction : PowerUpAction
+{
+    private ServiceA _serviceA;
+    public ExtraLifePowerUpAction(ServiceA serviceA)
+    {
+        _serviceA = serviceA;
+    }
+    public override void ApplyEffect()
+    {
+        Debug.Log($"Applied ExtraLifePowerUpAction: {_serviceA} extra lives granted");
+    }
 }
 
 [System.Serializable]
-public class PowerUpConfig
+public abstract class PowerUpConfig
 {
     public string Name;
+    public PowerUpKind Kind;
     public PowerUpPresenter Prefab;
     public int Weight;
-    public PowerUpFactory Factory;
+
+    public abstract void ApplyEffect();
 }
 
-public class PowerUpSpawner : ScriptableObject
+[System.Serializable]
+public class ExtraLifePowerUpConfig : PowerUpConfig
 {
-    public List<PowerUpConfig> _powerUpTable;
+    public int ExtraLives;
+    [Inject] private ServiceA _serviceA;
+    public void Inject(ServiceA serviceA)
+    {
+        _serviceA = serviceA;
+    }
+    public override void ApplyEffect()
+    {
+        // Implement the effect of extra lives here
+        Debug.Log($"Applied ExtraLifePowerUp: {ExtraLives} extra lives granted: {_serviceA}");
+    }
+}
 
-    public void SpawnPowerUp()
+[System.Serializable]
+public class ExtraBallPowerUpConfig : PowerUpConfig
+{
+    public int ExtraBalls;
+    [Inject] private ServiceA _serviceA;
+    public void Inject(ServiceA serviceA)
+    {
+        _serviceA = serviceA;
+    }
+    public override void ApplyEffect()
+    {
+        // Implement the effect of extra balls here
+        Debug.Log($"Applied ExtraBallPowerUp: {ExtraBalls} extra balls granted: {_serviceA}");
+    }
+}
+
+public interface IPowerUpSpawner
+{
+    void SpawnPowerUp(Vector3 position);
+}
+
+public interface IRandom
+{
+    int Next(int minValue, int maxValue);
+}
+
+public sealed class UnityRandom : IRandom
+{
+    /// <summary>
+    /// Return a random int within [minInclusive..maxExclusive).
+    /// </summary>
+    public int Next(int minValue, int maxValue)
+    {
+        return Random.Range(minValue, maxValue);
+    }
+}
+
+public class PowerUpSpawner : IPowerUpSpawner
+{
+    private readonly PowerUpTable _powerUpTable;
+    private readonly PowerUpFactory _factory;
+    private readonly IRandom _random;
+
+    public PowerUpSpawner(PowerUpTable powerUpTable, PowerUpFactory factory, IRandom random)
+    {
+        _powerUpTable = powerUpTable;
+        _factory = factory;
+        _random = random;
+    }
+
+    public void SpawnPowerUp(Vector3 position)
     {
         PowerUpConfig config = GetRandomPowerUpConfig();
-        if (config != null && config.Prefab != null)
+        if (config != null)
         {
-            //Instantiate(selectedLoot.Prefab, transform.position, Quaternion.identity);
-            config.Factory.Create(Vector3.zero);
+            _factory.Create(config, position);
         }
     }
 
-    PowerUpConfig GetRandomPowerUpConfig()
+    private PowerUpConfig GetRandomPowerUpConfig()
     {
-        int totalWeight = _powerUpTable.Sum(item => item.Weight);
-        int randomValue = Random.Range(0, totalWeight);
+        int totalWeight = _powerUpTable.Configs.Sum(item => item.Weight);
+        int randomValue = _random.Next(0, totalWeight);
         int cumulative = 0;
 
-        foreach (var item in _powerUpTable)
+        foreach (var item in _powerUpTable.Configs)
         {
             cumulative += item.Weight;
             if (randomValue < cumulative)
@@ -45,6 +149,7 @@ public class PowerUpSpawner : ScriptableObject
                 return item.Name == "None" ? null : item;
             }
         }
+
         return null;
     }
 }

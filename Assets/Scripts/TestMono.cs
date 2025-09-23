@@ -11,7 +11,7 @@ using UnityEngine.Profiling;
 
 namespace BreakoutGame
 {
-    public partial class TestMono : MonoBehaviour
+    public partial class TestMono : MonoBehaviour, IDisposable
     {
         readonly FrameTiming[] m_FrameTimings = new FrameTiming[1];
         private ProfilerRecorder gcAllocRecorder;
@@ -20,6 +20,8 @@ namespace BreakoutGame
         //[GameCtor.DevToolbox.Inject] object myInt;
         [Inject] int myInt2;
         [Inject] ServiceA serviceA;
+        [Inject] PowerUpSpawner powerUpSpawner;
+        [Inject] IRandom random;
 
         [SerializeReference]
         public BaseData[] data;
@@ -32,6 +34,7 @@ namespace BreakoutGame
         private void Start()
         {
             Debug.Log("Start");
+            powerUpSpawner.SpawnPowerUp(Vector3.one);
         }
 
         void OnEnable()
@@ -120,6 +123,11 @@ namespace BreakoutGame
             // Example allocation
             var arr = new int[1000];
             var s = new string('a', 200);
+        }
+
+        public void Dispose()
+        {
+            Debug.Log("Dispose");
         }
     }
 

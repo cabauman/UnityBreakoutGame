@@ -25,7 +25,9 @@ public class MyConfigDrawer : PropertyDrawer
             do
             {
                 if (SerializedProperty.EqualContents(iterator, end))
+                {
                     break;
+                }
 
                 //if (iterator.name == "m_Script") // skip Unity’s script ref
                 //    continue;
