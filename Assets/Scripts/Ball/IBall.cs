@@ -17,6 +17,7 @@ namespace BreakoutGame
         T Value { get; } 
     }
 
+    // IMutableInspectorConfig
     public interface ITestable<T>
     {
         void SetConfig(T config);

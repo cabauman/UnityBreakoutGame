@@ -10,21 +10,22 @@ namespace BreakoutGame
     {
         [SerializeField]
         private Ball _ballPrefab;
+
         [SerializeField]
         private Ball _mainBall;
 
-        private bool _gameOver = false;
         private readonly List<GameObject> _bonusBalls = new();
 
         private void Awake()
         {
             NumBallsInPlay = new ReactiveProperty<int>(1);
 
-            Ball.Active
-                .Where(active => !active)
+            Ball.Presenter
+                .Active
+                .Where(static active => !active)
                 .Subscribe(_ => NumBallsInPlay.Value -= 1);
 
-            CreateBonusBall = new ReactiveCommand<Vector3>(Observable.Defer(() => Observable.Return(!_gameOver)));
+            CreateBonusBall = new ReactiveCommand<Vector3>(); //Observable.Defer(() => Observable.Return(!_gameOver))
             CreateBonusBall
                 .Do(_ => NumBallsInPlay.Value += 1)
                 .Select(InstantiateBonusBall)
@@ -32,17 +33,18 @@ namespace BreakoutGame
                 .Subscribe(_ => NumBallsInPlay.Value -= 1);
         }
 
-        public BallPresenter Ball => _mainBall.Presenter;
+        public Ball Ball => _mainBall;
 
         public IReactiveProperty<int> NumBallsInPlay { get; private set; }
 
         public ReactiveCommand<Vector3> CreateBonusBall { get; private set; }
 
-        private IObservable<Unit> DetectWhenBonusBallBecomesInactive(Ball ball)
+        private static IObservable<Unit> DetectWhenBonusBallBecomesInactive(Ball ball)
         {
-            return ball.Presenter.Active
-                .Where(active => !active)
-                .Select(_ => Unit.Default)
+            return ball.Presenter
+                .Active
+                .Where(static active => !active)
+                .Select(static _ => Unit.Default)
                 .Take(1);
         }
 
@@ -54,7 +56,7 @@ namespace BreakoutGame
             return ballPresenter;
         }
 
-        private void ClearBonusBalls()
+        public void ResetGame()
         {
             foreach (var ball in _bonusBalls)
             {

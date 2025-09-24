@@ -1,5 +1,5 @@
-﻿using UniRx;
-using UniRx.Triggers;
+﻿using System;
+using UniRx;
 using UnityEngine;
 
 namespace BreakoutGame
@@ -8,43 +8,35 @@ namespace BreakoutGame
     {
         private IBallPaddleCollisionStrategy _collisionStrategy;
 
-        private float _screenWidth;
-        private GameObject _view;
-        private Paddle.Config _config;
+        private readonly float _screenWidth;
+        private readonly GameObject _view;
+        private readonly Paddle.Config _config;
 
-        public IReactiveProperty<float> Width { get; }
+        public IReactiveProperty<float> WidthScale { get; }
+
+        public float Width => _config._spriteRenderer.bounds.size.x * WidthScale.Value;
 
         public ReactiveCommand<Unit> ResetBallPos { get; }
+
+        public Transform GraphicTrfm => _config._spriteRenderer.transform;
 
         public PaddlePresenter(GameObject view, Paddle.Config config)
         {
             _view = view;
             _config = config;
             _screenWidth = Screen.width;
-            Width = new ReactiveProperty<float>(1);
+            WidthScale = new ReactiveProperty<float>(1);
             ResetBallPos = new ReactiveCommand<Unit>();
 
             this
-                .Width
-                .Subscribe(xScale => _config._graphicTrfm.localScale = new Vector3(xScale, _config._graphicTrfm.localScale.y))
+                .WidthScale
+                .Subscribe(xScale => GraphicTrfm.localScale = new Vector3(xScale, GraphicTrfm.localScale.y))
                 .AddTo(_view);
 
             this
                 .ResetBallPos
                 .Subscribe(_ => ResetBallPos_())
                 .AddTo(_view);
-
-            //Observable
-            //    .EveryUpdate()
-            //    .Select(_ => Input.mousePosition)
-            //    .Subscribe(UpdateXPosition)
-            //    .AddTo(_view);
-
-            //_view
-            //    .OnCollisionEnter2DAsObservable()
-            //    .Where(collision => collision.gameObject.name == PADDLE_COLLIDER_NAME)
-            //    .Subscribe(CalculateBounceVelocity)
-            //    .AddTo(_view);
         }
 
         public void Tick(float deltaTime)
@@ -58,17 +50,17 @@ namespace BreakoutGame
             _collisionStrategy = strategy;
         }
 
-        public void OnBallCollision(BallPresenter ball)
+        public void OnCollisionEnter2D(GameObject other, Vector2 point)
         {
-            _collisionStrategy.HandleCollision(ball, this);
+            if (other.TryGetComponent<Ball>(out var ball))
+            {
+                _collisionStrategy.HandleCollision(ball.Presenter, this, point);
+            }
         }
 
-        //public void OnCollisionEnter2D(Collision2D collision)
+        //public void OnBallCollision(BallPresenter ball, Vector2 point)
         //{
-        //    if (collision.gameObject.name == PADDLE_COLLIDER_NAME)
-        //    {
-        //        CalculateBounceVelocity();
-        //    }
+        //    _collisionStrategy.HandleCollision(ball, this);
         //}
 
         private void UpdateXPosition(Vector3 mousePos)
@@ -80,8 +72,8 @@ namespace BreakoutGame
 
         private void ResetBallPos_()
         {
-            _config._ballPresenter.transform.parent = _view.transform;
-            _config._ballPresenter.transform.position = _config._initialBallPosTrfm.position;
+            _config._ballObj.transform.parent = _view.transform;
+            _config._ballObj.transform.position = _config._initialBallPosTrfm.position;
         }
     }
 }

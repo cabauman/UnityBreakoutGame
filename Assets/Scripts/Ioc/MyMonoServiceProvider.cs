@@ -16,18 +16,22 @@ namespace BreakoutGame
     [Singleton(typeof(ServiceA))]
     //[Singleton(typeof(ServiceB))]
     [Singleton(typeof(TestMono), Factory = nameof(GetTestMono))]
-    [Singleton(typeof(PowerUpSpawner), Factory = nameof(GetPowerUpSpawner))]
+    [Singleton(typeof(IPowerUpSpawner), Factory = nameof(GetPowerUpSpawner))]
     [Scoped(typeof(IRandom), typeof(UnityRandom))]
-    [Singleton(typeof(Game2))]
+    [Singleton(typeof(Game))]
+    [Singleton(typeof(BrickManager), Instance = nameof(_brickManager))]
+    [Singleton(typeof(BallManager), Instance = nameof(_ballManager))]
+    //[Singleton(typeof(ScoreKeeper))]
     [Singleton(typeof(Paddle), Instance = nameof(_paddle))]
     [Singleton(typeof(PowerUpAction), typeof(ExtraLifePowerUpAction), Key = nameof(PowerUpKind.ExtraLife))]
-    public partial class CompositionRoot : BaseCompositionRoot
+    public partial class MyMonoServiceProvider : BaseCompositionRoot
     {
         public TestMono _testMono;
         public PowerUpTable _powerUpTable;
 
-        [SerializeField]
-        private Paddle _paddle;
+        [SerializeField] private Paddle _paddle;
+        [SerializeField] private BrickManager _brickManager;
+        [SerializeField] private BallManager _ballManager;
 
         public object TheInt { get; } = 42;
         public uint GetInt2() => 45;

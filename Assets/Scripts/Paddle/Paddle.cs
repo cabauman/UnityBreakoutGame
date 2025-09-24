@@ -1,11 +1,13 @@
 ﻿using System;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 
 namespace BreakoutGame
 {
     public sealed class Paddle : MonoBehaviour
     {
-        [MyConfig]
+        [Flatten]
         [SerializeField]
         private Config _config;
 
@@ -13,21 +15,17 @@ namespace BreakoutGame
 
         public Transform InitialBallPosTrfm => _config._initialBallPosTrfm;
 
-        // TODO: Remove this
-        public class Dummy
-        {
-            public Dummy(Paddle view)
-            {
-                Debug.Log(view._config);
-            }
-        }
-
-        private void Update() => Presenter.Tick(Time.deltaTime);
-
         private void Awake()
         {
             Presenter = new PaddlePresenter(gameObject, _config);
+
+            this
+                .OnCollisionEnter2DAsObservable()
+                .Subscribe(x => Presenter.OnCollisionEnter2D(x.gameObject, x.GetContact(0).point))
+                .AddTo(this);
         }
+
+        private void Update() => Presenter.Tick(Time.deltaTime);
 
         //private void OnCollisionEnter2D(Collision2D collision)
         //{
@@ -37,9 +35,9 @@ namespace BreakoutGame
         [Serializable]
         public sealed class Config
         {
-            public GameObject _ballPresenter;
+            public GameObject _ballObj;
             public Transform _initialBallPosTrfm;
-            public Transform _graphicTrfm;
+            public SpriteRenderer _spriteRenderer;
         }
     }
 }

@@ -16,6 +16,7 @@ namespace BreakoutGame
         {
             Debug.Log("UnityTest before yield");
             yield return new EnterPlayMode();
+            new GameObject().AddComponent<TestMono>();
             //Domain reload happening
             yield return new WaitForSeconds(1f);
             yield return new ExitPlayMode();

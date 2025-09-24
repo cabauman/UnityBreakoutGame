@@ -4,8 +4,8 @@ namespace BreakoutGame
 {
     public sealed class ExtraLifePowerUpAction : PowerUpAction
     {
-        private readonly Game2 _game;
-        public ExtraLifePowerUpAction(Game2 game)
+        private readonly Game _game;
+        public ExtraLifePowerUpAction(Game game)
         {
             _game = game;
         }

@@ -15,9 +15,9 @@ namespace BreakoutGame
             // Arrange
             var config = new Paddle.Config
             {
-                _graphicTrfm = new GameObject().transform,
+                _spriteRenderer = new GameObject().GetComponent<SpriteRenderer>(),
                 _initialBallPosTrfm = new GameObject().transform,
-                _ballPresenter = new GameObject(),
+                _ballObj = new GameObject(),
             };
             var view = new GameObject();
             var sut = new PaddlePresenter(view, config);

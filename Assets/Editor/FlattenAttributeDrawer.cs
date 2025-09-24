@@ -1,10 +1,9 @@
-using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 
-[CustomPropertyDrawer(typeof(MyConfigAttribute))]
-public class MyConfigDrawer : PropertyDrawer
+[CustomPropertyDrawer(typeof(FlattenAttribute))]
+public class FlattenAttributeDrawer : PropertyDrawer
 {
     public override VisualElement CreatePropertyGUI(SerializedProperty property)
     {

@@ -357,6 +357,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config:
-    _ballPresenter: {fileID: 0}
+    _ballObj: {fileID: 1278010722198756}
     _initialBallPosTrfm: {fileID: 4236238316101198}
-    _graphicTrfm: {fileID: 4740564554656712}
+    _spriteRenderer: {fileID: 212380950034527182}

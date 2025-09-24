@@ -15,10 +15,10 @@ namespace BreakoutGame
         public override void ApplyEffect(Paddle paddle)
         {
             Debug.Log("Paddle size increased!");
-            paddle.Presenter.Width.Value *= _widthMultiplier;
+            paddle.Presenter.WidthScale.Value *= _widthMultiplier;
             Observable
                 .Timer(TimeSpan.FromSeconds(_effectDuration))
-                .Subscribe(_ => paddle.Presenter.Width.Value /= _widthMultiplier);
+                .Subscribe(_ => paddle.Presenter.WidthScale.Value /= _widthMultiplier);
         }
     }
 }

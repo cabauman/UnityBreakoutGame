@@ -8,12 +8,13 @@ namespace BreakoutGame
 {
     public class GamePresenter : MonoBehaviour
     {
+        [Flatten]
         [SerializeField]
         private Config _config;
 
         private void Awake()
         {
-            Game = new Game(gameObject, _config);
+            Game = new GameDraft(gameObject, _config);
         }
 
         private void Start()
@@ -26,7 +27,7 @@ namespace BreakoutGame
         //    Game.Tick(Time.deltaTime);
         //}
 
-        public Game Game { get; private set; }
+        public GameDraft Game { get; private set; }
 
         [Serializable]
         public sealed class Config

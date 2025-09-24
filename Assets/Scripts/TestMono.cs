@@ -34,11 +34,12 @@ namespace BreakoutGame
         private void Start()
         {
             Debug.Log("Start");
-            powerUpSpawner.SpawnPowerUp(Vector3.one);
+            //powerUpSpawner.SpawnPowerUp(Vector3.one);
         }
 
         void OnEnable()
         {
+            Debug.Log("OnEnable");
             // GC Allocation In Frame Count
             // GC Used Memory
             // GC Allocated In Frame

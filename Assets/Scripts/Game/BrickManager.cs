@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UniRx;
 using UnityEngine;
 
@@ -24,7 +22,7 @@ namespace BreakoutGame
                 .Subscribe(_ => BricksRemaining.Value -= 1);
         }
 
-        private void ResetGame()
+        public void ResetGame()
         {
             BricksRemaining.Value = _bricks.Length;
 

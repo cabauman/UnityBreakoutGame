@@ -1,18 +1,29 @@
 ﻿using System;
+using UniDig;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 
 namespace BreakoutGame
 {
     [RequireComponent(typeof(BoxCollider2D))]
-    public sealed class Brick : MonoBehaviour
+    public sealed partial class Brick : MonoBehaviour
     {
-        [MyConfig]
+        [Flatten]
         [SerializeField]
         private Config _config;
 
+        [Inject] private IPowerUpSpawner _powerUpSpawner;
+
         private void Awake()
         {
-            Presenter = new BrickPresenter(gameObject, _config);
+            Presenter = new BrickPresenter(gameObject, _config, _powerUpSpawner);
+
+            this
+                .OnCollisionEnter2DAsObservable()
+                .Select(collision => collision.gameObject)
+                .Subscribe(go => Presenter.OnCollisionEnter2D(go))
+                .AddTo(this);
         }
 
         public BrickPresenter Presenter { get; private set; }
@@ -20,10 +31,8 @@ namespace BreakoutGame
         [Serializable]
         public sealed class Config
         {
+            // TODO: Naming
             public int _initialHp = 1;
-            [Range(0, 10)]
-            public int _powerUpSpawnOdds = 3;
-            public PowerUp _powerUpPrefab;
         }
     }
 }

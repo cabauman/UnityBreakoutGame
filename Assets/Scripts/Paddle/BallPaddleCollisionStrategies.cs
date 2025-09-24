@@ -1,40 +1,43 @@
-﻿namespace BreakoutGame
+﻿using UnityEngine;
+
+namespace BreakoutGame
 {
     public interface IBallPaddleCollisionStrategy
     {
-        void HandleCollision(BallPresenter ball, PaddlePresenter paddle);
+        void HandleCollision(BallPresenter ball, PaddlePresenter paddle, Vector2 point);
     }
 
     public class NormalBounceStrategy : IBallPaddleCollisionStrategy
     {
-        public void HandleCollision(BallPresenter ball, PaddlePresenter paddle)
+        private readonly float _maxPaddleBounceAngleInRadians;
+        //_maxPaddleBounceAngleRad = config._maxPaddleBounceAngle* Mathf.Deg2Rad;
+
+        public void HandleCollision(BallPresenter ball, PaddlePresenter paddle, Vector2 point)
         {
-            //var localContact = collision.transform.InverseTransformPoint(collision.contacts[0].point);
-            //var paddleWidth = collision.collider.GetComponent<SpriteRenderer>().bounds.size.x;
+            var localContact = paddle.GraphicTrfm.InverseTransformPoint(point);
 
-            //// Map the horizontal contact point to the (0, 1) range.
-            //// Input is in the range (-paddleWidth/2, paddleWidth/2)
-            //var normalizedLocalContactX = localContact.x / paddleWidth + 0.5f;
-            //var bounceAngle = Mathf.Lerp(
-            //    Mathf.PI / 2 + _maxPaddleBounceAngleInRadians,
-            //    Mathf.PI / 2 - _maxPaddleBounceAngleInRadians,
-            //    normalizedLocalContactX
-            //);
+            // Map the horizontal contact point to the (0, 1) range.
+            // Input is in the range (-paddleWidth/2, paddleWidth/2)
+            var normalizedLocalContactX = localContact.x / paddle.Width + 0.5f;
+            var bounceAngle = Mathf.Lerp(
+                Mathf.PI / 2 + _maxPaddleBounceAngleInRadians,
+                Mathf.PI / 2 - _maxPaddleBounceAngleInRadians,
+                normalizedLocalContactX
+            );
 
-            //var bounceForce = new Vector2
-            //{
-            //    x = Mathf.Cos(bounceAngle) * Ball.InitialForce,
-            //    y = Mathf.Sin(bounceAngle) * Ball.InitialForce
-            //};
+            var bounceForce = new Vector2
+            {
+                x = Mathf.Cos(bounceAngle) * ball.InitialForce,
+                y = Mathf.Sin(bounceAngle) * ball.InitialForce
+            };
 
-            //_rigidbody.linearVelocity = Vector2.zero;
-            //_rigidbody.AddForce(bounceForce);
+            ball.SetForce(bounceForce);
         }
     }
 
     public class ReverseBounceStrategy : IBallPaddleCollisionStrategy
     {
-        public void HandleCollision(BallPresenter ball, PaddlePresenter paddle)
+        public void HandleCollision(BallPresenter ball, PaddlePresenter paddle, Vector2 point)
         {
             //ball.ReverseBounce();
         }
@@ -42,7 +45,7 @@
 
     public class MagnetBounceStrategy : IBallPaddleCollisionStrategy
     {
-        public void HandleCollision(BallPresenter ball, PaddlePresenter paddle)
+        public void HandleCollision(BallPresenter ball, PaddlePresenter paddle, Vector2 point)
         {
             //ball.StickToPaddle(paddle);
         }

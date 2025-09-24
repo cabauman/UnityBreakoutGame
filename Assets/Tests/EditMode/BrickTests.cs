@@ -1,4 +1,5 @@
 using System.Collections;
+using NSubstitute;
 using NUnit.Framework;
 using UniRx;
 using UnityEngine;
@@ -13,82 +14,131 @@ namespace BreakoutGame
         {
             // Arrange
             var view = new GameObject();
-            var config = new Brick.Config
-            {
-                _initialHp = 1,
-                _powerUpSpawnOdds = 3,
-            };
-            var sut = new BrickPresenter(view, config);
+            var config = new Brick.Config { _initialHp = 1 };
+            var powerUpSpawner = Substitute.For<IPowerUpSpawner>();
+            var sut = new BrickPresenter(view, config, powerUpSpawner);
 
             // Assert
             Assert.That(sut.Hp.Value, Is.EqualTo(1));
             Assert.That(sut.Active.Value, Is.True);
         }
 
-        // TODO: Mock RandomUtil to make this test deterministic
         [TestCase(3, 1, 2)]
         [TestCase(3, 3, 0)]
         [TestCase(2, 5, -3)]
-        public void RespondToBallCollisionTest(int initialHp, int ballPower, int expectedRemainingHp)
+        public void HpReducedByBallPowerAmount(int initialHp, int ballPower, int expectedRemainingHp)
         {
             // Arrange
-            var powerUpPrefab = new GameObject().AddComponent<PowerUp>();
             var view = new GameObject();
-            var config = new Brick.Config
-            {
-                _initialHp = initialHp,
-                _powerUpSpawnOdds = 3,
-                _powerUpPrefab = powerUpPrefab,
-            };
-            var sut = new BrickPresenter(view, config);
+            var config = new Brick.Config { _initialHp = initialHp };
+            var powerUpSpawner = Substitute.For<IPowerUpSpawner>();
+            var sut = new BrickPresenter(view, config, powerUpSpawner);
 
-            var ballView = new GameObject();
+            var ballObj = new GameObject();
+            var ball = ballObj.AddComponent<Ball>();
             var ballConfig = new Ball.Config
             {
-                _initialForce = 5,
-                _initialAngle = 45,
                 _power = ballPower,
-                _maxPaddleBounceAngle = 75,
             };
-            var ball = new BallPresenter(ballView, ballConfig);
+            var testableBall = (ITestable<Ball.Config>)ball;
+            testableBall.SetConfig(ballConfig);
+            InvokeLifecycleFunction(ball, "Awake");
 
             // Act
-            sut.RespondToBallCollision.Execute(ball);
+            sut.OnCollisionEnter2D(ballObj);
 
             // Assert
             Assert.That(sut.Hp.Value, Is.EqualTo(expectedRemainingHp));
         }
 
-        // TODO: Mock RandomUtil to make this test deterministic
         [Test]
-        public void ActiveTest()
+        public void ActiveSetToFalseWhenHpReaches0()
         {
             // Arrange
-            var powerUpPrefab = new GameObject().AddComponent<PowerUp>();
             var view = new GameObject();
             var config = new Brick.Config
             {
                 _initialHp = 2,
-                _powerUpSpawnOdds = 3,
-                _powerUpPrefab = powerUpPrefab,
             };
-            var sut = new BrickPresenter(view, config);
+            var powerUpSpawner = Substitute.For<IPowerUpSpawner>();
+            var sut = new BrickPresenter(view, config, powerUpSpawner);
 
-            var ballView = new GameObject();
+            var ballObj = new GameObject();
+            var ball = ballObj.AddComponent<Ball>();
             var ballConfig = new Ball.Config
             {
-                _initialForce = 5,
-                _initialAngle = 45,
                 _power = 2,
-                _maxPaddleBounceAngle = 75,
             };
-            var ball = new BallPresenter(ballView, ballConfig);
+            var testableBall = (ITestable<Ball.Config>)ball;
+            testableBall.SetConfig(ballConfig);
+            InvokeLifecycleFunction(ball, "Awake");
+            //var ballPresenter = new BallPresenter(ballObj, ballConfig);
 
             // Act
-            sut.RespondToBallCollision.Execute(ball);
+            sut.OnCollisionEnter2D(ballObj);
 
             // Assert
             Assert.That(sut.Active.Value, Is.False);
+        }
+
+        [Test]
+        public void PowerUpSpawnerNotInvoked_When_HpGreaterThan0()
+        {
+            // Arrange
+            var view = new GameObject();
+            view.transform.position = new Vector3(1, 2, 3);
+            var config = new Brick.Config
+            {
+                _initialHp = 2,
+            };
+            var powerUpSpawner = Substitute.For<IPowerUpSpawner>();
+            var sut = new BrickPresenter(view, config, powerUpSpawner);
+
+            var ballObj = new GameObject();
+            var ball = ballObj.AddComponent<Ball>();
+            var ballConfig = new Ball.Config
+            {
+                _power = 1,
+            };
+            var testableBall = (ITestable<Ball.Config>)ball;
+            testableBall.SetConfig(ballConfig);
+            InvokeLifecycleFunction(ball, "Awake");
+
+            // Act
+            sut.OnCollisionEnter2D(ballObj);
+
+            // Assert
+            powerUpSpawner.DidNotReceive().SpawnPowerUp(Arg.Any<Vector3>());
+        }
+
+        [Test]
+        public void PowerUpSpawnerInvoked_When_HpReaches0()
+        {
+            // Arrange
+            var view = new GameObject();
+            view.transform.position = new Vector3(1, 2, 3);
+            var config = new Brick.Config
+            {
+                _initialHp = 2,
+            };
+            var powerUpSpawner = Substitute.For<IPowerUpSpawner>();
+            var sut = new BrickPresenter(view, config, powerUpSpawner);
+
+            var ballObj = new GameObject();
+            var ball = ballObj.AddComponent<Ball>();
+            var ballConfig = new Ball.Config
+            {
+                _power = 2,
+            };
+            var testableBall = (ITestable<Ball.Config>)ball;
+            testableBall.SetConfig(ballConfig);
+            InvokeLifecycleFunction(ball, "Awake");
+
+            // Act
+            sut.OnCollisionEnter2D(ballObj);
+
+            // Assert
+            powerUpSpawner.Received(1).SpawnPowerUp(new(1, 2, 3));
         }
 
         [Test]
@@ -99,20 +149,21 @@ namespace BreakoutGame
             var config = new Brick.Config
             {
                 _initialHp = 2,
-                _powerUpSpawnOdds = 3,
             };
-            var sut = new BrickPresenter(view, config);
+            var powerUpSpawner = Substitute.For<IPowerUpSpawner>();
+            var sut = new BrickPresenter(view, config, powerUpSpawner);
 
-            var ballView = new GameObject();
+            var ballObj = new GameObject();
+            var ball = ballObj.AddComponent<Ball>();
             var ballConfig = new Ball.Config
             {
-                _initialForce = 5,
-                _initialAngle = 45,
                 _power = 2,
-                _maxPaddleBounceAngle = 75,
             };
-            var ball = new BallPresenter(ballView, ballConfig);
-            //sut.RespondToBallCollision.Execute(ball);
+            var testableBall = (ITestable<Ball.Config>)ball;
+            testableBall.SetConfig(ballConfig);
+            InvokeLifecycleFunction(ball, "Awake");
+            //var ballPresenter = new BallPresenter(ballObj, ballConfig);
+            //sut.OnCollisionEnter2D(ballObj);
 
             sut.Hp.Value = 0;
             Assert.That(sut.Active.Value, Is.False);
@@ -123,6 +174,12 @@ namespace BreakoutGame
             // Assert
             Assert.That(sut.Hp.Value, Is.EqualTo(2));
             Assert.That(sut.Active.Value, Is.True);
+        }
+
+        public static void InvokeLifecycleFunction<T>(T mono, string name)
+        {
+            var method = typeof(T).GetMethod(name, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            method?.Invoke(mono, null);
         }
     }
 }

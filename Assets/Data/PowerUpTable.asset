@@ -15,7 +15,6 @@ MonoBehaviour:
   _configs:
   - rid: 8432942456068374587
   - rid: 8432942456068374588
-  - rid: 8432942458344309047
   references:
     version: 2
     RefIds:
@@ -33,9 +32,3 @@ MonoBehaviour:
         Prefab: {fileID: 329374770883220387, guid: 21ac330a748308240bd5323deca95d02,
           type: 3}
         Weight: 1
-    - rid: 8432942458344309047
-      type: {class: ReverseBouncePowerUpConfig, ns: BreakoutGame, asm: BreakoutGame}
-      data:
-        Kind: 4
-        Prefab: {fileID: 0}
-        Weight: 6

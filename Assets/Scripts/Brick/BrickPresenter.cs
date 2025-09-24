@@ -1,6 +1,4 @@
-﻿using System;
-using UniRx;
-using UniRx.Triggers;
+﻿using UniRx;
 using UnityEngine;
 
 namespace BreakoutGame
@@ -9,45 +7,35 @@ namespace BreakoutGame
     {
         private readonly GameObject _view;
         private readonly Brick.Config _config;
+        private readonly IPowerUpSpawner _powerUpSpawner;
+        private readonly IReactiveCommand<Ball> _respondToBallCollision;
 
-        public BrickPresenter(GameObject view, Brick.Config config)
+        public BrickPresenter(GameObject view, Brick.Config config, IPowerUpSpawner powerUpSpawner)
         {
-            _view = view != null ? view : throw new ArgumentNullException(nameof(view));
-            // TODO: Validate config values
-            _config = config ?? throw new ArgumentNullException(nameof(config));
+            // TODO: Validate input
+            _view = view;
+            _config = config;
+            _powerUpSpawner = powerUpSpawner;
 
             Hp = new ReactiveProperty<int>(config._initialHp);
 
             Active = Hp.Select(x => x > 0).ToReactiveProperty();
 
             ResetHp = new ReactiveCommand<Unit>();
-            ResetHp.Subscribe(_ => Hp.Value = config._initialHp);
+            ResetHp
+                .Subscribe(_ => Hp.Value = config._initialHp);
 
-            RespondToBallCollision = new ReactiveCommand<BallPresenter>();
-            RespondToBallCollision.Subscribe(ball => Hp.Value -= ball.Power);
+            _respondToBallCollision = new ReactiveCommand<Ball>();
+            _respondToBallCollision
+                .Subscribe(ball => Hp.Value -= ball.Presenter.Power);
 
-            PowerUpCreated = RespondToBallCollision
-                .Where(_ => RandomUtil.Random.Next(0, 10) < config._powerUpSpawnOdds)
-                .Select(_ => CreateRandomPowerUp());
+            Active
+                .Where(value => !value)
+                .Subscribe(_ => SpawnPowerUp());
 
-            view
-                .OnCollisionEnter2DAsObservable()
-                .Select(collision => collision.collider.GetComponent<Ball>().Presenter)
-                .Subscribe(ball => RespondToBallCollision.Execute(ball))
-                .AddTo(view);
-
-            this
-                .PowerUpCreated
-                .Subscribe(InstantiatePowerUp)
-                .AddTo(view);
-
-            this
-                .Active
-                .Subscribe(value => view.SetActive(value))
-                .AddTo(view);
+            Active
+                .Subscribe(value => view.SetActive(value));
         }
-
-        public IObservable<PowerUp> PowerUpCreated { get; }
 
         public IReactiveProperty<int> Hp { get; }
 
@@ -55,24 +43,17 @@ namespace BreakoutGame
 
         public IReactiveCommand<Unit> ResetHp { get; }
 
-        public IReactiveCommand<BallPresenter> RespondToBallCollision { get; }
-
-        private void InstantiatePowerUp(PowerUp powerUp)
+        public void OnCollisionEnter2D(GameObject other)
         {
-            var powerUpPresenter = GameObject.Instantiate(_config._powerUpPrefab, _view.transform.position, Quaternion.identity);
-            //powerUpPresenter.PowerUpPresenter = powerUp;
+            if (other.TryGetComponent<Ball>(out var ball))
+            {
+                _respondToBallCollision.Execute(ball);
+            }
         }
 
-        private PowerUp CreateRandomPowerUp()
+        private void SpawnPowerUp()
         {
-            return null;
-            //int randNum = RandomUtil.Random.Next(0, 3);
-            //return randNum switch
-            //{
-            //    0 => new ExtraLifePowerUp(),
-            //    1 => new ExtraBallPowerUp(),
-            //    _ => new PaddleSizePowerUp(),
-            //};
+            _powerUpSpawner.SpawnPowerUp(_view.transform.position);
         }
     }
 }
