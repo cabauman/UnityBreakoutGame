@@ -11,8 +11,9 @@ namespace BreakoutGame
     [ServiceProvider]
     [Singleton(typeof(Game))]
     [Singleton(typeof(IPowerUpSpawner), Factory = nameof(GetPowerUpSpawner))]
-    [Scoped(typeof(IRandom), typeof(UnityRandom))]
-    [Singleton(typeof(BrickManager), Instance = nameof(_brickManager))]
+    [Singleton(typeof(IRandom), typeof(UnityRandom))]
+    //[Singleton(typeof(BrickManager), Instance = nameof(_brickManager))]
+    [Singleton(typeof(BrickManager), Factory = nameof(GetBrickManager))]
     [Singleton(typeof(BallManager), Instance = nameof(_ballManager))]
     [Singleton(typeof(Paddle), Instance = nameof(_paddle))]
     [Singleton(typeof(PowerUpAction), typeof(ExtraLifePowerUpAction), Key = nameof(PowerUpKind.ExtraLife))]
@@ -24,8 +25,15 @@ namespace BreakoutGame
         [SerializeField] private BrickManager _brickManager;
         [SerializeField] private BallManager _ballManager;
 
+        private BrickManager GetBrickManager()
+        {
+            _brickManager.Inject(GetService<IRandom>());
+            return _brickManager;
+        }
+
         private PowerUpSpawner GetPowerUpSpawner()
         {
+            Debug.Log(_ballManager?.ToString());
             var dataList = new List<PowerUpData>();
             foreach (var config in _powerUpTable.Configs)
             {

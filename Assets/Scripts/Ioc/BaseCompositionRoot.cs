@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UniDig;
 
@@ -53,6 +51,11 @@ namespace GameCtor.DevToolbox
                         break;
                     }
                 }
+            }
+
+            if (service is IPostAwake pa)
+            {
+                StartupLifecycle.AddInjectListener(pa.PostInject);
             }
 
             return service == null ? throw new Exception($"{typeof(T).Name} is not registered.") : service;

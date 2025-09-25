@@ -20,12 +20,25 @@ namespace GameCtor.DevToolbox
         /// </remarks>
         private void Awake()
         {
+            StartupLifecycle.Initialize();
 #if UNITY_EDITOR
             monoInjectObjects = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .Where(x => x is UniDig.IMonoInject)
                 .ToArray();
 #endif
-            InjectSceneDependencies(monoInjectObjects);
+            //InjectSceneDependencies(monoInjectObjects);
+            StartupLifecycle.AddInjectListener(() => InjectSceneDependencies(monoInjectObjects));
+            //foreach (var obj in monoInjectObjects)
+            //{
+            //    if (obj is UniDig.IMonoInject)
+            //    {
+            //        var methodInfo = obj.GetType().GetMethod("PostInit", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            //        if (methodInfo is not null)
+            //        {
+            //            StartupLifecycle.AddListener(() => methodInfo.Invoke(obj, null));
+            //        }
+            //    }
+            //}
         }
 
         protected virtual void InjectSceneDependencies(MonoBehaviour[] monos)

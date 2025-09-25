@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="BreakoutGame" Description=" " ToolsVersion="17.0">
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.NetAnalyzers" RuleNamespace="Microsoft.CodeAnalysis.NetAnalyzers">
+    <Rule Id="CA1707" Action="Warning" />
+    <Rule Id="CS0414" Action="Warning" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.Unity.Analyzers" RuleNamespace="Microsoft.Unity.Analyzers">
+    <!-- -a:"Assets/Scripts/Microsoft.Unity.Analyzers.dll" -->
+    <!-- Full list of rule description available here https://github.com/microsoft/Microsoft.Unity.Analyzers/blob/main/doc/index.md -->
+    <Rule Id="UNT0007" Action="Warning" />
+    <Rule Id="UNT0008" Action="Warning" />
+  </Rules>
+</RuleSet>

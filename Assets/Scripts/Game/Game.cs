@@ -1,6 +1,8 @@
-﻿using System;
+﻿using GameCtor.DevToolbox;
+using System;
 using System.Linq;
 using UniRx;
+using UnityEngine;
 
 namespace BreakoutGame
 {
@@ -14,6 +16,7 @@ namespace BreakoutGame
 
         public Game(BrickManager brickManager, BallManager ballManager, Paddle paddle)
         {
+            Debug.Log("Game Constructor");
             _brickManager = brickManager;
             _ballManager = ballManager;
             _paddle = paddle;
@@ -21,7 +24,11 @@ namespace BreakoutGame
 
             NumLives = new ReactiveProperty<uint>(_defaultNumLives);
 
-            var noBallsInPlay = ballManager.NumBallsInPlay
+            ResetGameCmd = new ReactiveCommand();
+            ResetGameCmd.Subscribe(_ => ResetGame());
+            //GameCtor.DevToolbox.StartupLifecycle.AddPostInjectListener(PostInject);
+
+            var noBallsInPlay = _ballManager.NumBallsInPlay
                 .Where(count => count == 0)
                 .Do(_ => NumLives.Value -= 1)
                 .Publish()
@@ -36,18 +43,43 @@ namespace BreakoutGame
                 .Where(_ => NumLives.Value == 0)
                 .Select(static _ => Unit.Default);
 
-            GameWon = brickManager.BricksRemaining
+            GameWon = _brickManager.BricksRemaining
                 .Where(count => count == 0)
                 .Do(_ => _gameOver = true)
                 .Select(static _ => Unit.Default);
 
-            ResetGameCmd = new ReactiveCommand();
-            ResetGameCmd.Subscribe(_ => ResetGame());
+            Debug.Log(_brickManager.Random);
         }
 
-        public IObservable<Unit> GameWon { get; }
+        public void PostInject()
+        {
+            Debug.Log("Game PostInject");
+            //Debug.Break();
 
-        public IObservable<Unit> GameLost { get; }
+            var noBallsInPlay = _ballManager.NumBallsInPlay
+                .Where(count => count == 0)
+                .Do(_ => NumLives.Value -= 1)
+                .Publish()
+                .RefCount();
+
+            noBallsInPlay
+                .Where(_ => NumLives.Value > 0)
+                .Delay(TimeSpan.FromMilliseconds(100))
+                .Subscribe(_ => UseExtraLife());
+
+            GameLost = noBallsInPlay
+                .Where(_ => NumLives.Value == 0)
+                .Select(static _ => Unit.Default);
+
+            GameWon = _brickManager.BricksRemaining
+                .Where(count => count == 0)
+                .Do(_ => _gameOver = true)
+                .Select(static _ => Unit.Default);
+        }
+
+        public IObservable<Unit> GameWon { get; private set; }
+
+        public IObservable<Unit> GameLost { get; private set; }
 
         public IReactiveProperty<uint> NumLives { get; }
 
