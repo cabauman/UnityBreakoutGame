@@ -70,9 +70,15 @@ namespace GameCtor.DevToolbox.Editor
         {
             MonoBehaviour[] monoInjectObjects = scene.GetRootGameObjects()
                 .SelectMany(x => x.GetComponentsInChildren<MonoBehaviour>(true))
-                .Where(x => x is IMonoInject)
+                .Where(x =>
+                {
+                    //var a = x is UniDig.IMonoInject;
+                    var a = x.GetType().GetInterfaces().Any(y => y.FullName.Equals("UniDig.IMonoInject"));
+                    return a;
+                })
                 .ToArray();
 
+            Debug.Log($"{monoInjectObjects.Length} MonoInject objects found in scene '{scene.name}'");
             //ULog.Debug($"{monoInjectObjects.Length} MonoInject objects found in scene '{scene.name}'");
 
             if (monoInjectObjects.Length > 0)
@@ -96,6 +102,7 @@ namespace GameCtor.DevToolbox.Editor
                 }
                 else
                 {
+                    Debug.LogError($"Found MonoInject objects in scene, but no SceneBootstrapper was found: {scene.path}");
                     //ULog.Warn($"Found MonoInject objects in scene, but no SceneBootstrapper was found: {scene.path}");
                 }
             }

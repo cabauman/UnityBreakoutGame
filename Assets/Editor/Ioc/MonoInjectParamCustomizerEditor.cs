@@ -39,7 +39,9 @@ namespace GameCtor.DevToolbox.Editor
             var paramCustomizer = (MonoInjectParamCustomizer)target;
             var keysProperty = serializedObject.FindProperty("keys");
 
-            if (!paramCustomizer.TryGetComponent<IMonoInject>(out var monoInject))
+            var monoInject = paramCustomizer.GetComponents<MonoBehaviour>().FirstOrDefault(x => x.GetType().GetInterfaces().Any(y => y.FullName.Equals("UniDig.IMonoInject")));
+            if (monoInject == null)
+            //if (!paramCustomizer.TryGetComponent<IMonoInject>(out var monoInject))
             {
                 var helpBox = new HelpBox(
                     "This component is only valid on a GameObject with an IMonoInject component.",

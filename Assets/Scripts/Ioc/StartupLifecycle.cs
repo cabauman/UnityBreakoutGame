@@ -27,8 +27,16 @@ namespace GameCtor.DevToolbox
             PlayerLoop.SetPlayerLoop(playerLoop);
         }
 
-        public static void AddInjectListener(Action callback) => _onInject += callback;
-        public static void AddPostInjectListener(Action callback) => _onPostInject += callback;
+        public static void AddInjectListener(Action callback)
+        {
+            _onInject -= callback;
+            _onInject += callback;
+        }
+        public static void AddPostInjectListener(Action callback)
+        {
+            _onPostInject -= callback;
+            _onPostInject += callback;
+        }
 
         private static void RunPostAwake()
         {

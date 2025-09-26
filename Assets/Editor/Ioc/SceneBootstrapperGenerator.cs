@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEngine;
 
 namespace GameCtor.DevToolbox.Editor
 {
@@ -14,6 +15,8 @@ namespace GameCtor.DevToolbox.Editor
             var bootstrapperType = bootstrapper.GetType();
             if (bootstrapperType == typeof(BaseSceneBootstrapper))
             {
+                Debug.LogWarning($"BaseSceneBootstrapper is not a valid type for code generation. Use a derived class " +
+                    "if code generation is desired.");
                 //ULog.Warn($"BaseSceneBootstrapper is not a valid type for code generation. Use a derived class " +
                 //    "if code generation is desired.");
                 return;
@@ -24,11 +27,12 @@ namespace GameCtor.DevToolbox.Editor
             var methodBodyList = new List<(ParameterInfo[] Parameters, string FullTypeName, bool hasKeys)>();
             foreach (var monoInject in monoInjectObjectsByType)
             {
-                var monoType = monoInject.First().GetType();
+                var monoType = monoInject.Key;
                 var hasKeys = monoInject.Any(x => x.TryGetComponent<MonoInjectParamCustomizer>(out var _));
                 var injectMethod = GetInjectMethod(monoType);
                 if (injectMethod == null)
                 {
+                    Debug.LogError($"No Inject method found for {monoType.FullName}");
                     //ULog.Error($"No Inject method found for {monoType.FullName}");
                     continue;
                 }
@@ -41,8 +45,8 @@ namespace GameCtor.DevToolbox.Editor
             var writer = new SourceWriter();
             writer.AppendLine("using System.Collections.Generic;");
             writer.AppendLine("using System.Linq;");
-            writer.AppendLine("using DevToolbox;");
-            writer.AppendLine("using GameCtor.ULogging;");
+            writer.AppendLine("using GameCtor.DevToolbox;");
+            //writer.AppendLine("using GameCtor.ULogging;");
             writer.AppendLine("using UnityEngine;").AppendLine();
 
             using (writer.Namespace(namespaceName))
@@ -52,27 +56,19 @@ namespace GameCtor.DevToolbox.Editor
                     writer.AppendLine("#if !UNITY_EDITOR");
                     using (writer.BlockFormat("protected override void InjectSceneDependencies(MonoBehaviour[] behaviours)"))
                     {
-                        writer.AppendLine("ULog.Debug(\"Injecting dependencies from generated source code.\");");
-                        writer.AppendLine("var resolving = new HashSet<TypeKey>();");
-                        using (writer.Block("foreach (var behaviour in behaviours)"))
+                        writer.AppendLine("//ULog.Debug(\"Injecting dependencies from generated source code.\");");
+
+                        for (int i = 0; i < methodBodyList.Count; i++)
                         {
-                            using (writer.Block("switch (behaviour.GetType().FullName)"))
-                            {
-                                foreach (var (Parameters, FullTypeName, hasKeys) in methodBodyList)
-                                {
-                                    using var @case = writer.BlockFormatWithoutBraces($"case \"{FullTypeName}\":");
-                                    writer.AppendLineFormat("Resolve{0}(behaviour, resolving);", FullTypeName.Substring(FullTypeName.IndexOf(".") + 1));
-                                    writer.AppendLine("break;");
-                                }
-                            }
+                            var (Parameters, FullTypeName, hasKeys) = methodBodyList[i];
+                            writer.AppendLineFormat("Resolve(monoInjectObjects[{0}] as {1});", i.ToString(), FullTypeName);
                         }
                     }
 
                     foreach (var (Parameters, FullTypeName, hasKeys) in methodBodyList)
                     {
-                        using (writer.BlockFormat("private void Resolve{0}(MonoBehaviour behaviour, HashSet<TypeKey> resolving)", FullTypeName.Substring(FullTypeName.IndexOf(".") + 1)))
+                        using (writer.BlockFormat("private void Resolve({0} monoInject)", FullTypeName))
                         {
-                            writer.AppendLine($"var monoInject = behaviour as {FullTypeName};");
                             if (hasKeys)
                             {
                                 writer.AppendLine("Dictionary<string, string> keys = null;");
@@ -105,8 +101,6 @@ namespace GameCtor.DevToolbox.Editor
                 {
                     writer.AppendLine($"keys?.TryGetValue(\"{parameters[i].Name}\", out key);");
                 }
-                writer.AppendLine("resolving.Clear();");
-                writer.AppendLine("resolving.Add(new TypeKey(behaviour.GetType(), key));");
                 writer.AppendLine($"var arg{i} = _compositionRoot.Resolve<{parameters[i].ParameterType.FullName}>(key);");
             }
 
