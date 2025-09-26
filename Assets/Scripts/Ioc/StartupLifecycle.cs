@@ -1,12 +1,13 @@
 using System;
+using UnityEngine;
 using UnityEngine.LowLevel;
 using UnityEngine.PlayerLoop;
 
 namespace GameCtor.DevToolbox
 {
-    public interface IPostAwake
+    public interface IPostInject
     {
-        void PostInject();
+        void PostInject() => Debug.Log("Default PostInject");
     }
 
     public static class StartupLifecycle

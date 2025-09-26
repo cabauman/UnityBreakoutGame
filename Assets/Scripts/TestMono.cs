@@ -11,7 +11,7 @@ using UnityEngine.Profiling;
 
 namespace BreakoutGame
 {
-    public partial class TestMono : MonoBehaviour, IDisposable
+    public partial class TestMono : MonoBehaviour, IDisposable, GameCtor.DevToolbox.IPostInject
     {
         readonly FrameTiming[] m_FrameTimings = new FrameTiming[1];
         private ProfilerRecorder gcAllocRecorder;
@@ -35,6 +35,11 @@ namespace BreakoutGame
         {
             Debug.Log("Start");
             //powerUpSpawner.SpawnPowerUp(Vector3.one);
+        }
+
+        public void PostInject()
+        {
+            Debug.Log("TestMono PostInject");
         }
 
         void OnEnable()

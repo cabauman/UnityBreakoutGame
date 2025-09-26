@@ -6,7 +6,10 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class Game
+    public interface IGame
+    {
+    }
+    public sealed class Game : GameCtor.DevToolbox.IPostInject, IGame
     {
         private readonly BrickManager _brickManager;
         private readonly BallManager _ballManager;
@@ -14,10 +17,10 @@ namespace BreakoutGame
         private readonly uint _defaultNumLives;
         private bool _gameOver = false;
 
-        public Game(BrickManager brickManager, BallManager ballManager, Paddle paddle)
+        public Game(IBrickManager brickManager, BallManager ballManager, Paddle paddle)
         {
             Debug.Log("Game Constructor");
-            _brickManager = brickManager;
+            //_brickManager = brickManager;
             _ballManager = ballManager;
             _paddle = paddle;
             _defaultNumLives = 1;

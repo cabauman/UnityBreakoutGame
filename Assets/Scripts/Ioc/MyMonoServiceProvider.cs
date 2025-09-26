@@ -18,12 +18,12 @@ namespace BreakoutGame
     [Singleton(typeof(TestMono), Factory = nameof(GetTestMono))]
     [Singleton(typeof(IPowerUpSpawner), Factory = nameof(GetPowerUpSpawner))]
     [Scoped(typeof(IRandom), typeof(UnityRandom))]
-    [Singleton(typeof(Game))]
+    //[Singleton(typeof(Game))]
     [Singleton(typeof(BrickManager), Instance = nameof(_brickManager))]
     [Singleton(typeof(BallManager), Instance = nameof(_ballManager))]
     //[Singleton(typeof(ScoreKeeper))]
     [Singleton(typeof(Paddle), Instance = nameof(_paddle))]
-    [Singleton(typeof(PowerUpAction), typeof(ExtraLifePowerUpAction), Key = nameof(PowerUpKind.ExtraLife))]
+    //[Singleton(typeof(PowerUpAction), typeof(ExtraLifePowerUpAction), Key = nameof(PowerUpKind.ExtraLife))]
     public partial class MyMonoServiceProvider : BaseCompositionRoot
     {
         public TestMono _testMono;
@@ -95,8 +95,6 @@ namespace BreakoutGame
 
             injectMethod.Invoke(obj, injectArgs);
         }
-
-        public override void Dispose1() => Dispose();
     }
 }
 

@@ -32,10 +32,10 @@ namespace GameCtor.DevToolbox
                 _registrar.Remove(this);
             }
 
-            Dispose1();
+            Dispose();
         }
 
-        public abstract void Dispose1();
+        public abstract void Dispose();
 
         public T Resolve<T>(string key)
         {
@@ -51,11 +51,6 @@ namespace GameCtor.DevToolbox
                         break;
                     }
                 }
-            }
-
-            if (service is IPostAwake pa)
-            {
-                StartupLifecycle.AddInjectListener(pa.PostInject);
             }
 
             return service == null ? throw new Exception($"{typeof(T).Name} is not registered.") : service;

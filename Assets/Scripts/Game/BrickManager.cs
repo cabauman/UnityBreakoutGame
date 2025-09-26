@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed partial class BrickManager : MonoBehaviour
+    public interface IBrickManager
+    {
+    }
+    public sealed partial class BrickManager : MonoBehaviour, GameCtor.DevToolbox.IPostInject, IBrickManager
     {
         [SerializeField]
         private Brick[] _bricks;
@@ -20,7 +23,6 @@ namespace BreakoutGame
         {
             Debug.Log("BrickManager Awake");
             BricksRemaining = new ReactiveProperty<int>(_bricks.Length);
-            GameCtor.DevToolbox.StartupLifecycle.AddPostInjectListener(PostInject);
         }
 
         public void Inject(BreakoutGame.IRandom _random)

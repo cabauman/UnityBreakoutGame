@@ -12,8 +12,8 @@ namespace BreakoutGame
     [Singleton(typeof(Game))]
     [Singleton(typeof(IPowerUpSpawner), Factory = nameof(GetPowerUpSpawner))]
     [Singleton(typeof(IRandom), typeof(UnityRandom))]
-    //[Singleton(typeof(BrickManager), Instance = nameof(_brickManager))]
-    [Singleton(typeof(BrickManager), Factory = nameof(GetBrickManager))]
+    [Singleton(typeof(IBrickManager), Instance = nameof(_brickManager))]
+    //[Singleton(typeof(BrickManager), Factory = nameof(GetBrickManager))]
     [Singleton(typeof(BallManager), Instance = nameof(_ballManager))]
     [Singleton(typeof(Paddle), Instance = nameof(_paddle))]
     [Singleton(typeof(PowerUpAction), typeof(ExtraLifePowerUpAction), Key = nameof(PowerUpKind.ExtraLife))]
@@ -47,7 +47,5 @@ namespace BreakoutGame
                 new PowerUpFactory(),
                 GetService<IRandom>());
         }
-
-        public override void Dispose1() => Dispose();
     }
 }
