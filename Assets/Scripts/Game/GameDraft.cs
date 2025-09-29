@@ -59,12 +59,12 @@ namespace BreakoutGame
                 .Subscribe(_ => ClearBonusBalls())
                 .AddTo(view);
 
-            Observable
-                .EveryUpdate()
-                .Where(_ =>
-                    UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
-                .Subscribe(_ => _config._ballPresenter.Presenter.AddInitialForce())
-                .AddTo(view);
+            //Observable
+            //    .EveryUpdate()
+            //    .Where(_ =>
+            //        UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
+            //    .Subscribe(_ => _config._ballPresenter.Presenter.AddInitialForce())
+            //    .AddTo(view);
         }
 
         public void Start()

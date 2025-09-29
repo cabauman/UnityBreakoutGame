@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
@@ -6,11 +6,12 @@ namespace BreakoutGame
 {
     public sealed class PaddlePresenter
     {
-        private IBallPaddleCollisionStrategy _collisionStrategy;
-
         private readonly float _screenWidth;
         private readonly GameObject _view;
+        private IBallPaddleCollisionStrategy _collisionStrategy;
         private readonly Paddle.Config _config;
+
+        private List<BallPresenter> _attachedBalls = new();
 
         public IReactiveProperty<float> WidthScale { get; }
 
@@ -20,23 +21,52 @@ namespace BreakoutGame
 
         public Transform GraphicTrfm => _config._spriteRenderer.transform;
 
-        public PaddlePresenter(GameObject view, Paddle.Config config)
+        public Transform Trfm => _view.transform;
+
+        public PaddlePresenter(GameObject view, IBallPaddleCollisionStrategy collisionStrategy, Paddle.Config config)
         {
             _view = view;
+            _collisionStrategy = collisionStrategy;
             _config = config;
             _screenWidth = Screen.width;
-            WidthScale = new ReactiveProperty<float>(1);
+            WidthScale = new ReactiveProperty<float>(1f);
             ResetBallPos = new ReactiveCommand<Unit>();
 
             this
                 .WidthScale
-                .Subscribe(xScale => GraphicTrfm.localScale = new Vector3(xScale, GraphicTrfm.localScale.y))
-                .AddTo(_view);
+                .Subscribe(xScale => GraphicTrfm.localScale = new Vector3(xScale, GraphicTrfm.localScale.y, 1f));
 
             this
                 .ResetBallPos
-                .Subscribe(_ => ResetBallPos_())
+                .Subscribe(_ => ResetBallPos_());
+
+            Observable
+                .EveryUpdate()
+                .Where(_ => UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
+                //.DoOnCompleted(() => Debug.Log("Mouse click observable completed"))
+                //.DoOnTerminate(() => Debug.Log("Mouse click observable terminated"))
+                //.DoOnCancel(() => Debug.Log("Mouse click observable cancelled"))
+                .Subscribe(_ => LaunchBalls())
                 .AddTo(_view);
+
+            AttachBall(_config._ballObj.Presenter);
+        }
+
+        public static Vector2 CalculateBallLaunchForce(BallPresenter ball, PaddlePresenter paddle, Vector2 point)
+        {
+            var localContact = paddle.GraphicTrfm.InverseTransformPoint(point);
+
+            // Map the horizontal contact point to the (0, 1) range.
+            // Input is in the range (-paddleWidth/2, paddleWidth/2)
+            var normalizedLocalContactX = localContact.x / paddle.Width + 0.5f;
+            var bounceAngle = Mathf.Lerp(
+                Mathf.PI / 2 + paddle._config.MaxBounceAngleRad,
+                Mathf.PI / 2 - paddle._config.MaxBounceAngleRad,
+                normalizedLocalContactX
+            );
+
+            var bounceForce = new Vector2(Mathf.Cos(bounceAngle), Mathf.Sin(bounceAngle)) * paddle._config._ballLaunchForce;
+            return bounceForce;
         }
 
         public void Tick(float deltaTime)
@@ -54,6 +84,7 @@ namespace BreakoutGame
         {
             if (other.TryGetComponent<Ball>(out var ball))
             {
+                Debug.Log("Paddle collided with ball");
                 _collisionStrategy.HandleCollision(ball.Presenter, this, point);
             }
         }
@@ -62,6 +93,26 @@ namespace BreakoutGame
         //{
         //    _collisionStrategy.HandleCollision(ball, this);
         //}
+
+        public void AttachBall(BallPresenter ball)
+        {
+            if (!_attachedBalls.Contains(ball))
+            {
+                _attachedBalls.Add(ball);
+                ball.Trfm.parent = _view.transform;
+            }
+        }
+
+        private void LaunchBalls()
+        {
+            foreach (var ball in _attachedBalls)
+            {
+                ball.Trfm.parent = null;
+                var force = CalculateBallLaunchForce(ball, this, ball.Trfm.position);
+                ball.SetForce(force);
+            }
+            _attachedBalls.Clear();
+        }
 
         private void UpdateXPosition(Vector3 mousePos)
         {
@@ -72,7 +123,7 @@ namespace BreakoutGame
 
         private void ResetBallPos_()
         {
-            _config._ballObj.transform.parent = _view.transform;
+            AttachBall(_config._ballObj.Presenter);
             _config._ballObj.transform.position = _config._initialBallPosTrfm.position;
         }
     }

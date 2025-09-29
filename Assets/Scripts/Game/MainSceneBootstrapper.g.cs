@@ -1,13 +1,13 @@
-//using System.Collections.Generic;
-//using System.Linq;
-//using GameCtor.DevToolbox;
+using System.Collections.Generic;
+using System.Linq;
+using GameCtor.DevToolbox;
 using UnityEngine;
 
 namespace BreakoutGame
 {
     partial class MainSceneBootstrapper
     {
-        #if UNITY_EDITOR
+        #if !UNITY_EDITOR
         protected override void InjectSceneDependencies(MonoBehaviour[] behaviours)
         {
             //ULog.Debug("Injecting dependencies from generated source code.");

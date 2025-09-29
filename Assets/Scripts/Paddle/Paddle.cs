@@ -1,15 +1,18 @@
 ﻿using System;
+using UniDig;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class Paddle : MonoBehaviour
+    public sealed partial class Paddle : MonoBehaviour, GameCtor.DevToolbox.IPostInject
     {
         [Flatten]
         [SerializeField]
         private Config _config;
+
+        [Inject] private IBallPaddleCollisionStrategy _collisionStrategy;
 
         public PaddlePresenter Presenter { get; set; }
 
@@ -17,9 +20,7 @@ namespace BreakoutGame
 
         private void Awake()
         {
-            Presenter = new PaddlePresenter(gameObject, _config);
-
-            this
+            _config._spriteRenderer
                 .OnCollisionEnter2DAsObservable()
                 .Subscribe(x => Presenter.OnCollisionEnter2D(x.gameObject, x.GetContact(0).point))
                 .AddTo(this);
@@ -27,17 +28,28 @@ namespace BreakoutGame
 
         private void Update() => Presenter.Tick(Time.deltaTime);
 
+        public void PostInject()
+        {
+            Presenter = new PaddlePresenter(gameObject, _collisionStrategy, _config);
+        }
+
         //private void OnCollisionEnter2D(Collision2D collision)
         //{
-        //    Paddle.OnCollisionEnter2D(collision);
+        //    Presenter.OnCollisionEnter2D(collision.gameObject, collision.GetContact(0).point);
         //}
 
         [Serializable]
         public sealed class Config
         {
-            public GameObject _ballObj;
+            public Ball _ballObj;
             public Transform _initialBallPosTrfm;
             public SpriteRenderer _spriteRenderer;
+
+            [Range(0f, 100f)]
+            public float _ballLaunchForce = 50f;
+
+            public float _maxBounceAngleDeg = 75f;
+            public float MaxBounceAngleRad => _maxBounceAngleDeg * Mathf.Deg2Rad;
         }
     }
 }

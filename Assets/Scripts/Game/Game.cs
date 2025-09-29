@@ -17,10 +17,10 @@ namespace BreakoutGame
         private readonly uint _defaultNumLives;
         private bool _gameOver = false;
 
-        public Game(IBrickManager brickManager, BallManager ballManager, Paddle paddle)
+        public Game(BrickManager brickManager, BallManager ballManager, Paddle paddle)
         {
             Debug.Log("Game Constructor");
-            //_brickManager = brickManager;
+            _brickManager = brickManager;
             _ballManager = ballManager;
             _paddle = paddle;
             _defaultNumLives = 1;
@@ -52,6 +52,12 @@ namespace BreakoutGame
                 .Select(static _ => Unit.Default);
 
             Debug.Log(_brickManager.Random);
+
+            //Observable
+            //    .EveryUpdate()
+            //    .Where(_ =>
+            //        UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
+            //    .Subscribe(_ => _ballManager.Ball.Presenter.AddInitialForce());
         }
 
         public void PostInject()

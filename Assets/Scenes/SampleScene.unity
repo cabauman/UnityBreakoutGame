@@ -1013,9 +1013,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config:
-    _ballObj: {fileID: 669068903}
+    _ballObj: {fileID: 819904564}
     _initialBallPosTrfm: {fileID: 780486887}
     _spriteRenderer: {fileID: 45767442}
+    _ballLaunchForce: 1
+    _maxBounceAngleDeg: 75
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1366,12 +1368,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5528d2af47d78346aaa5b1874018aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &669068903 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1707160519486024, guid: 7a55b66ede701e34d85554b5629b4543,
-    type: 3}
-  m_PrefabInstance: {fileID: 533138657}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &685763928 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4332127223117772, guid: 3a1f9fc061536dd4d826c3affda54aba,
@@ -1801,7 +1797,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 533138657}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 669068903}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da897800948560e4f957be049e6ae3fc, type: 3}

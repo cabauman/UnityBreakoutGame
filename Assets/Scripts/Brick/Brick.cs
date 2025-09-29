@@ -7,7 +7,7 @@ using UnityEngine;
 namespace BreakoutGame
 {
     [RequireComponent(typeof(BoxCollider2D))]
-    public sealed partial class Brick : MonoBehaviour
+    public sealed partial class Brick : MonoBehaviour, GameCtor.DevToolbox.IPostInject
     {
         [Flatten]
         [SerializeField]
@@ -18,13 +18,22 @@ namespace BreakoutGame
         private void Awake()
         {
             //Debug.Log("Brick Awake");
-            Presenter = new BrickPresenter(gameObject, _config, _powerUpSpawner);
+            this
+                .OnCollisionEnter2DAsObservable()
+                .Subscribe(x => Presenter.OnCollisionEnter2D(x.gameObject))
+                .AddTo(this);
+            GameCtor.DevToolbox.StartupLifecycle.AddPostInjectListener(PostInject);
         }
 
         //private void Start()
         //{
         //    Debug.Log("Brick Start");
         //}
+
+        public void PostInject()
+        {
+            Presenter = new BrickPresenter(gameObject, _config, _powerUpSpawner);
+        }
 
         //public void Inject(BreakoutGame.IPowerUpSpawner _powerUpSpawner)
         //{

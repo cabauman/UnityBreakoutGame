@@ -12,12 +12,13 @@ namespace BreakoutGame
     [Singleton(typeof(Game))]
     [Singleton(typeof(IPowerUpSpawner), Factory = nameof(GetPowerUpSpawner))]
     [Singleton(typeof(IRandom), typeof(UnityRandom))]
-    [Singleton(typeof(IBrickManager), Instance = nameof(_brickManager))]
+    [Singleton(typeof(BrickManager), Instance = nameof(_brickManager))]
     //[Singleton(typeof(BrickManager), Factory = nameof(GetBrickManager))]
     [Singleton(typeof(BallManager), Instance = nameof(_ballManager))]
     [Singleton(typeof(Paddle), Instance = nameof(_paddle))]
     [Singleton(typeof(PowerUpAction), typeof(ExtraLifePowerUpAction), Key = nameof(PowerUpKind.ExtraLife))]
     [Singleton(typeof(PowerUpAction), typeof(ExtraBallPowerUpAction), Key = nameof(PowerUpKind.ExtraBall))]
+    [Singleton(typeof(IBallPaddleCollisionStrategy), typeof(ReverseBounceStrategy))]
     public partial class MainCompositionRoot : BaseCompositionRoot
     {
         [SerializeField] PowerUpTable _powerUpTable;
