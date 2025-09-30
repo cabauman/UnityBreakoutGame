@@ -286,5 +286,22 @@ namespace BreakoutGame
         {
             return Mathf.Clamp(signedDistance / (planeWidth * 0.5f), -1f, 1f);
         }
+        
+        /// <summary>
+        /// Projects a 2D vector onto a plane defined by its normal vector.
+        /// This is the 2D equivalent of Vector3.ProjectOnPlane.
+        /// </summary>
+        /// <param name="vector">The vector to project</param>
+        /// <param name="planeNormal">The normal vector of the plane (should be normalized)</param>
+        /// <returns>The projected vector that lies on the plane</returns>
+        public static Vector2 ProjectOnPlane(Vector2 vector, Vector2 planeNormal)
+        {
+            // Project vector onto normal: proj = (v · n) * n
+            float dotProduct = Vector2.Dot(vector, planeNormal);
+            Vector2 projection = dotProduct * planeNormal;
+            
+            // Subtract the projection from the original vector to get the component on the plane
+            return vector - projection;
+        }
     }
 }

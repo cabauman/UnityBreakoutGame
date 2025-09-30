@@ -50,23 +50,6 @@ namespace BreakoutGame
 
         public Transform Trfm => _view.transform;
 
-        public static Vector2 CalculateBallLaunchForce(BallPresenter ball, PaddlePresenter paddle, Vector2 point)
-        {
-            var localContact = paddle.GraphicTrfm.InverseTransformPoint(point);
-
-            // Map the horizontal contact point to the (0, 1) range.
-            // Input is in the range (-paddleWidth/2, paddleWidth/2)
-            var normalizedLocalContactX = localContact.x / paddle.Width + 0.5f;
-            var bounceAngle = Mathf.Lerp(
-                Mathf.PI / 2 + paddle._config.MaxBounceAngleRad,
-                Mathf.PI / 2 - paddle._config.MaxBounceAngleRad,
-                normalizedLocalContactX
-            );
-
-            var bounceForce = new Vector2(Mathf.Cos(bounceAngle), Mathf.Sin(bounceAngle)) * paddle._config._ballLaunchForce;
-            return bounceForce;
-        }
-
         public void Tick(float deltaTime)
         {
             //var mousePos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
@@ -96,6 +79,23 @@ namespace BreakoutGame
             Assert.IsFalse(_attachedBalls.Contains(ball));
             _attachedBalls.Add(ball);
             ball.Trfm.parent = _view.transform;
+        }
+
+        private static Vector2 CalculateBallLaunchForce(BallPresenter ball, PaddlePresenter paddle, Vector2 point)
+        {
+            var localContact = paddle.GraphicTrfm.InverseTransformPoint(point);
+
+            // Map the horizontal contact point to the (0, 1) range.
+            // Input is in the range (-paddleWidth/2, paddleWidth/2)
+            var normalizedLocalContactX = localContact.x / paddle.Width + 0.5f;
+            var bounceAngle = Mathf.Lerp(
+                Mathf.PI / 2 + paddle._config.MaxBounceAngleRad,
+                Mathf.PI / 2 - paddle._config.MaxBounceAngleRad,
+                normalizedLocalContactX
+            );
+
+            var bounceForce = new Vector2(Mathf.Cos(bounceAngle), Mathf.Sin(bounceAngle)) * paddle._config._ballLaunchForce;
+            return bounceForce;
         }
 
         private void LaunchBalls()
