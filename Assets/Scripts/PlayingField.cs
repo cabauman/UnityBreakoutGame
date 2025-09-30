@@ -15,10 +15,11 @@ namespace BreakoutGame
 
         private void Start()
         {
-            _leftWall.position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.5f));
-            _rightWall.position = Camera.main.ViewportToWorldPoint(new Vector3(1f, 0.5f));
-            _topWall.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 1f));
-            _deadZone.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0f));
+            var cameraDistanceZ = Mathf.Abs(Camera.main.transform.position.z - transform.position.z);
+            _leftWall.position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.5f, cameraDistanceZ));
+            _rightWall.position = Camera.main.ViewportToWorldPoint(new Vector3(1f, 0.5f, cameraDistanceZ));
+            _topWall.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 1f, cameraDistanceZ));
+            _deadZone.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0f, cameraDistanceZ));
         }
     }
 }

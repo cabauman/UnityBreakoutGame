@@ -12,7 +12,7 @@ namespace BreakoutGame
         public override void ApplyEffect(Paddle paddle)
         {
             Debug.Log("Extra ball!");
-            //_ballManager.CreateBonusBall.Execute(paddle.InitialBallPosTrfm.position);
+            _ballManager.CreateBonusBall.Execute(paddle.InitialBallPosTrfm.position);
         }
     }
 }

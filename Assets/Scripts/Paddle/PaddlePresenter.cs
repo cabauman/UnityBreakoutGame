@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace BreakoutGame
 {
@@ -12,16 +13,6 @@ namespace BreakoutGame
         private readonly Paddle.Config _config;
 
         private List<BallPresenter> _attachedBalls = new();
-
-        public IReactiveProperty<float> WidthScale { get; }
-
-        public float Width => _config._spriteRenderer.bounds.size.x * WidthScale.Value;
-
-        public ReactiveCommand<Unit> ResetBallPos { get; }
-
-        public Transform GraphicTrfm => _config._spriteRenderer.transform;
-
-        public Transform Trfm => _view.transform;
 
         public PaddlePresenter(GameObject view, IBallPaddleCollisionStrategy collisionStrategy, Paddle.Config config)
         {
@@ -43,14 +34,21 @@ namespace BreakoutGame
             Observable
                 .EveryUpdate()
                 .Where(_ => UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
-                //.DoOnCompleted(() => Debug.Log("Mouse click observable completed"))
-                //.DoOnTerminate(() => Debug.Log("Mouse click observable terminated"))
-                //.DoOnCancel(() => Debug.Log("Mouse click observable cancelled"))
                 .Subscribe(_ => LaunchBalls())
                 .AddTo(_view);
 
             AttachBall(_config._ballObj.Presenter);
         }
+
+        public IReactiveProperty<float> WidthScale { get; }
+
+        public float Width => _config._spriteRenderer.bounds.size.x * WidthScale.Value;
+
+        public ReactiveCommand<Unit> ResetBallPos { get; }
+
+        public Transform GraphicTrfm => _config._spriteRenderer.transform;
+
+        public Transform Trfm => _view.transform;
 
         public static Vector2 CalculateBallLaunchForce(BallPresenter ball, PaddlePresenter paddle, Vector2 point)
         {
@@ -71,8 +69,8 @@ namespace BreakoutGame
 
         public void Tick(float deltaTime)
         {
-            var mousePos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
-            UpdateXPosition(new Vector3(mousePos.x, mousePos.y, 10f));
+            //var mousePos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
+            //UpdateXPosition(new Vector3(mousePos.x, mousePos.y, 10f));
         }
 
         public void SetCollisionStrategy(IBallPaddleCollisionStrategy strategy)
@@ -84,7 +82,6 @@ namespace BreakoutGame
         {
             if (other.TryGetComponent<Ball>(out var ball))
             {
-                Debug.Log("Paddle collided with ball");
                 _collisionStrategy.HandleCollision(ball.Presenter, this, point);
             }
         }
@@ -96,11 +93,9 @@ namespace BreakoutGame
 
         public void AttachBall(BallPresenter ball)
         {
-            if (!_attachedBalls.Contains(ball))
-            {
-                _attachedBalls.Add(ball);
-                ball.Trfm.parent = _view.transform;
-            }
+            Assert.IsFalse(_attachedBalls.Contains(ball));
+            _attachedBalls.Add(ball);
+            ball.Trfm.parent = _view.transform;
         }
 
         private void LaunchBalls()
@@ -116,9 +111,14 @@ namespace BreakoutGame
 
         private void UpdateXPosition(Vector3 mousePos)
         {
-            mousePos.x = Mathf.Clamp(mousePos.x, 0, _screenWidth);
-            var xPos = Camera.main.ScreenToWorldPoint(mousePos).x;
-            _view.transform.position = new Vector3(xPos, _view.transform.position.y, _view.transform.position.z);
+            var paddleHalfWidth = Width / 2f;
+
+            float halfScreenWidthWorld = Camera.main.orthographicSize * Camera.main.aspect;
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mousePos);
+            float clampedX = Mathf.Clamp(mouseWorldPos.x, -halfScreenWidthWorld + paddleHalfWidth, halfScreenWidthWorld - paddleHalfWidth);
+
+
+            _view.transform.position = new Vector3(clampedX, _view.transform.position.y, _view.transform.position.z);
         }
 
         private void ResetBallPos_()

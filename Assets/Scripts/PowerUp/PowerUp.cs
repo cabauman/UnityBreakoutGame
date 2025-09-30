@@ -8,6 +8,11 @@ namespace BreakoutGame
     {
         private PowerUpData _data;
 
+        public void Init(PowerUpData data)
+        {
+            _data = data;
+        }
+
         private void Start()
         {
             this
@@ -29,11 +34,6 @@ namespace BreakoutGame
                 _data.Action.ApplyEffect(paddle);
                 Destroy(gameObject);
             }
-        }
-
-        public void Init(PowerUpData data)
-        {
-            _data = data;
         }
     }
 }

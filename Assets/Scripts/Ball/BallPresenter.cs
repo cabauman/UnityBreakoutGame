@@ -11,12 +11,6 @@ namespace BreakoutGame
         private readonly Ball.Config _config;
         private readonly Rigidbody2D _rigidbody;
 
-        public Transform Trfm => _view.transform;
-
-        public int Power { get; }
-
-        public IReactiveProperty<bool> Active { get; }
-
         public BallPresenter(GameObject view, Ball.Config config)
         {
             _view = view;
@@ -29,6 +23,12 @@ namespace BreakoutGame
             Active
                 .Subscribe(value => view.SetActive(value));
         }
+
+        public Transform Trfm => _view.transform;
+
+        public int Power { get; }
+
+        public IReactiveProperty<bool> Active { get; }
 
         //public void AddInitialForce()
         //{

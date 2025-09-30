@@ -18,7 +18,11 @@ namespace BreakoutGame
     [Singleton(typeof(Paddle), Instance = nameof(_paddle))]
     [Singleton(typeof(PowerUpAction), typeof(ExtraLifePowerUpAction), Key = nameof(PowerUpKind.ExtraLife))]
     [Singleton(typeof(PowerUpAction), typeof(ExtraBallPowerUpAction), Key = nameof(PowerUpKind.ExtraBall))]
-    [Singleton(typeof(IBallPaddleCollisionStrategy), typeof(ReverseBounceStrategy))]
+    [Singleton(typeof(IBallPaddleCollisionStrategy), typeof(NormalBounceStrategy))]
+    [Singleton(typeof(ReverseBounceModifier), typeof(ReverseBounceModifier))]
+    [Singleton(typeof(ReverseBounceStrategy), typeof(ReverseBounceStrategy))]
+    [Singleton(typeof(MagnetPowerUp), typeof(MagnetPowerUp))]
+    [Singleton(typeof(MagnetBounceStrategy), typeof(MagnetBounceStrategy))]
     public partial class MainCompositionRoot : BaseCompositionRoot
     {
         [SerializeField] PowerUpTable _powerUpTable;

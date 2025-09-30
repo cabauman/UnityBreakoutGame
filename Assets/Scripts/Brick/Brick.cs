@@ -15,6 +15,8 @@ namespace BreakoutGame
 
         [Inject] private IPowerUpSpawner _powerUpSpawner;
 
+        public BrickPresenter Presenter { get; private set; }
+
         private void Awake()
         {
             //Debug.Log("Brick Awake");
@@ -25,30 +27,10 @@ namespace BreakoutGame
             GameCtor.DevToolbox.StartupLifecycle.AddPostInjectListener(PostInject);
         }
 
-        //private void Start()
-        //{
-        //    Debug.Log("Brick Start");
-        //}
-
         public void PostInject()
         {
             Presenter = new BrickPresenter(gameObject, _config, _powerUpSpawner);
         }
-
-        //public void Inject(BreakoutGame.IPowerUpSpawner _powerUpSpawner)
-        //{
-        //    Debug.Log("Brick Inject");
-        //    this._powerUpSpawner = _powerUpSpawner;
-        //    Presenter = new BrickPresenter(gameObject, _config, _powerUpSpawner);
-
-        //    this
-        //        .OnCollisionEnter2DAsObservable()
-        //        .Select(collision => collision.gameObject)
-        //        .Subscribe(go => Presenter.OnCollisionEnter2D(go))
-        //        .AddTo(this);
-        //}
-
-        public BrickPresenter Presenter { get; private set; }
 
         [Serializable]
         public sealed class Config
