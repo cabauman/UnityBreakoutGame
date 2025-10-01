@@ -9,7 +9,7 @@ namespace BreakoutGame
     public interface IGame
     {
     }
-    public sealed class Game : GameCtor.DevToolbox.IPostInject, IGame
+    public sealed class Game : IGame
     {
         private readonly BrickManager _brickManager;
         private readonly BallManager _ballManager;
@@ -23,7 +23,7 @@ namespace BreakoutGame
             _brickManager = brickManager;
             _ballManager = ballManager;
             _paddle = paddle;
-            _defaultNumLives = 1;
+            _defaultNumLives = 2;
 
             NumLives = new ReactiveProperty<uint>(_defaultNumLives);
 
@@ -51,6 +51,7 @@ namespace BreakoutGame
                 .Do(_ => _gameOver = true)
                 .Select(static _ => Unit.Default);
 
+            // Just making sure brick manager dependencies are injected by the time this constructor runs
             Debug.Log(_brickManager.Random);
 
             //Observable
@@ -58,32 +59,6 @@ namespace BreakoutGame
             //    .Where(_ =>
             //        UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
             //    .Subscribe(_ => _ballManager.Ball.Presenter.AddInitialForce());
-        }
-
-        public void PostInject()
-        {
-            Debug.Log("Game PostInject");
-            //Debug.Break();
-
-            var noBallsInPlay = _ballManager.NumBallsInPlay
-                .Where(count => count == 0)
-                .Do(_ => NumLives.Value -= 1)
-                .Publish()
-                .RefCount();
-
-            noBallsInPlay
-                .Where(_ => NumLives.Value > 0)
-                .Delay(TimeSpan.FromMilliseconds(100))
-                .Subscribe(_ => UseExtraLife());
-
-            GameLost = noBallsInPlay
-                .Where(_ => NumLives.Value == 0)
-                .Select(static _ => Unit.Default);
-
-            GameWon = _brickManager.BricksRemaining
-                .Where(count => count == 0)
-                .Do(_ => _gameOver = true)
-                .Select(static _ => Unit.Default);
         }
 
         public IObservable<Unit> GameWon { get; private set; }

@@ -19,7 +19,7 @@ namespace BreakoutGame
         private SpriteRenderer _spriteRenderer;
         private float _maxBounceAngleRad => _maxAngleDeg * Mathf.Deg2Rad;
         private List<BallPresenter> _attachedBalls = new();
-        private List<RigidBody2D> _attachedBalls2 = new();
+        private List<Rigidbody2D> _attachedBalls2 = new();
 
         private float Width => _spriteRenderer.bounds.size.x * transform.localScale.x;
 

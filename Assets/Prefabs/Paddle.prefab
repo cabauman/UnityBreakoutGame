@@ -169,10 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config:
-    _initialForce: 50
-    _initialAngle: 45
     _power: 1
-    _maxPaddleBounceAngle: 75
 --- !u!1 &1677328400602050
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,6 +354,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config:
-    _ballObj: {fileID: 1278010722198756}
+    _ballObj: {fileID: 114974153256704328}
     _initialBallPosTrfm: {fileID: 4236238316101198}
     _spriteRenderer: {fileID: 212380950034527182}
+    _ballLaunchForce: 50
+    _maxBounceAngleDeg: 75

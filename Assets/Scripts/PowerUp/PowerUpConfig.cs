@@ -9,6 +9,11 @@
     }
 
     [System.Serializable]
+    public class NonePowerUpConfig : PowerUpConfig
+    {
+    }
+
+    [System.Serializable]
     public class ExtraLifePowerUpConfig : PowerUpConfig
     {
     }

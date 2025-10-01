@@ -7,7 +7,6 @@ namespace BreakoutGame
 {
     public sealed class PaddlePresenter
     {
-        private readonly float _screenWidth;
         private readonly GameObject _view;
         private IBallPaddleCollisionStrategy _collisionStrategy;
         private readonly Paddle.Config _config;
@@ -19,7 +18,6 @@ namespace BreakoutGame
             _view = view;
             _collisionStrategy = collisionStrategy;
             _config = config;
-            _screenWidth = Screen.width;
             WidthScale = new ReactiveProperty<float>(1f);
             ResetBallPos = new ReactiveCommand<Unit>();
 
@@ -38,6 +36,8 @@ namespace BreakoutGame
                 .AddTo(_view);
 
             AttachBall(_config._ballObj.Presenter);
+
+            //_config._gameplayStartedEvent.OnEventRaised += ResetBallPos_;
         }
 
         public IReactiveProperty<float> WidthScale { get; }
@@ -123,6 +123,7 @@ namespace BreakoutGame
 
         private void ResetBallPos_()
         {
+            _config._ballObj.Presenter.Active.Value = true;
             AttachBall(_config._ballObj.Presenter);
             _config._ballObj.transform.position = _config._initialBallPosTrfm.position;
         }

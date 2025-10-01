@@ -44,6 +44,7 @@ namespace BreakoutGame
             public Ball _ballObj;
             public Transform _initialBallPosTrfm;
             public SpriteRenderer _spriteRenderer;
+            public GameEvent _gameplayStartedEvent;
 
             [Range(0f, 100f)]
             public float _ballLaunchForce = 50f;

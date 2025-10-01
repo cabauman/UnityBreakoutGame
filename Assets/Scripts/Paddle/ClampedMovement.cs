@@ -1,20 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(SpriteRenderer))]
 public class ClampedMovement : MonoBehaviour
 {
     [SerializeField] private Camera _camera;
     [SerializeField] private Collider2D _leftWall;
     [SerializeField] private Collider2D _rightWall;
+    [SerializeField] private SpriteRenderer _renderer;
+    [SerializeField] private PlayerInput _playerInput;
 
-    private SpriteRenderer _renderer;
     private Mouse _mouse;
     //private PlayerInputActions input;
 
     private void Awake()
     {
-        _renderer = GetComponent<SpriteRenderer>();
         _mouse = Mouse.current;
     }
 
