@@ -10,18 +10,20 @@ namespace BreakoutGame
 {
     [ServiceProvider]
     [Singleton(typeof(Game))]
-    [Singleton(typeof(IPowerUpSpawner), Factory = nameof(GetPowerUpSpawner))]
+    [Singleton(typeof(IPowerUpSpawner), typeof(PowerUpSpawner))]
+    [Singleton(typeof(PowerUpFactory), typeof(PowerUpFactory))]
     [Singleton(typeof(IRandom), typeof(UnityRandom))]
     [Singleton(typeof(BrickManager), Instance = nameof(_brickManager))]
     //[Singleton(typeof(BrickManager), Factory = nameof(GetBrickManager))]
     [Singleton(typeof(BallManager), Instance = nameof(_ballManager))]
     [Singleton(typeof(Paddle), Instance = nameof(_paddle))]
-    [Singleton(typeof(PowerUpAction), typeof(ExtraLifePowerUpAction), Key = nameof(PowerUpKind.ExtraLife))]
-    [Singleton(typeof(PowerUpAction), typeof(ExtraBallPowerUpAction), Key = nameof(PowerUpKind.ExtraBall))]
+    // [Singleton(typeof(PowerUpAction), typeof(ExtraLifePowerUpAction), Key = nameof(PowerUpKind.ExtraLife))]
+    // [Singleton(typeof(PowerUpAction), typeof(ExtraBallPowerUpAction), Key = nameof(PowerUpKind.ExtraBall))]
+    // [Singleton(typeof(ReverseBounceModifier), typeof(ReverseBounceModifier))]
+    // [Singleton(typeof(MagnetPowerUp), typeof(MagnetPowerUp))]
     [Singleton(typeof(IBallPaddleCollisionStrategy), typeof(NormalBounceStrategy))]
-    [Singleton(typeof(ReverseBounceModifier), typeof(ReverseBounceModifier))]
     [Singleton(typeof(ReverseBounceStrategy), typeof(ReverseBounceStrategy))]
-    [Singleton(typeof(MagnetPowerUp), typeof(MagnetPowerUp))]
+    [Singleton(typeof(ReverseBounceStrategy), typeof(ReverseBounceStrategy), Key = "A")]
     [Singleton(typeof(MagnetBounceStrategy), typeof(MagnetBounceStrategy))]
     public partial class MainCompositionRoot : BaseCompositionRoot
     {
@@ -39,18 +41,19 @@ namespace BreakoutGame
         private PowerUpSpawner GetPowerUpSpawner()
         {
             Debug.Log(_ballManager?.ToString());
-            var dataList = new List<PowerUpData>();
-            foreach (var config in _powerUpTable.Configs)
-            {
-                var command = Resolve<PowerUpAction>(config.Kind.ToString());
-                var data = new PowerUpData(config, command);
-                dataList.Add(data);
-            }
+            return null;
+            // var dataList = new List<PowerUpData>();
+            // foreach (var config in _powerUpTable.Configs)
+            // {
+            //     var command = Resolve<PowerUpAction>(config.Kind.ToString());
+            //     var data = new PowerUpData(config, command);
+            //     dataList.Add(data);
+            // }
 
-            return new PowerUpSpawner(
-                dataList,
-                new PowerUpFactory(),
-                GetService<IRandom>());
+            // return new PowerUpSpawner(
+            //     dataList,
+            //     new PowerUpFactory(),
+            //     GetService<IRandom>());
         }
     }
 }

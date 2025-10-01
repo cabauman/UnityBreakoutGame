@@ -1,17 +1,20 @@
-﻿using UnityEngine;
+﻿using UniDig;
+using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class MagnetPowerUp : PowerUpAction
+    public sealed partial class MagnetPowerUp : PowerUp
     {
-        private readonly MagnetBounceStrategy _strategy;
-
-        public MagnetPowerUp(MagnetBounceStrategy strategy)
-        {
-            _strategy = strategy;
-        }
+        [Inject] private MagnetBounceStrategy _strategy;
         
-        public override void ApplyEffect(Paddle paddle)
+        // private readonly MagnetBounceStrategy _strategy;
+
+        // public MagnetPowerUp(MagnetBounceStrategy strategy)
+        // {
+        //     _strategy = strategy;
+        // }
+
+        protected override void ApplyEffect(Paddle paddle)
         {
             Debug.Log("MagnetPowerUp");
             paddle.Presenter.SetCollisionStrategy(_strategy);

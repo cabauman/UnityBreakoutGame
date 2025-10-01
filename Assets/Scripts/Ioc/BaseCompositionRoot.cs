@@ -58,7 +58,7 @@ namespace GameCtor.DevToolbox
 
         public T GetServiceShallow<T>(string key)
         {
-            var service = this is IServiceProvider<T> provider
+            var service = this is IServiceProvider<T> provider && key == null
                 ? provider.GetService()
                 : default;
 

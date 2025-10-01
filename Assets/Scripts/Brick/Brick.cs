@@ -13,7 +13,11 @@ namespace BreakoutGame
         [SerializeField]
         private Config _config;
 
-        [Inject] private IPowerUpSpawner _powerUpSpawner;
+        [SerializeField]
+        private PowerUpTable _powerUpTable;
+
+        [Inject]
+        private IPowerUpSpawner _powerUpSpawner;
 
         public BrickPresenter Presenter { get; private set; }
 
@@ -24,12 +28,14 @@ namespace BreakoutGame
                 .OnCollisionEnter2DAsObservable()
                 .Subscribe(x => Presenter.OnCollisionEnter2D(x.gameObject))
                 .AddTo(this);
+
+            // TODO: Consider doing this in the bootstrapper instead
             GameCtor.DevToolbox.StartupLifecycle.AddPostInjectListener(PostInject);
         }
 
         public void PostInject()
         {
-            Presenter = new BrickPresenter(gameObject, _config, _powerUpSpawner);
+            Presenter = new BrickPresenter(gameObject, _config, _powerUpTable, _powerUpSpawner);
         }
 
         [Serializable]

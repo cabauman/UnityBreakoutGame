@@ -4,22 +4,17 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class PowerUp : MonoBehaviour
+    public abstract class PowerUp : MonoBehaviour
     {
-        private PowerUpData _data;
-
-        public void Init(PowerUpData data)
-        {
-            _data = data;
-        }
-
-        private void Start()
+        private void Awake()
         {
             this
                 .OnTriggerEnter2DAsObservable()
                 .Subscribe(ApplyAndDestroy)
                 .AddTo(this);
         }
+
+        protected abstract void ApplyEffect(Paddle paddle);
 
         private void ApplyAndDestroy(Collider2D collider)
         {
@@ -31,7 +26,7 @@ namespace BreakoutGame
 
             if (collider.TryGetComponent<Paddle>(out var paddle))
             {
-                _data.Action.ApplyEffect(paddle);
+                ApplyEffect(paddle);
                 Destroy(gameObject);
             }
         }

@@ -37,22 +37,22 @@ namespace BreakoutGame
         public uint GetInt2() => 45;
         public TestMono GetTestMono() => _testMono;
 
-        private PowerUpSpawner GetPowerUpSpawner()
-        {
-            var dataList = new List<PowerUpData>();
-            foreach (var config in _powerUpTable.Configs)
-            {
-                var command = Resolve<PowerUpAction>(config.Kind.ToString());
-                var data = new PowerUpData(config, command);
-                dataList.Add(data);
-                //InjectDependencies(config);
-            }
+        //private PowerUpSpawner GetPowerUpSpawner()
+        //{
+        //    var dataList = new List<PowerUpData>();
+        //    foreach (var config in _powerUpTable.Configs)
+        //    {
+        //        var command = Resolve<PowerUpAction>(config.Kind.ToString());
+        //        var data = new PowerUpData(config, command);
+        //        dataList.Add(data);
+        //        //InjectDependencies(config);
+        //    }
 
-            return new PowerUpSpawner(
-                dataList,
-                new PowerUpFactory(),
-                GetService<IRandom>());
-        }
+        //    return new PowerUpSpawner(
+        //        dataList,
+        //        new PowerUpFactory(),
+        //        GetService<IRandom>());
+        //}
 
         private void InjectDependencies(object obj)
         {

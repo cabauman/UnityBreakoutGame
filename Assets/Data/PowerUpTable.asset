@@ -13,22 +13,7 @@ MonoBehaviour:
   m_Name: PowerUpTable
   m_EditorClassIdentifier: BreakoutGame::BreakoutGame.PowerUpTable
   _configs:
-  - rid: 8432942456068374587
-  - rid: 8432942456068374588
-  references:
-    version: 2
-    RefIds:
-    - rid: 8432942456068374587
-      type: {class: ExtraLifePowerUpConfig, ns: BreakoutGame, asm: BreakoutGame}
-      data:
-        Kind: 1
-        Prefab: {fileID: 329374770883220387, guid: 21ac330a748308240bd5323deca95d02,
-          type: 3}
-        Weight: 1
-    - rid: 8432942456068374588
-      type: {class: ExtraBallPowerUpConfig, ns: BreakoutGame, asm: BreakoutGame}
-      data:
-        Kind: 2
-        Prefab: {fileID: 329374770883220387, guid: 21ac330a748308240bd5323deca95d02,
-          type: 3}
-        Weight: 1
+  - Prefab: {fileID: 0}
+    Weight: 0
+  - Prefab: {fileID: 0}
+    Weight: 1

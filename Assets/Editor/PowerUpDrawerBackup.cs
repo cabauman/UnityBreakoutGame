@@ -7,7 +7,7 @@ using UnityEditor.UIElements;
 
 namespace BreakoutGame
 {
-    [CustomPropertyDrawer(typeof(PowerUpConfig), true)]
+    //[CustomPropertyDrawer(typeof(PowerUpConfig), true)]
     public class PowerUpDrawerBackup : PropertyDrawer
     {
         static Dictionary<string, Type> _typeMap;

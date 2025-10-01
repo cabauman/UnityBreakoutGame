@@ -1,17 +1,20 @@
-﻿using UnityEngine;
+﻿using UniDig;
+using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class ReverseBounceModifier : PowerUpAction
+    public sealed partial class ReverseBounceModifier : PowerUp
     {
-        private readonly ReverseBounceStrategy _strategy;
+        [Inject] private ReverseBounceStrategy _strategy;
 
-        public ReverseBounceModifier(ReverseBounceStrategy strategy)
-        {
-            _strategy = strategy;
-        }
+        // private readonly ReverseBounceStrategy _strategy;
 
-        public override void ApplyEffect(Paddle paddle)
+        // public ReverseBounceModifier(ReverseBounceStrategy strategy)
+        // {
+        //     _strategy = strategy;
+        // }
+
+        protected override void ApplyEffect(Paddle paddle)
         {
             Debug.Log("ReverseBounceModifier");
             paddle.Presenter.SetCollisionStrategy(_strategy);

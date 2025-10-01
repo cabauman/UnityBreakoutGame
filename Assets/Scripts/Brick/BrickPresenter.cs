@@ -7,14 +7,20 @@ namespace BreakoutGame
     {
         private readonly GameObject _view;
         private readonly Brick.Config _config;
+        private readonly PowerUpTable _powerUpTable;
         private readonly IPowerUpSpawner _powerUpSpawner;
         private readonly IReactiveCommand<Ball> _respondToBallCollision;
 
-        public BrickPresenter(GameObject view, Brick.Config config, IPowerUpSpawner powerUpSpawner)
+        public BrickPresenter(
+            GameObject view,
+            Brick.Config config,
+            PowerUpTable powerUpTable,
+            IPowerUpSpawner powerUpSpawner)
         {
             // TODO: Validate input
             _view = view;
             _config = config;
+            _powerUpTable = powerUpTable;
             _powerUpSpawner = powerUpSpawner;
 
             Hp = new ReactiveProperty<int>(config._initialHp);
@@ -53,7 +59,7 @@ namespace BreakoutGame
 
         private void SpawnPowerUp()
         {
-            _powerUpSpawner.SpawnPowerUp(_view.transform.position);
+            _powerUpSpawner.SpawnPowerUp(_powerUpTable, _view.transform.position);
         }
     }
 }
