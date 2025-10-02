@@ -24,12 +24,15 @@ namespace BreakoutGame
                 .OnCollisionEnter2DAsObservable()
                 .Subscribe(x => Presenter.OnCollisionEnter2D(x.gameObject, x.GetContact(0).point))
                 .AddTo(this);
+
+            GameCtor.DevToolbox.StartupLifecycle.AddPostInjectListener(PostInject);
         }
 
-        private void Update() => Presenter.Tick(Time.deltaTime);
+        //private void Update() => Presenter.Tick(Time.deltaTime);
 
         public void PostInject()
         {
+            Debug.Log("Paddle PostInject");
             Presenter = new PaddlePresenter(gameObject, _collisionStrategy, _config);
         }
 

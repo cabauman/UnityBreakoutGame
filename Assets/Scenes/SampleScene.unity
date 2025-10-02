@@ -1852,6 +1852,8 @@ MonoBehaviour:
   _paddle: {fileID: 512602519}
   _brickManager: {fileID: 1691324712}
   _ballManager: {fileID: 1691324711}
+  _dummyPrefab: {fileID: 6387191264931408925, guid: 21ac330a748308240bd5323deca95d02,
+    type: 3}
 --- !u!114 &874812035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1866,6 +1868,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: BreakoutGame::GameCtor.DevToolbox.BaseSceneBootstrapper
   _compositionRoot: {fileID: 874812034}
   monoInjectObjects:
+  - {fileID: 512602519}
   - {fileID: 641725648}
   - {fileID: 289035448}
   - {fileID: 1217807902}

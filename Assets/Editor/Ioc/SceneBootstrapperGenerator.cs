@@ -58,10 +58,10 @@ namespace GameCtor.DevToolbox.Editor
                     {
                         writer.AppendLine("//ULog.Debug(\"Injecting dependencies from generated source code.\");");
 
-                        for (int i = 0; i < methodBodyList.Count; i++)
+                        for (int i = 0; i < monoInjectObjects.Length; ++i)
                         {
-                            var (Parameters, FullTypeName, hasKeys) = methodBodyList[i];
-                            writer.AppendLineFormat("Resolve(monoInjectObjects[{0}] as {1});", i.ToString(), FullTypeName);
+                            var monoType = monoInjectObjects[i].GetType();
+                            writer.AppendLineFormat("Resolve(monoInjectObjects[{0}] as {1});", i.ToString(), monoType.FullName);
                         }
                     }
 

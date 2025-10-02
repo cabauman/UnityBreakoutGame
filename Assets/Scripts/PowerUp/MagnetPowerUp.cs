@@ -6,6 +6,11 @@ namespace BreakoutGame
     public sealed partial class MagnetPowerUp : PowerUp
     {
         [Inject] private MagnetBounceStrategy _strategy;
+
+        private void Start()
+        {
+            Debug.Log(_strategy == null ? "null" : "not null");
+        }
         
         // private readonly MagnetBounceStrategy _strategy;
 

@@ -165,6 +165,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1439413112383232}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e0ee8c7009fd704d9741d9043efd390, type: 3}
+  m_Script: {fileID: 11500000, guid: aa4b25a2463a3e64cb11991c43e9b4c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BreakoutGame::BreakoutGame.PowerUpPresenter

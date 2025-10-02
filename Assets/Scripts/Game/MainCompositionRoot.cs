@@ -25,6 +25,8 @@ namespace BreakoutGame
     [Singleton(typeof(ReverseBounceStrategy), typeof(ReverseBounceStrategy))]
     [Singleton(typeof(ReverseBounceStrategy), typeof(ReverseBounceStrategy), Key = "A")]
     [Singleton(typeof(MagnetBounceStrategy), typeof(MagnetBounceStrategy))]
+    //[Singleton(typeof(ExtraLifePowerUpAction), typeof(ExtraLifePowerUpAction))]
+    [Singleton(typeof(PrefabFactory), Factory = nameof(GetPrefabFactory))]
     public partial class MainCompositionRoot : BaseCompositionRoot
     {
         [SerializeField] PowerUpTable _powerUpTable;
@@ -32,10 +34,24 @@ namespace BreakoutGame
         [SerializeField] private BrickManager _brickManager;
         [SerializeField] private BallManager _ballManager;
 
+        [SerializeField] private PowerUp _dummyPrefab;
+        private void Start()
+        {
+            //var instance = GameObject.Instantiate(_dummyPrefab);
+            //Inject(instance);
+            var factory = this.GetService<PrefabFactory>();
+            var instance = factory.Create(_dummyPrefab, Vector3.one);
+        }
+
         private BrickManager GetBrickManager()
         {
             _brickManager.Inject(GetService<IRandom>());
             return _brickManager;
+        }
+
+        private PrefabFactory GetPrefabFactory()
+        {
+            return new PrefabFactory(this);
         }
 
         private PowerUpSpawner GetPowerUpSpawner()
@@ -54,6 +70,29 @@ namespace BreakoutGame
             //     dataList,
             //     new PowerUpFactory(),
             //     GetService<IRandom>());
+        }
+    }
+
+    //[ServiceProviderModule]
+    //[Singleton(typeof(Game))]
+    //public partial class MainCompositionRoot
+    //{
+    //}
+
+    public sealed class PrefabFactory
+    {
+        private readonly IInjector _injector;
+
+        public PrefabFactory(IInjector injector)
+        {
+            _injector = injector;
+        }
+
+        public T Create<T>(T prefab, Vector3 position) where T : UnityEngine.Object
+        {
+            var instance = UnityEngine.Object.Instantiate(prefab);
+            _injector.Inject(instance);
+            return instance;
         }
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 212538846116020936}
   - component: {fileID: 58401200314826384}
   - component: {fileID: 50682446515051932}
-  - component: {fileID: 329374770883220387}
+  - component: {fileID: 6387191264931408925}
   m_Layer: 8
   m_Name: PowerUp
   m_TagString: Untagged
@@ -156,7 +156,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &329374770883220387
+--- !u!114 &6387191264931408925
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -165,6 +165,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1439413112383232}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e0ee8c7009fd704d9741d9043efd390, type: 3}
+  m_Script: {fileID: 11500000, guid: c313dffc695439142ba731948987bce1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.PowerUpPresenter
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.MagnetPowerUp
