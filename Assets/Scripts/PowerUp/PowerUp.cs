@@ -24,7 +24,8 @@ namespace BreakoutGame
                 return;
             }
 
-            if (collider.TryGetComponent<Paddle>(out var paddle))
+            Paddle paddle = collider.GetComponentInParent<Paddle>();
+            if (paddle != null)
             {
                 ApplyEffect(paddle);
                 Destroy(gameObject);

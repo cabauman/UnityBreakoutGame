@@ -11,7 +11,6 @@ namespace BreakoutGame
     [ServiceProvider]
     [Singleton(typeof(Game))]
     [Singleton(typeof(IPowerUpSpawner), typeof(PowerUpSpawner))]
-    [Singleton(typeof(PowerUpFactory), typeof(PowerUpFactory))]
     [Singleton(typeof(IRandom), typeof(UnityRandom))]
     [Singleton(typeof(BrickManager), Instance = nameof(_brickManager))]
     //[Singleton(typeof(BrickManager), Factory = nameof(GetBrickManager))]

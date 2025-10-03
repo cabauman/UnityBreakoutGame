@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 342a33d9750f7504cb5d38462c0a430b, type: 3}
-  m_Name: PowerUpTable
+  m_Name: RedBrickDropTable
   m_EditorClassIdentifier: BreakoutGame::BreakoutGame.PowerUpTable
+  _dropChance: 0.2
   _configs:
-  - Prefab: {fileID: 0}
-    Weight: 0
-  - Prefab: {fileID: 0}
+  - Prefab: {fileID: 6387191264931408925, guid: e8957ae472aabaa4da897faa7b8f62c8,
+      type: 3}
     Weight: 1

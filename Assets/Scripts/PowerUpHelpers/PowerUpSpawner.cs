@@ -10,10 +10,10 @@ namespace BreakoutGame
     
     public sealed class PowerUpSpawner : IPowerUpSpawner
     {
-        private readonly PowerUpFactory _factory;
+        private readonly PrefabFactory _factory;
         private readonly IRandom _random;
 
-        public PowerUpSpawner(PowerUpFactory factory, IRandom random)
+        public PowerUpSpawner(PrefabFactory factory, IRandom random)
         {
             _factory = factory;
             _random = random;
@@ -21,6 +21,12 @@ namespace BreakoutGame
 
         public void SpawnPowerUp(PowerUpTable spawnTable, Vector3 position)
         {
+            float chance = _random.Next(0f, 1f);
+            if (chance > spawnTable.DropChance)
+            {
+                return;
+            }
+
             PowerUp prefab = GetRandomPowerUpConfig(spawnTable);
             if (prefab != null)
             {

@@ -1155,6 +1155,11 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 50696475277762082, guid: 7a55b66ede701e34d85554b5629b4543,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 114606524586847714, guid: 7a55b66ede701e34d85554b5629b4543,
         type: 3}
       propertyPath: _initialAngle

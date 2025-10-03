@@ -153,7 +153,7 @@ namespace BreakoutGame
     {
         public void HandleCollision(BallPresenter ball, PaddlePresenter paddle, Vector2 point)
         {
-            ball.AttachTo(paddle.Trfm);
+            paddle.AttachBall(ball);
         }
     }
 

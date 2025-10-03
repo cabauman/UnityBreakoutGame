@@ -52,8 +52,6 @@ namespace BreakoutGame
 
         public void Tick(float deltaTime)
         {
-            //var mousePos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
-            //UpdateXPosition(new Vector3(mousePos.x, mousePos.y, 10f));
         }
 
         public void SetCollisionStrategy(IBallPaddleCollisionStrategy strategy)
@@ -77,6 +75,7 @@ namespace BreakoutGame
         public void AttachBall(BallPresenter ball)
         {
             Assert.IsFalse(_attachedBalls.Contains(ball));
+            ball.AttachTo(Trfm);
             _attachedBalls.Add(ball);
             ball.Trfm.parent = _view.transform;
         }
@@ -107,18 +106,6 @@ namespace BreakoutGame
                 ball.SetForce(force);
             }
             _attachedBalls.Clear();
-        }
-
-        private void UpdateXPosition(Vector3 mousePos)
-        {
-            var paddleHalfWidth = Width / 2f;
-
-            float halfScreenWidthWorld = Camera.main.orthographicSize * Camera.main.aspect;
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mousePos);
-            float clampedX = Mathf.Clamp(mouseWorldPos.x, -halfScreenWidthWorld + paddleHalfWidth, halfScreenWidthWorld - paddleHalfWidth);
-
-
-            _view.transform.position = new Vector3(clampedX, _view.transform.position.y, _view.transform.position.z);
         }
 
         private void ResetBallPos_()
