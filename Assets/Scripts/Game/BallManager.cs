@@ -56,8 +56,15 @@ namespace BreakoutGame
             return ballPresenter;
         }
 
+        public void UseExtraLife()
+        {
+            NumBallsInPlay.Value = 1;
+        }
+
         public void ResetGame()
         {
+            NumBallsInPlay.Value = 1;
+
             foreach (var ball in _bonusBalls)
             {
                 GameObject.Destroy(ball);

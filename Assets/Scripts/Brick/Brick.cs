@@ -28,6 +28,10 @@ namespace BreakoutGame
                 .OnCollisionEnter2DAsObservable()
                 .Subscribe(x => Presenter.OnCollisionEnter2D(x.gameObject))
                 .AddTo(this);
+            this
+                .OnTriggerEnter2DAsObservable()
+                .Subscribe(x => Presenter.OnCollisionEnter2D(x.gameObject))
+                .AddTo(this);
 
             // TODO: Consider doing this in the bootstrapper instead
             GameCtor.DevToolbox.StartupLifecycle.AddPostInjectListener(PostInject);

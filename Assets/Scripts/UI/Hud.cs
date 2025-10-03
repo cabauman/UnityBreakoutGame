@@ -1,21 +1,22 @@
 ﻿using TMPro;
+using UniDig;
 using UniRx;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public class Hud : MonoBehaviour
+    public partial class Hud : MonoBehaviour
     {
         private const string NUM_LIVES_FMT = "Lives: {0}";
 
-        [SerializeField]
-        private GamePresenter _gamePresenter;
+        [Inject] private Game _game;
+        
         [SerializeField]
         private TextMeshProUGUI _numLivesLabel;
 
         private void Start()
         {
-            _gamePresenter.Game
+            _game
                 .NumLives
                 .Subscribe(numLives => _numLivesLabel.text = string.Format(NUM_LIVES_FMT, numLives))
                 .AddTo(this);

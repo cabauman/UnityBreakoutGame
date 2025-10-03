@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4147466906449456}
+  - component: {fileID: 114606524586847714}
   - component: {fileID: 212278211248291338}
   - component: {fileID: 58092384203437350}
   - component: {fileID: 50696475277762082}
-  - component: {fileID: 114606524586847714}
   m_Layer: 10
   m_Name: Ball
   m_TagString: Untagged
@@ -35,6 +35,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114606524586847714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707160519486024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da897800948560e4f957be049e6ae3fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _config:
+    _power: 1
 --- !u!212 &212278211248291338
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -154,22 +168,5 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &114606524586847714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1707160519486024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da897800948560e4f957be049e6ae3fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _config:
-    _initialForce: 50
-    _initialAngle: 45
-    _power: 1
-    _maxPaddleBounceAngle: 75

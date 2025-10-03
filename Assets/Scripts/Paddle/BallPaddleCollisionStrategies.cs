@@ -1,10 +1,35 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace BreakoutGame
 {
     public interface IBallPaddleCollisionStrategy
     {
         void HandleCollision(BallPresenter ball, PaddlePresenter paddle, Vector2 point);
+    }
+
+    public sealed class ProjectileCollisionStrategyDecorator : IBallPaddleCollisionStrategy
+    {
+        private readonly IBallPaddleCollisionStrategy _baseStrategy;
+        private readonly float _projectileForceMag = 1f;
+        private readonly GameObject _projectilePrefab;
+
+        public ProjectileCollisionStrategyDecorator(IBallPaddleCollisionStrategy baseStrategy, GameObject projectilePrefab)
+        {
+            _baseStrategy = baseStrategy;
+            _projectilePrefab = projectilePrefab;
+        }
+
+        public void HandleCollision(BallPresenter ball, PaddlePresenter paddle, Vector2 point)
+        {
+            _baseStrategy.HandleCollision(ball, paddle, point);
+
+            // Launch a projectile upwards from the paddle's position
+            var projectileInstance = GameObject.Instantiate(_projectilePrefab, point, Quaternion.identity);
+            var projectileRigidbody = projectileInstance.GetComponent<Rigidbody2D>();
+            Assert.IsNotNull(projectileRigidbody, "Projectile prefab must have a Rigidbody2D component.");
+            projectileRigidbody.AddForce(Vector2.up * _projectileForceMag, ForceMode2D.Impulse);
+        }
     }
 
     public class NormalBounceStrategy : IBallPaddleCollisionStrategy

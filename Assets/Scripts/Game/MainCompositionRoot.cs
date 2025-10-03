@@ -21,9 +21,9 @@ namespace BreakoutGame
     // [Singleton(typeof(ReverseBounceModifier), typeof(ReverseBounceModifier))]
     // [Singleton(typeof(MagnetPowerUp), typeof(MagnetPowerUp))]
     [Singleton(typeof(IBallPaddleCollisionStrategy), typeof(NormalBounceStrategy))]
-    [Singleton(typeof(ReverseBounceStrategy), typeof(ReverseBounceStrategy))]
-    [Singleton(typeof(ReverseBounceStrategy), typeof(ReverseBounceStrategy), Key = "A")]
-    [Singleton(typeof(MagnetBounceStrategy), typeof(MagnetBounceStrategy))]
+    [Singleton(typeof(ReverseBounceStrategy))]
+    [Singleton(typeof(MagnetBounceStrategy))]
+    [Singleton(typeof(ProjectileCollisionStrategyDecorator), Factory = nameof(GetProjectilePowerUp))]
     //[Singleton(typeof(ExtraLifePowerUpAction), typeof(ExtraLifePowerUpAction))]
     [Singleton(typeof(PrefabFactory), Factory = nameof(GetPrefabFactory))]
     public partial class MainCompositionRoot : BaseCompositionRoot
@@ -32,20 +32,13 @@ namespace BreakoutGame
         [SerializeField] private Paddle _paddle;
         [SerializeField] private BrickManager _brickManager;
         [SerializeField] private BallManager _ballManager;
+        [SerializeField] private GameObject _projectilePrefab;
 
-        [SerializeField] private PowerUp _dummyPrefab;
-        private void Start()
+        private ProjectileCollisionStrategyDecorator GetProjectilePowerUp()
         {
-            //var instance = GameObject.Instantiate(_dummyPrefab);
-            //Inject(instance);
-            var factory = this.GetService<PrefabFactory>();
-            var instance = factory.Create(_dummyPrefab, Vector3.one);
-        }
-
-        private BrickManager GetBrickManager()
-        {
-            _brickManager.Inject(GetService<IRandom>());
-            return _brickManager;
+            return new ProjectileCollisionStrategyDecorator(
+                GetService<IBallPaddleCollisionStrategy>(),
+                _projectilePrefab);
         }
 
         private PrefabFactory GetPrefabFactory()
@@ -89,7 +82,7 @@ namespace BreakoutGame
 
         public T Create<T>(T prefab, Vector3 position) where T : UnityEngine.Object
         {
-            var instance = UnityEngine.Object.Instantiate(prefab);
+            var instance = UnityEngine.Object.Instantiate(prefab, position, Quaternion.identity);
             _injector.Inject(instance);
             return instance;
         }

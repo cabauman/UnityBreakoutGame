@@ -34,6 +34,7 @@ namespace BreakoutGame
             var noBallsInPlay = _ballManager.NumBallsInPlay
                 .Where(count => count == 0)
                 .Do(_ => NumLives.Value -= 1)
+                .Do(_ => Debug.Log($"NumLives is now {NumLives.Value}"))
                 .Publish()
                 .RefCount();
 
@@ -59,6 +60,10 @@ namespace BreakoutGame
             //    .Where(_ =>
             //        UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
             //    .Subscribe(_ => _ballManager.Ball.Presenter.AddInitialForce());
+
+            //GameLost
+            //    .Merge(GameWon)
+            //    .Subscribe(_ => Debug.Log(_gameOver ? "Game Won!" : "Game Lost!"));
         }
 
         public IObservable<Unit> GameWon { get; private set; }
@@ -80,6 +85,7 @@ namespace BreakoutGame
 
         private void UseExtraLife()
         {
+            _ballManager.UseExtraLife();
             _paddle.Presenter.ResetBallPos.Execute(Unit.Default);
         }
     }

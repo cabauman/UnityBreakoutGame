@@ -2,6 +2,7 @@
 using UniDig;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace BreakoutGame
 {
@@ -53,6 +54,17 @@ namespace BreakoutGame
             foreach (var brick in _bricks)
             {
                 brick.Presenter.ResetHp.Execute(Unit.Default);
+            }
+        }
+
+        public void MarkBricksAsTriggers(bool value)
+        {
+            // TODO: Only affect certain brick types.
+            foreach (var brick in _bricks)
+            {
+                var collider = brick.GetComponent<BoxCollider2D>();
+                Assert.IsNotNull(collider);
+                collider.isTrigger = value;
             }
         }
     }
