@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using UniDig;
-using UniRx;
+using R3;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -16,7 +16,7 @@ namespace BreakoutGame
 
         [Inject] IRandom _random;
 
-        public IReactiveProperty<int> BricksRemaining { get; private set; }
+        public ReactiveProperty<int> BricksRemaining { get; private set; }
 
         public IRandom Random => _random;
 

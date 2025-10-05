@@ -2,7 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UniRx;
+using R3;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.TestTools;

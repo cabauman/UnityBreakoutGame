@@ -1,7 +1,7 @@
 ﻿using GameCtor.DevToolbox;
 using System;
 using System.Linq;
-using UniRx;
+using R3;
 using UnityEngine;
 
 namespace BreakoutGame
@@ -18,7 +18,7 @@ namespace BreakoutGame
     }
     public interface ISubscriber<T>
     {
-        IObservable<T> Subscribe();
+        Observable<T> Subscribe();
     }
     public interface IGame
     {
@@ -80,11 +80,11 @@ namespace BreakoutGame
             //    .Subscribe(_ => Debug.Log(_gameOver ? "Game Won!" : "Game Lost!"));
         }
 
-        public IObservable<Unit> GameWon { get; private set; }
+        public Observable<Unit> GameWon { get; private set; }
 
-        public IObservable<Unit> GameLost { get; private set; }
+        public Observable<Unit> GameLost { get; private set; }
 
-        public IReactiveProperty<uint> NumLives { get; }
+        public ReactiveProperty<uint> NumLives { get; }
 
         public ReactiveCommand ResetGameCmd { get; }
 

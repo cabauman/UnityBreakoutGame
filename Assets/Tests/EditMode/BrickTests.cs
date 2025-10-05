@@ -1,7 +1,7 @@
 using System.Collections;
 using NSubstitute;
 using NUnit.Framework;
-using UniRx;
+using R3;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -21,7 +21,7 @@ namespace BreakoutGame
 
             // Assert
             Assert.That(sut.Hp.Value, Is.EqualTo(1));
-            Assert.That(sut.Active.Value, Is.True);
+            Assert.That(sut.Active.CurrentValue, Is.True);
         }
 
         [TestCase(3, 1, 2)]
@@ -81,7 +81,7 @@ namespace BreakoutGame
             sut.OnCollisionEnter2D(ballObj);
 
             // Assert
-            Assert.That(sut.Active.Value, Is.False);
+            Assert.That(sut.Active.CurrentValue, Is.False);
         }
 
         [Test]
@@ -172,14 +172,14 @@ namespace BreakoutGame
             //sut.OnCollisionEnter2D(ballObj);
 
             sut.Hp.Value = 0;
-            Assert.That(sut.Active.Value, Is.False);
+            Assert.That(sut.Active.CurrentValue, Is.False);
 
             // Act
             sut.ResetHp.Execute(Unit.Default);
 
             // Assert
             Assert.That(sut.Hp.Value, Is.EqualTo(2));
-            Assert.That(sut.Active.Value, Is.True);
+            Assert.That(sut.Active.CurrentValue, Is.True);
         }
 
         public static void InvokeLifecycleFunction<T>(T mono, string name)

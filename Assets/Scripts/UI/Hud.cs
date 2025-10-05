@@ -1,6 +1,6 @@
 ﻿using TMPro;
 using UniDig;
-using UniRx;
+using R3;
 using UnityEngine;
 
 namespace BreakoutGame

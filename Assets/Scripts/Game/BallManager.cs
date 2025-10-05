@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UniRx;
+using R3;
 using UnityEngine;
 
 namespace BreakoutGame
@@ -35,11 +35,11 @@ namespace BreakoutGame
 
         public Ball Ball => _mainBall;
 
-        public IReactiveProperty<int> NumBallsInPlay { get; private set; }
+        public ReactiveProperty<int> NumBallsInPlay { get; private set; }
 
         public ReactiveCommand<Vector3> CreateBonusBall { get; private set; }
 
-        private static IObservable<Unit> DetectWhenBonusBallBecomesInactive(Ball ball)
+        private static Observable<Unit> DetectWhenBonusBallBecomesInactive(Ball ball)
         {
             return ball.Presenter
                 .Active

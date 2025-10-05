@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using UniRx;
+﻿using R3;
 using UnityEngine;
 
 namespace BreakoutGame
@@ -28,7 +26,7 @@ namespace BreakoutGame
 
         public int Power { get; }
 
-        public IReactiveProperty<bool> Active { get; }
+        public ReactiveProperty<bool> Active { get; }
 
         //public void AddInitialForce()
         //{

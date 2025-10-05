@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using UniRx;
+using R3;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -43,7 +43,7 @@ namespace BreakoutGame
             //_config._gameplayStartedEvent.OnEventRaised += ResetBallPos_;
         }
 
-        public IReactiveProperty<float> WidthScale { get; }
+        public ReactiveProperty<float> WidthScale { get; }
 
         public float Width => _config._spriteRenderer.bounds.size.x * WidthScale.Value;
 

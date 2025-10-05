@@ -1,4 +1,4 @@
-﻿using UniRx;
+﻿using R3;
 using UnityEngine;
 
 namespace BreakoutGame
@@ -9,7 +9,7 @@ namespace BreakoutGame
         private readonly Brick.Config _config;
         private readonly PowerUpTable _powerUpTable;
         private readonly IPowerUpSpawner _powerUpSpawner;
-        private readonly IReactiveCommand<Ball> _respondToBallCollision;
+        private readonly ReactiveCommand<Ball> _respondToBallCollision;
 
         public BrickPresenter(
             GameObject view,
@@ -25,7 +25,7 @@ namespace BreakoutGame
 
             Hp = new ReactiveProperty<int>(config._initialHp);
 
-            Active = Hp.Select(x => x > 0).ToReactiveProperty();
+            Active = Hp.Select(x => x > 0).ToReadOnlyReactiveProperty();
 
             ResetHp = new ReactiveCommand<Unit>();
             ResetHp
@@ -43,11 +43,11 @@ namespace BreakoutGame
                 .Subscribe(value => view.SetActive(value));
         }
 
-        public IReactiveProperty<int> Hp { get; }
+        public ReactiveProperty<int> Hp { get; }
 
-        public IReadOnlyReactiveProperty<bool> Active { get; }
+        public ReadOnlyReactiveProperty<bool> Active { get; }
 
-        public IReactiveCommand<Unit> ResetHp { get; }
+        public ReactiveCommand<Unit> ResetHp { get; }
 
         public void OnCollisionEnter2D(GameObject other)
         {

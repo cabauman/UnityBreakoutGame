@@ -1,7 +1,7 @@
 ﻿using System;
 using TMPro;
 using UniDig;
-using UniRx;
+using R3;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,13 +43,16 @@ namespace BreakoutGame
                 .Subscribe(_ => _playAgainButton.gameObject.SetActive(true))
                 .AddTo(this);
 
-            _game.ResetGameCmd.BindToOnClick(_playAgainButton, _ => HideUI());
-            _playAgainButton.onClick.AddListener(OnPlayAgainClicked);
+            //_game.ResetGameCmd.BindToOnClick(_playAgainButton, _ => HideUI());
+            _playAgainButton.OnClickAsObservable()
+                .Subscribe(_ => OnPlayAgainClicked())
+                .AddTo(this);
         }
 
         private void OnPlayAgainClicked()
         {
             //_newGameRequestPublisher.Publish(new NewGameRequest());
+            _game.ResetGameCmd.Execute(Unit.Default);
             HideUI();
         }
 
