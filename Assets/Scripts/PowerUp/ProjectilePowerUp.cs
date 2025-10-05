@@ -13,7 +13,7 @@ namespace BreakoutGame
         protected override void ApplyEffect(Paddle paddle)
         {
             Debug.Log("ProjectilePowerUp");
-            paddle.Presenter.SetCollisionStrategy(_strategy);
+            paddle.Presenter.SetBallCollisionStrategy(_strategy);
         }
     }
 }

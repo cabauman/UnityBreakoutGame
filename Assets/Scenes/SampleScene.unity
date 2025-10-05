@@ -1025,7 +1025,8 @@ MonoBehaviour:
     _ballObj: {fileID: 819904564}
     _initialBallPosTrfm: {fileID: 780486887}
     _spriteRenderer: {fileID: 45767442}
-    _gameplayStartedEvent: {fileID: 0}
+    _gameplayStartedEvent: {fileID: 11400000, guid: e20af219c3bbbbf4db80d3613b25ad67,
+      type: 2}
     _ballLaunchForce: 1
     _maxBounceAngleDeg: 75
 --- !u!1 &519420028

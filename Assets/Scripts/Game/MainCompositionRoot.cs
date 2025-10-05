@@ -24,6 +24,7 @@ namespace BreakoutGame
     [Singleton(typeof(ReverseBounceStrategy))]
     [Singleton(typeof(MagnetBounceStrategy))]
     [Singleton(typeof(ProjectileCollisionStrategyDecorator), Factory = nameof(GetProjectilePowerUp))]
+    [Singleton(typeof(HeavyBallGameWorldEffect))]
     //[Singleton(typeof(ExtraLifePowerUpAction), typeof(ExtraLifePowerUpAction))]
     [Singleton(typeof(PrefabFactory), Factory = nameof(GetPrefabFactory))]
     public partial class MainCompositionRoot : BaseCompositionRoot

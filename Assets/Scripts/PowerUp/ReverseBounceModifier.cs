@@ -17,7 +17,7 @@ namespace BreakoutGame
         protected override void ApplyEffect(Paddle paddle)
         {
             Debug.Log("ReverseBounceModifier");
-            paddle.Presenter.SetCollisionStrategy(_strategy);
+            paddle.Presenter.SetBallCollisionStrategy(_strategy);
         }
     }
 }

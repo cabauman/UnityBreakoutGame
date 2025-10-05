@@ -22,6 +22,8 @@ namespace BreakoutGame
         private float _delayBeforeDisplayingPlayAgainButton = 3f;
 
         [Inject] private Game _game;
+        // [Inject] private IPublisher<NewGameRequest> _newGameRequestPublisher;
+        // [Inject] private ISubscriber<GameOverEvent> _gameOverEventSubscriber;
 
         private void Start()
         {
@@ -29,6 +31,7 @@ namespace BreakoutGame
                 .GameWon
                 .Subscribe(_ => _gameWonLabel.gameObject.SetActive(true))
                 .AddTo(this);
+            //_gameOverEventSubscriber.Subscribe().Subscribe(_ => _gameLostLabel.gameObject.SetActive(true));
 
             _game
                 .GameLost
@@ -41,6 +44,13 @@ namespace BreakoutGame
                 .AddTo(this);
 
             _game.ResetGameCmd.BindToOnClick(_playAgainButton, _ => HideUI());
+            _playAgainButton.onClick.AddListener(OnPlayAgainClicked);
+        }
+
+        private void OnPlayAgainClicked()
+        {
+            //_newGameRequestPublisher.Publish(new NewGameRequest());
+            HideUI();
         }
 
         private void HideUI()

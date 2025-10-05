@@ -11,12 +11,15 @@ namespace BreakoutGame
         private IBallPaddleCollisionStrategy _collisionStrategy;
         private readonly Paddle.Config _config;
 
+        private IBallPaddleCollisionStrategy _defaultCollisionStrategy;
+        private IGameWorldEffect _gameWorldEffect; 
         private List<BallPresenter> _attachedBalls = new();
 
         public PaddlePresenter(GameObject view, IBallPaddleCollisionStrategy collisionStrategy, Paddle.Config config)
         {
             _view = view;
             _collisionStrategy = collisionStrategy;
+            _defaultCollisionStrategy = collisionStrategy;
             _config = config;
             WidthScale = new ReactiveProperty<float>(1f);
             ResetBallPos = new ReactiveCommand<Unit>();
@@ -50,13 +53,25 @@ namespace BreakoutGame
 
         public Transform Trfm => _view.transform;
 
-        public void Tick(float deltaTime)
+        // public void Tick(float deltaTime)
+        // {
+        // }
+
+        public void SetBallCollisionStrategy(IBallPaddleCollisionStrategy strategy)
         {
+            Assert.IsNotNull(strategy);
+            _collisionStrategy = strategy;
+            _gameWorldEffect?.Disable();
+            _gameWorldEffect = null;
         }
 
-        public void SetCollisionStrategy(IBallPaddleCollisionStrategy strategy)
+        public void SetGameWorldEffect(IGameWorldEffect effect)
         {
-            _collisionStrategy = strategy;
+            Assert.IsNotNull(effect);
+            _collisionStrategy = _defaultCollisionStrategy;
+            _gameWorldEffect?.Disable();
+            _gameWorldEffect = effect;
+            _gameWorldEffect.Enable();
         }
 
         public void OnCollisionEnter2D(GameObject other, Vector2 point)
@@ -77,24 +92,6 @@ namespace BreakoutGame
             Assert.IsFalse(_attachedBalls.Contains(ball));
             ball.AttachTo(Trfm);
             _attachedBalls.Add(ball);
-            ball.Trfm.parent = _view.transform;
-        }
-
-        private static Vector2 CalculateBallLaunchForce(BallPresenter ball, PaddlePresenter paddle, Vector2 point)
-        {
-            var localContact = paddle.GraphicTrfm.InverseTransformPoint(point);
-
-            // Map the horizontal contact point to the (0, 1) range.
-            // Input is in the range (-paddleWidth/2, paddleWidth/2)
-            var normalizedLocalContactX = localContact.x / paddle.Width + 0.5f;
-            var bounceAngle = Mathf.Lerp(
-                Mathf.PI / 2 + paddle._config.MaxBounceAngleRad,
-                Mathf.PI / 2 - paddle._config.MaxBounceAngleRad,
-                normalizedLocalContactX
-            );
-
-            var bounceForce = new Vector2(Mathf.Cos(bounceAngle), Mathf.Sin(bounceAngle)) * paddle._config._ballLaunchForce;
-            return bounceForce;
         }
 
         private void LaunchBalls()
@@ -102,7 +99,16 @@ namespace BreakoutGame
             foreach (var ball in _attachedBalls)
             {
                 ball.Trfm.parent = null;
-                var force = CalculateBallLaunchForce(ball, this, ball.Trfm.position);
+
+                var force = PlaneBouncingUtility.CalculateBounceDirection(
+                    GraphicTrfm.position,
+                    Vector2.up,
+                    Width,
+                    _config._ballObj.transform.position,
+                    _config.MaxBounceAngleRad,
+                    _config._ballLaunchForce
+                );
+
                 ball.SetForce(force);
             }
             _attachedBalls.Clear();
@@ -110,9 +116,18 @@ namespace BreakoutGame
 
         private void ResetBallPos_()
         {
+            _collisionStrategy = _defaultCollisionStrategy;
+            _gameWorldEffect?.Disable();
+
             _config._ballObj.Presenter.Active.Value = true;
             AttachBall(_config._ballObj.Presenter);
             _config._ballObj.transform.position = _config._initialBallPosTrfm.position;
         }
+    }
+
+    public interface IGameWorldEffect
+    {
+        void Enable();
+        void Disable();
     }
 }

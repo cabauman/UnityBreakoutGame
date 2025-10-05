@@ -22,7 +22,7 @@ namespace BreakoutGame
         protected override void ApplyEffect(Paddle paddle)
         {
             Debug.Log("MagnetPowerUp");
-            paddle.Presenter.SetCollisionStrategy(_strategy);
+            paddle.Presenter.SetBallCollisionStrategy(_strategy);
         }
     }
 }

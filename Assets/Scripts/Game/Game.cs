@@ -6,6 +6,20 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
+    public readonly struct NumLivesChangedEvent
+    {
+        public uint NewNumLives { get; init; }
+    }
+    public readonly struct NewGameRequest { }
+    public readonly struct GameOverEvent { }
+    public interface IPublisher<T>
+    {
+        void Publish(T eventData);
+    }
+    public interface ISubscriber<T>
+    {
+        IObservable<T> Subscribe();
+    }
     public interface IGame
     {
     }
