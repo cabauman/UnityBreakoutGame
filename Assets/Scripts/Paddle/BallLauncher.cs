@@ -40,13 +40,14 @@ namespace BreakoutGame
         {
             Assert.IsFalse(_attachedBalls.Contains(ball));
             _attachedBalls.Add(ball);
-            ball.Trfm.parent = transform;
+            ball.AttachTo(transform);
         }
 
         public void AttachBall(Rigidbody2D ball)
         {
             Assert.IsFalse(_attachedBalls2.Contains(ball));
             _attachedBalls2.Add(ball);
+            ball.linearVelocity = Vector2.zero;
             ball.transform.parent = transform;
         }
 

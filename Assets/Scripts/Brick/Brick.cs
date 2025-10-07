@@ -23,7 +23,6 @@ namespace BreakoutGame
 
         private void Awake()
         {
-            //Debug.Log("Brick Awake");
             this
                 .OnCollisionEnter2DAsObservable()
                 .Subscribe(x => Presenter.OnCollisionEnter2D(x.gameObject))
@@ -45,8 +44,7 @@ namespace BreakoutGame
         [Serializable]
         public sealed class Config
         {
-            // TODO: Naming
-            public int _initialHp = 1;
+            public MonoCommand[] _hitCommands;
         }
     }
 }

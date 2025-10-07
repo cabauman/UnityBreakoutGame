@@ -7,9 +7,9 @@ namespace BreakoutGame
     {
         private readonly GameObject _view;
         private readonly Brick.Config _config;
-        private readonly PowerUpTable _powerUpTable;
-        private readonly IPowerUpSpawner _powerUpSpawner;
-        private readonly ReactiveCommand<Ball> _respondToBallCollision;
+        //private readonly PowerUpTable _powerUpTable;
+        //private readonly IPowerUpSpawner _powerUpSpawner;
+        //private readonly ReactiveCommand<Ball> _respondToBallCollision;
 
         public BrickPresenter(
             GameObject view,
@@ -20,20 +20,10 @@ namespace BreakoutGame
             // TODO: Validate input
             _view = view;
             _config = config;
-            _powerUpTable = powerUpTable;
-            _powerUpSpawner = powerUpSpawner;
-
-            Hp = new ReactiveProperty<int>(config._initialHp);
-
-            Active = Hp.Select(x => x > 0).ToReadOnlyReactiveProperty();
+            // _powerUpTable = powerUpTable;
+            // _powerUpSpawner = powerUpSpawner;
 
             ResetHp = new ReactiveCommand<Unit>();
-            ResetHp
-                .Subscribe(_ => Hp.Value = config._initialHp);
-
-            _respondToBallCollision = new ReactiveCommand<Ball>();
-            _respondToBallCollision
-                .Subscribe(ball => Hp.Value -= ball.Presenter.Power);
 
             Active
                 .Where(value => !value)
@@ -43,23 +33,25 @@ namespace BreakoutGame
                 .Subscribe(value => view.SetActive(value));
         }
 
-        public ReactiveProperty<int> Hp { get; }
-
         public ReadOnlyReactiveProperty<bool> Active { get; }
 
         public ReactiveCommand<Unit> ResetHp { get; }
 
         public void OnCollisionEnter2D(GameObject other)
         {
-            if (other.TryGetComponent<Ball>(out var ball))
+            if (!other.TryGetComponent<Ball>(out var ball))
             {
-                _respondToBallCollision.Execute(ball);
+                return;
+            }
+            foreach (var cmd in _config._hitCommands)
+            {
+                cmd.Execute();
             }
         }
 
         private void SpawnPowerUp()
         {
-            _powerUpSpawner.SpawnPowerUp(_powerUpTable, _view.transform.position);
+            //_powerUpSpawner.SpawnPowerUp(_powerUpTable, _view.transform.position);
         }
     }
 }

@@ -28,8 +28,6 @@ namespace BreakoutGame
             GameCtor.DevToolbox.StartupLifecycle.AddPostInjectListener(PostInject);
         }
 
-        //private void Update() => Presenter.Tick(Time.deltaTime);
-
         public void PostInject()
         {
             Debug.Log("Paddle PostInject");

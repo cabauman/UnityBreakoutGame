@@ -53,10 +53,6 @@ namespace BreakoutGame
 
         public Transform Trfm => _view.transform;
 
-        // public void Tick(float deltaTime)
-        // {
-        // }
-
         public void SetBallCollisionStrategy(IBallPaddleCollisionStrategy strategy)
         {
             Assert.IsNotNull(strategy);
@@ -81,11 +77,6 @@ namespace BreakoutGame
                 _collisionStrategy.HandleCollision(ball.Presenter, this, point);
             }
         }
-
-        //public void OnBallCollision(BallPresenter ball, Vector2 point)
-        //{
-        //    _collisionStrategy.HandleCollision(ball, this);
-        //}
 
         public void AttachBall(BallPresenter ball)
         {
