@@ -7,12 +7,6 @@ namespace BreakoutGame
     {
         [Inject] private Game _game;
 
-        // private readonly Game _game;
-        // public ExtraLifePowerUpAction(Game game)
-        // {
-        //     _game = game;
-        // }
-
         protected override void ApplyEffect(Paddle paddle)
         {
             Debug.Log("Extra life!");

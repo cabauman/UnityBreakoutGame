@@ -11,18 +11,11 @@ namespace BreakoutGame
         {
             Debug.Log(_strategy == null ? "null" : "not null");
         }
-        
-        // private readonly MagnetBounceStrategy _strategy;
-
-        // public MagnetPowerUp(MagnetBounceStrategy strategy)
-        // {
-        //     _strategy = strategy;
-        // }
 
         protected override void ApplyEffect(Paddle paddle)
         {
             Debug.Log("MagnetPowerUp");
-            paddle.Presenter.SetBallCollisionStrategy(_strategy);
+            paddle.Presenter.SetGameWorldEffect(_strategy);
         }
     }
 }

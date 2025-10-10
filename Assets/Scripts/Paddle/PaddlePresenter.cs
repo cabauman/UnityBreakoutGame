@@ -57,17 +57,19 @@ namespace BreakoutGame
         {
             Assert.IsNotNull(strategy);
             _collisionStrategy = strategy;
-            _gameWorldEffect?.Disable();
-            _gameWorldEffect = null;
+        }
+
+        public void ResetBallCollisionStrategy()
+        {
+            _collisionStrategy = _defaultCollisionStrategy;
         }
 
         public void SetGameWorldEffect(IGameWorldEffect effect)
         {
             Assert.IsNotNull(effect);
-            _collisionStrategy = _defaultCollisionStrategy;
-            _gameWorldEffect?.Disable();
+            _gameWorldEffect?.OnExit(this);
             _gameWorldEffect = effect;
-            _gameWorldEffect.Enable();
+            _gameWorldEffect.OnEnter(this);
         }
 
         public void OnCollisionEnter2D(GameObject other, Vector2 point)
@@ -108,7 +110,7 @@ namespace BreakoutGame
         private void ResetBallPos_()
         {
             _collisionStrategy = _defaultCollisionStrategy;
-            _gameWorldEffect?.Disable();
+            _gameWorldEffect?.OnExit(this);
 
             _config._ballObj.Presenter.Active.Value = true;
             AttachBall(_config._ballObj.Presenter);
@@ -118,7 +120,7 @@ namespace BreakoutGame
 
     public interface IGameWorldEffect
     {
-        void Enable();
-        void Disable();
+        void OnEnter(PaddlePresenter paddle);
+        void OnExit(PaddlePresenter paddle);
     }
 }

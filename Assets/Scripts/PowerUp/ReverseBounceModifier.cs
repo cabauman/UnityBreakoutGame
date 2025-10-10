@@ -7,17 +7,10 @@ namespace BreakoutGame
     {
         [Inject] private ReverseBounceStrategy _strategy;
 
-        // private readonly ReverseBounceStrategy _strategy;
-
-        // public ReverseBounceModifier(ReverseBounceStrategy strategy)
-        // {
-        //     _strategy = strategy;
-        // }
-
         protected override void ApplyEffect(Paddle paddle)
         {
             Debug.Log("ReverseBounceModifier");
-            paddle.Presenter.SetBallCollisionStrategy(_strategy);
+            paddle.Presenter.SetGameWorldEffect(_strategy);
         }
     }
 }

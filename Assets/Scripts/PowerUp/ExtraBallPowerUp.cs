@@ -7,13 +7,6 @@ namespace BreakoutGame
     {
         [Inject] private BallManager _ballManager;
 
-        // private readonly BallManager _ballManager;
-
-        // public ExtraBallPowerUpAction(BallManager ballManager)
-        // {
-        //     _ballManager = ballManager;
-        // }
-
         protected override void ApplyEffect(Paddle paddle)
         {
             Debug.Log("Extra ball!");

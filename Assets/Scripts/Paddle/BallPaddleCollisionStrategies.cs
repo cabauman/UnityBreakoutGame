@@ -53,7 +53,7 @@ namespace BreakoutGame
         }
     }
 
-    public class ReverseBounceStrategy : IBallPaddleCollisionStrategy
+    public class ReverseBounceStrategy : IBallPaddleCollisionStrategy, IGameWorldEffect
     {
         private readonly float _maxBounceAngleRad = 75f * Mathf.Deg2Rad;
         private readonly float _bounceForceMag = 1f;
@@ -72,13 +72,33 @@ namespace BreakoutGame
             bounceForce.x = -bounceForce.x;
             ball.SetForce(bounceForce);
         }
+
+        public void OnEnter(PaddlePresenter paddle)
+        {
+            paddle.SetBallCollisionStrategy(this);
+        }
+
+        public void OnExit(PaddlePresenter paddle)
+        {
+            paddle.ResetBallCollisionStrategy();
+        }
     }
 
-    public class MagnetBounceStrategy : IBallPaddleCollisionStrategy
+    public class MagnetBounceStrategy : IBallPaddleCollisionStrategy, IGameWorldEffect
     {
         public void HandleCollision(BallPresenter ball, PaddlePresenter paddle, Vector2 point)
         {
             paddle.AttachBall(ball);
+        }
+
+        public void OnEnter(PaddlePresenter paddle)
+        {
+            paddle.SetBallCollisionStrategy(this);
+        }
+
+        public void OnExit(PaddlePresenter paddle)
+        {
+            paddle.ResetBallCollisionStrategy();
         }
     }
 

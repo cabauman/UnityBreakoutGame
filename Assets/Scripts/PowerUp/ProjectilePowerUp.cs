@@ -16,4 +16,25 @@ namespace BreakoutGame
             paddle.Presenter.SetBallCollisionStrategy(_strategy);
         }
     }
+
+    public sealed class ProjectileGameWorldEffect : IGameWorldEffect
+    {
+        private readonly ProjectileCollisionStrategyDecorator _strategy;
+
+        public ProjectileGameWorldEffect(ProjectileCollisionStrategyDecorator strategy)
+        {
+            _strategy = strategy;
+        }
+
+        public void OnEnter(PaddlePresenter paddle)
+        {
+            Debug.Log("ProjectilePowerUp");
+            paddle.SetBallCollisionStrategy(_strategy);
+        }
+
+        public void OnExit(PaddlePresenter paddle)
+        {
+            paddle.ResetBallCollisionStrategy();
+        }
+    }
 }

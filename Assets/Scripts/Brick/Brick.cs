@@ -44,6 +44,8 @@ namespace BreakoutGame
         [Serializable]
         public sealed class Config
         {
+            // TODO: Remove this field
+            public int _initialHp = 1;
             public MonoCommand[] _hitCommands;
         }
     }

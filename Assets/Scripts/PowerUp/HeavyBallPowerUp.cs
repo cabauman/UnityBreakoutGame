@@ -23,12 +23,12 @@ namespace BreakoutGame
             _brickManager = brickManager;
         }
 
-        public void Enable()
+        public void OnEnter(PaddlePresenter paddle)
         {
             _brickManager.MarkBricksAsTriggers(true);
         }
 
-        public void Disable()
+        public void OnExit(PaddlePresenter paddle)
         {
             _brickManager.MarkBricksAsTriggers(false);
         }
