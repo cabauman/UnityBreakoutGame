@@ -27,6 +27,7 @@ namespace BreakoutGame
     [Singleton(typeof(HeavyBallGameWorldEffect))]
     //[Singleton(typeof(ExtraLifePowerUpAction), typeof(ExtraLifePowerUpAction))]
     [Singleton(typeof(PrefabFactory), Factory = nameof(GetPrefabFactory))]
+    //[Singleton(typeof(IPublisher<>), typeof(Signal<>))]
     public partial class MainCompositionRoot : BaseCompositionRoot
     {
         [SerializeField] PowerUpTable _powerUpTable;

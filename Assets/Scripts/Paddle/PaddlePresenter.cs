@@ -11,7 +11,7 @@ namespace BreakoutGame
         private IBallPaddleCollisionStrategy _collisionStrategy;
         private readonly Paddle.Config _config;
 
-        private IBallPaddleCollisionStrategy _defaultCollisionStrategy;
+        private readonly IBallPaddleCollisionStrategy _defaultCollisionStrategy;
         private IGameWorldEffect _gameWorldEffect; 
         private List<BallPresenter> _attachedBalls = new();
 

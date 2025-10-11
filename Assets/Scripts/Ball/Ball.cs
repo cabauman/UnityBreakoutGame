@@ -20,6 +20,10 @@ namespace BreakoutGame
                 .OnTriggerEnter2DAsObservable()
                 .Subscribe(x => Presenter.OnTriggerEnter2D(x.gameObject))
                 .AddTo(this);
+            this
+                .OnCollisionEnter2DAsObservable()
+                .Subscribe(x => Presenter.OnCollisionEnter2D(x.gameObject))
+                .AddTo(this);
         }
 
         void ITestable<Config>.SetConfig(Config config) => _config = config;

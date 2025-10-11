@@ -1,4 +1,5 @@
 ﻿using R3;
+using R3.Triggers;
 using UnityEngine;
 
 namespace BreakoutGame
@@ -10,6 +11,7 @@ namespace BreakoutGame
         //private readonly PowerUpTable _powerUpTable;
         //private readonly IPowerUpSpawner _powerUpSpawner;
         //private readonly ReactiveCommand<Ball> _respondToBallCollision;
+        private bool _isQuitting;
 
         public BrickPresenter(
             GameObject view,
@@ -25,14 +27,35 @@ namespace BreakoutGame
 
             ResetHp = new ReactiveCommand<Unit>();
 
-            Active
-                .Where(value => !value)
-                .Subscribe(_ => SpawnPowerUp());
+            ResetHp
+                .Subscribe(_ =>
+                {
+                    foreach (var cmd in _config._resetCommands)
+                    {
+                        cmd.Execute();
+                    }
+                });
 
-            Active
-                .Subscribe(value => view.SetActive(value));
+            Application.quitting += () => _isQuitting = true;
+            var onDisabled = _view.OnDisableAsObservable();
+            onDisabled
+                .SkipLastFrame(1)
+                .Subscribe(_ =>
+                {
+                    //if (_isQuitting) return;
+                    foreach (var cmd in _config._destroyCommands)
+                    {
+                        cmd.Execute();
+                    }
+                })
+                .AddTo(_view);
+
+            Active = onDisabled
+                .Select(_ => false)
+                .Merge(_view.OnEnableAsObservable().Select(_ => true))
+                .ToReadOnlyReactiveProperty(true);
         }
-
+        
         public ReadOnlyReactiveProperty<bool> Active { get; }
 
         public ReactiveCommand<Unit> ResetHp { get; }

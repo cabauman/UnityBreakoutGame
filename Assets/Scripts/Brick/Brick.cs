@@ -9,7 +9,7 @@ namespace BreakoutGame
     [RequireComponent(typeof(BoxCollider2D))]
     public sealed partial class Brick : MonoBehaviour, GameCtor.DevToolbox.IPostInject
     {
-        [Flatten]
+        //[Flatten]
         [SerializeField]
         private Config _config;
 
@@ -47,6 +47,8 @@ namespace BreakoutGame
             // TODO: Remove this field
             public int _initialHp = 1;
             public MonoCommand[] _hitCommands;
+            public MonoCommand[] _destroyCommands;
+            public MonoCommand[] _resetCommands;
         }
     }
 }

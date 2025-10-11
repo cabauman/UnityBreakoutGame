@@ -17,9 +17,9 @@ namespace BreakoutGame
         private float _maxAngleDeg = 75f;
 
         private SpriteRenderer _spriteRenderer;
-        private float _maxBounceAngleRad => _maxAngleDeg * Mathf.Deg2Rad;
-        private List<BallPresenter> _attachedBalls = new();
-        private List<Rigidbody2D> _attachedBalls2 = new();
+        private readonly List<BallPresenter> _attachedBalls = new();
+
+        private float MaxBounceAngleRad => _maxAngleDeg * Mathf.Deg2Rad;
 
         private float Width => _spriteRenderer.bounds.size.x * transform.localScale.x;
 
@@ -43,14 +43,6 @@ namespace BreakoutGame
             ball.AttachTo(transform);
         }
 
-        public void AttachBall(Rigidbody2D ball)
-        {
-            Assert.IsFalse(_attachedBalls2.Contains(ball));
-            _attachedBalls2.Add(ball);
-            ball.linearVelocity = Vector2.zero;
-            ball.transform.parent = transform;
-        }
-
         private Vector2 CalculateBallLaunchForce(Vector2 point)
         {
             var deltaX = point.x - transform.position.x;
@@ -58,8 +50,8 @@ namespace BreakoutGame
             // Convert to (0, 1) range for angle interpolation
             var normalizedLocalContactX = (normalizedDistance + 1f) * 0.5f; // or normalizedDistance * 0.5f + 0.5f;
             var bounceAngle = Mathf.Lerp(
-                Mathf.PI / 2 + _maxBounceAngleRad,
-                Mathf.PI / 2 - _maxBounceAngleRad,
+                Mathf.PI / 2 + MaxBounceAngleRad,
+                Mathf.PI / 2 - MaxBounceAngleRad,
                 normalizedLocalContactX
             );
 
@@ -69,24 +61,34 @@ namespace BreakoutGame
 
         private void LaunchBalls()
         {
-            // foreach (var ball in _attachedBalls)
-            // {
-            //     ball.Trfm.parent = null;
-            //     var force = CalculateBallLaunchForce(this, ball.Trfm.position);
-            //     ball.SetForce(force);
-            // }
+            foreach (var ball in _attachedBalls)
+            {
+                ball.Trfm.parent = null;
+                var force = CalculateBallLaunchForce(ball.Trfm.position);
+                ball.SetForce(force);
+            }
+
             _attachedBalls.Clear();
         }
 
         private void LaunchBalls2()
         {
-            foreach (var ball in _attachedBalls2)
+            foreach (var ball in _attachedBalls)
             {
-                ball.transform.parent = null;
-                var force = CalculateBallLaunchForce(ball.transform.position);
-                ball.AddForce(force, ForceMode2D.Impulse);
+                ball.Trfm.parent = null;
+
+                var force = PlaneBouncingUtility.CalculateBounceDirection(
+                    transform.position,
+                    Vector2.up,
+                    Width,
+                    ball.Trfm.transform.position,
+                    MaxBounceAngleRad,
+                    _launchForce
+                );
+
+                ball.SetForce(force);
             }
-            _attachedBalls2.Clear();
+            _attachedBalls.Clear();
         }
     }
 }

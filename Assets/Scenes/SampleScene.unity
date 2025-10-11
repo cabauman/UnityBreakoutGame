@@ -1377,6 +1377,11 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 61965762783396918, guid: 893bc193bb1ecf144a57846f30065fed,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1412,6 +1417,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 1014296972457434, guid: 3a1f9fc061536dd4d826c3affda54aba, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4332127223117772, guid: 3a1f9fc061536dd4d826c3affda54aba, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1445,12 +1454,6 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 212962683432279368, guid: 3a1f9fc061536dd4d826c3affda54aba,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: e74b518a65bc45f4cace9a2fef6af29d,
-        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2942,6 +2945,7 @@ GameObject:
   - component: {fileID: 1559758604}
   - component: {fileID: 512602519}
   - component: {fileID: 1559758605}
+  - component: {fileID: 1559758606}
   m_Layer: 0
   m_Name: Paddle
   m_TagString: Untagged
@@ -2983,7 +2987,22 @@ MonoBehaviour:
   _leftWall: {fileID: 1637959251}
   _rightWall: {fileID: 2076665258}
   _renderer: {fileID: 45767442}
-  _playerInput: {fileID: 0}
+--- !u!114 &1559758606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559758603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0a89b5ae3e406b4eafecdffe7a5478b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.PlayerInputProvider
+  _moveAction: {fileID: 8657714970280454364, guid: 73716a3fa57424f409109abf10a5dd13,
+    type: 3}
+  _launchAction: {fileID: -8001159134418796147, guid: 73716a3fa57424f409109abf10a5dd13,
+    type: 3}
 --- !u!1 &1637959248
 GameObject:
   m_ObjectHideFlags: 0

@@ -50,6 +50,20 @@ namespace BreakoutGame
             if (other.CompareTag(Tags.DEAD_ZONE))
             {
                 Active.Value = false;
+                _rigidbody.linearVelocity = Vector2.zero;
+                return;
+            }
+            if (other.TryGetComponent<Health>(out var health))
+            {
+                health.TakeDamage(Power);
+            }
+        }
+
+        public void OnCollisionEnter2D(GameObject other)
+        {
+            if (other.TryGetComponent<Health>(out var health))
+            {
+                health.TakeDamage(Power);
             }
         }
 

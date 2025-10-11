@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4603689936688962}
   - component: {fileID: 114200545537051036}
+  - component: {fileID: 4371686096956530885}
+  - component: {fileID: 1483061668806094384}
+  - component: {fileID: 5029149508202716160}
   - component: {fileID: 212385208986771528}
   - component: {fileID: 61965762783396918}
   m_Layer: 0
@@ -48,6 +51,64 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _config:
     _initialHp: 2
+    _hitCommands: []
+    _destroyCommands:
+    - {fileID: 5029149508202716160}
+    _resetCommands:
+    - {fileID: 1483061668806094384}
+  _powerUpTable: {fileID: 11400000, guid: 2f50c639c84a8ab408ae3314eb93e679, type: 2}
+--- !u!114 &4371686096956530885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980295900810062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54e25008b9933e94e899dd79b47c9d8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.Health
+  _maxHp: 2
+--- !u!114 &1483061668806094384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980295900810062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18fd91d1822ac24488ef47369a482f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.CallerCommand
+  _action:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4371686096956530885}
+        m_TargetAssemblyTypeName: BreakoutGame.Health, BreakoutGame
+        m_MethodName: ResetHealth
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5029149508202716160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980295900810062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bce93069860259743be162d5547e7eac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.SpawnPowerUpCommand
   _powerUpTable: {fileID: 11400000, guid: 2f50c639c84a8ab408ae3314eb93e679, type: 2}
 --- !u!212 &212385208986771528
 SpriteRenderer:
