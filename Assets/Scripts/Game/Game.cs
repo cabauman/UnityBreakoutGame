@@ -6,6 +6,38 @@ using System.Collections.Generic;
 
 namespace BreakoutGame
 {
+    public sealed class LevelLoader
+    {
+        /*
+         * NOTES
+         * - Load from json file
+         */
+    }
+
+    public sealed class GameManager
+    {
+        /*
+         * NOTES
+         * - 
+         */
+    }
+
+    public sealed class GameStopwatch
+    {
+        /*
+         * NOTES
+         * - Measure the time taken to complete each level
+         */
+    }
+
+    public sealed class BestTimesManager
+    {
+        /*
+         * NOTES
+         * - Manage and store the best times for each level
+         */
+    }
+
     public interface IPlayerInputProvider
     {
         Vector2 GetHorizontalInput();
@@ -32,17 +64,40 @@ namespace BreakoutGame
         }
     }
 
+    public sealed class LifeTracker
+    {
+        public readonly ReactiveProperty<int> Lives;
+
+        public LifeTracker(
+            Observable<BallCountChangedEvent> ballCountChanged,
+            Observer<ExtraLifeUsedEvent> extraLifeUsed)
+        {
+            Lives = new ReactiveProperty<int>(3);
+            ballCountChanged
+                .Where(static evt => evt.Count == 0)
+                .Select(_ => Lives.Value -= 1)
+                .Where(static lives => lives > 0)
+                .Delay(TimeSpan.FromMilliseconds(100))
+                .Subscribe(_ => extraLifeUsed.OnNext(new ExtraLifeUsedEvent()));
+        }
+    }
+
     public abstract class MonoCommand : MonoBehaviour
     {
         public abstract void Execute();
     }
 
 
-
+    public readonly struct BallCountChangedEvent
+    {
+        public uint Count { get; init; }
+    }
     public readonly struct NumLivesChangedEvent
     {
         public uint NewNumLives { get; init; }
     }
+    public readonly struct AllBricksDestroyedEvent { }
+    public readonly struct ExtraLifeUsedEvent { }
     public readonly struct NewGameRequest { }
     public readonly struct GameOverEvent { }
     public interface IPublisher<T>
@@ -82,82 +137,50 @@ namespace BreakoutGame
     }
     public sealed class Game : IGame
     {
-        private readonly BrickManager _brickManager;
-        private readonly BallManager _ballManager;
-        private readonly Paddle _paddle;
-        private readonly uint _defaultNumLives;
         private bool _gameOver = false;
 
-        public Game(BrickManager brickManager, BallManager ballManager, Paddle paddle)
+        public Game(
+            Observable<AllBricksDestroyedEvent> allBricksDestroyed,
+            LifeTracker lifeTracker,
+            // TODO: Consider removing gameOver in favor of the properties GameWon and GameLost
+            Observer<GameOverEvent> gameOver)
         {
             Debug.Log("Game Constructor");
-            _brickManager = brickManager;
-            _ballManager = ballManager;
-            _paddle = paddle;
-            _defaultNumLives = 2;
-
-            NumLives = new ReactiveProperty<uint>(_defaultNumLives);
 
             ResetGameCmd = new ReactiveCommand();
             ResetGameCmd.Subscribe(_ => ResetGame());
-            //GameCtor.DevToolbox.StartupLifecycle.AddPostInjectListener(PostInject);
 
-            var noBallsInPlay = _ballManager.NumBallsInPlay
-                .Where(count => count == 0)
-                .Do(_ => NumLives.Value -= 1)
-                .Do(_ => Debug.Log($"NumLives is now {NumLives.Value}"))
-                .Publish()
-                .RefCount();
+            GameLost = lifeTracker.Lives
+                .Where(lives => lives == 0)
+                .AsUnitObservable();
 
-            noBallsInPlay
-                .Where(_ => NumLives.Value > 0)
-                .Delay(TimeSpan.FromMilliseconds(100))
-                .Subscribe(_ => UseExtraLife());
+            GameWon = allBricksDestroyed
+                .AsUnitObservable();
 
-            GameLost = noBallsInPlay
-                .Where(_ => NumLives.Value == 0)
-                .Select(static _ => Unit.Default);
-
-            GameWon = _brickManager.BricksRemaining
-                .Where(count => count == 0)
-                .Do(_ => _gameOver = true)
-                .Select(static _ => Unit.Default);
-
-            // Just making sure brick manager dependencies are injected by the time this constructor runs
-            Debug.Log(_brickManager.Random);
-
-            //Observable
-            //    .EveryUpdate()
-            //    .Where(_ =>
-            //        UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
-            //    .Subscribe(_ => _ballManager.Ball.Presenter.AddInitialForce());
-
-            //GameLost
-            //    .Merge(GameWon)
-            //    .Subscribe(_ => Debug.Log(_gameOver ? "Game Won!" : "Game Lost!"));
+            GameLost
+               .Merge(GameWon)
+               .Subscribe(_ => gameOver.OnNext(new GameOverEvent()));
         }
 
         public Observable<Unit> GameWon { get; private set; }
 
         public Observable<Unit> GameLost { get; private set; }
 
-        public ReactiveProperty<uint> NumLives { get; }
-
         public ReactiveCommand ResetGameCmd { get; }
 
         private void ResetGame()
         {
-            NumLives.Value = _defaultNumLives;
-            _paddle.Presenter.ResetBallPos.Execute(Unit.Default);
-            _brickManager.ResetGame();
-            _ballManager.ResetGame();
+            //NumLives.Value = _defaultNumLives;
+            //_paddle.Presenter.ResetBallPos.Execute(Unit.Default);
+            //_brickManager.ResetGame();
+            //_ballManager.ResetGame();
             _gameOver = false;
         }
 
         private void UseExtraLife()
         {
-            _ballManager.UseExtraLife();
-            _paddle.Presenter.ResetBallPos.Execute(Unit.Default);
+            //_ballManager.UseExtraLife();
+            //_paddle.Presenter.ResetBallPos.Execute(Unit.Default);
         }
     }
 }

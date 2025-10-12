@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace BreakoutGame
 {
-    public partial class GameOverScreen : MonoBehaviour
+    public sealed partial class GameOverScreen : MonoBehaviour
     {
         [Header("Object References")]
         [SerializeField]

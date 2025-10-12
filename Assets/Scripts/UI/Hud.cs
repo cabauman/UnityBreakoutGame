@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    public partial class Hud : MonoBehaviour
+    public sealed partial class Hud : MonoBehaviour
     {
         private const string NUM_LIVES_FMT = "Lives: {0}";
 

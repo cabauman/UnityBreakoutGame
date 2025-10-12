@@ -15,6 +15,7 @@ namespace BreakoutGame
         private Ball _mainBall;
 
         private readonly List<GameObject> _bonusBalls = new();
+        //private ObservableList<GameObject> _activeBalls = new();
 
         private void Awake()
         {

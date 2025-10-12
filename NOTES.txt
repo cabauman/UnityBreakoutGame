@@ -1,0 +1,87 @@
+Game Dev Notes
+
+・ A splash screen.
+・ A main menu with a New Game, Continue, Load Game, Settings, Quit buttons, with game version.
+・ Use an image for the game title on the splash screen and main menu.
+・ Add audio/video settings (music/effects volume/mute, full screen/windowed)
+・ Add controller/keyboard/mouse support.
+・ Add button/key indicators that switch between controller/keyboard/mouse use.
+・ Add button/key re-binding support.
+・ Add "reset to default" settings support.
+・ Make sure to save any settings changed and reload them when the game is restarted.
+・ Add localization support. Add 3 languages: Mixed-case English, lower-case English, ALL-UPPER-CASE ENGLISH. Add support for updating localized images (remember the game title image above?)
+・ When new game is pressed, enter the game that has 3 buttons: Win, Lose, Add 1 Point. Show the Score (points) somewhere on the screen.
+・ Support Esc with options to: Load, Save, Return to Game, Quit Game. Provide Save slots and save the game state (score). Loading a game should restore the saved state.
+・ Have a win screen!
+・ Have a lose screen :(
+・ Data download flow at start (can you update localized text by downloading data only).
+・ Data hotfix flow (can you update 1 Point to 2 Points (or more) while the game is running?).
+・ Fill in the obvious functionality not mentioned here (confirm quit game, continue would require an auto save, validate save game data, etc.).
+・ You don't have to implement everything at once. Break it into smaller tasks first, but code in a way that will let you add the rest later.
+・ Make sure there are ZERO bugs and all features work as YOU would expect as a player.
+
+---
+
+# Brick Breaker Game Design
+
+Core Gameplay
+- Player controls a paddle at the bottom of the screen
+  - Mouse: horizontal movement
+  - Mouse click: launch balls attached to paddle
+- Ball bounces around the screen, breaking bricks at the top
+- Player must prevent the ball from falling off the bottom of the screen
+- Power-ups occasionally drop from destroyed bricks
+- Player starts with 3 lives
+- Lose a life if
+  - no more balls remain in play (they all fell off bottom of screen)
+  - paddle is hit by a falling hazard
+- Lose condition: lose all lives
+- Level win condition: destroy all bricks
+- Level completion is timed
+- Ball-paddle collision angle depends on where the ball hits the paddle
+  - Hitting near paddle edges results in a sharper bounce angle in that direction
+  - Hitting near paddle center results in more vertical bounce angle
+
+Game Modes
+- Classic
+  - start from level 1, progress through levels sequentially
+  - complete all levels to win the game
+- Level Select
+  - choose any unlocked level to play
+  - try to beat your best time on each level
+
+Brick Types
+- Standard Brick: breaks with one hit
+- Strong Brick: takes two hits to break (changes color after first hit)
+- Unbreakable Brick: cannot be destroyed, acts as an obstacle
+- Hazard Brick: breaks with one hit, but drops a falling hazard when destroyed
+- Moving Brick: moves horizontally back and forth, breaks with one hit
+- Exploding Brick: breaks with one hit, destroys adjacent bricks when broken
+- Resizing Brick: scales up and down horizontally, breaks with one hit
+- Bottom Armor Brick: only breaks when hit from the top, otherwise acts as an unbreakable brick
+- Treadmill Brick: moves the ball in a specific horizontal direction when hit, unbreakable brick
+
+Power-Ups
+- Expand Paddle: increases paddle width for a limited time
+- Shrink Paddle: decreases paddle width for a limited time
+- Multi-Ball: splits the ball into multiple balls
+- Extra Life: grants an additional life
+- Sticky Paddle: ball sticks to paddle on contact, allowing player to aim next shot
+- Projectile: paddle shoots projectile straight up upon each ball contact (destroys breakable bricks)
+- Reverse Bounce: reverse ball's normal horizontal bounce direction upon hitting the paddle
+- Heavy Ball: ball breaks through all bricks in its path
+
+Future Ideas
+- Ability to save and load classic mode progress (can only save between levels)
+- In-game Level Editor
+- Online Unity Services e.g. leaderboards, achievements, cloud saves, dlc
+- Classic Mode: add scoring that gets accumulated through the levels based on
+  - time taken to complete level
+  - number of lives lost
+  - possibly for each brick destroyed
+  - add high score tracking
+- Level Select Mode: display best times on level select
+- Score Multiplier: increases points earned for a limited time
+- Power-Up Stacking: multiple power-ups can be active simultaneously, with their effects stacking
+- Power-Up Duration: power-ups last for a set duration (e.g., 10 seconds)
+- Power-Up Indicators: visual indicators show which power-ups are active and their remaining duration

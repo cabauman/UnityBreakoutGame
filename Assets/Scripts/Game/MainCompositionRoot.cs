@@ -1,4 +1,5 @@
 ﻿using GameCtor.DevToolbox;
+using R3;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,13 @@ namespace BreakoutGame
     [Singleton(typeof(HeavyBallGameWorldEffect))]
     //[Singleton(typeof(ExtraLifePowerUpAction), typeof(ExtraLifePowerUpAction))]
     [Singleton(typeof(PrefabFactory), Factory = nameof(GetPrefabFactory))]
-    //[Singleton(typeof(IPublisher<>), typeof(Signal<>))]
+    //[Singleton(typeof(IPublisher<GameOverEvent>), typeof(Signal<GameOverEvent>))]
+    [Singleton(typeof(Subject<GameOverEvent>))]
+    [Singleton(typeof(Observable<GameOverEvent>), Factory = nameof(GetGameOverObservable))]
+    [Singleton(typeof(Subject<BallCountChangedEvent>))]
+    [Singleton(typeof(Observable<BallCountChangedEvent>), Factory = nameof(GetBallCountChangedObservable))]
+    [Singleton(typeof(Subject<AllBricksDestroyedEvent>))]
+    [Singleton(typeof(Observable<AllBricksDestroyedEvent>), Factory = nameof(GetAllBricksDestroyedObservable))]
     public partial class MainCompositionRoot : BaseCompositionRoot
     {
         [SerializeField] PowerUpTable _powerUpTable;
@@ -47,6 +54,10 @@ namespace BreakoutGame
         {
             return new PrefabFactory(this);
         }
+
+        private Observable<GameOverEvent> GetGameOverObservable(Subject<GameOverEvent> subject) => subject;
+        private Observable<BallCountChangedEvent> GetBallCountChangedObservable(Subject<BallCountChangedEvent> subject) => subject;
+        private Observable<AllBricksDestroyedEvent> GetAllBricksDestroyedObservable(Subject<AllBricksDestroyedEvent> subject) => subject;
 
         private PowerUpSpawner GetPowerUpSpawner()
         {
