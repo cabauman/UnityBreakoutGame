@@ -17,10 +17,10 @@ namespace BreakoutGame
 
         private void Start()
         {
-            _game
-                .NumLives
-                .Subscribe(numLives => _numLivesLabel.text = string.Format(NUM_LIVES_FMT, numLives))
-                .AddTo(this);
+            //_game
+            //    .NumLives
+            //    .Subscribe(numLives => _numLivesLabel.text = string.Format(NUM_LIVES_FMT, numLives))
+            //    .AddTo(this);
             // _numLivesChangedEventSubscriber.Subscribe()
             //     .Subscribe(numLives => _numLivesLabel.text = string.Format(NUM_LIVES_FMT, numLives));
         }

@@ -10,7 +10,7 @@ using UnityEngine;
 namespace BreakoutGame
 {
     [ServiceProvider]
-    [Singleton(typeof(Game))]
+    //[Singleton(typeof(Game))]
     [Singleton(typeof(IPowerUpSpawner), typeof(PowerUpSpawner))]
     [Singleton(typeof(IRandom), typeof(UnityRandom))]
     [Singleton(typeof(BrickManager), Instance = nameof(_brickManager))]
@@ -29,12 +29,12 @@ namespace BreakoutGame
     //[Singleton(typeof(ExtraLifePowerUpAction), typeof(ExtraLifePowerUpAction))]
     [Singleton(typeof(PrefabFactory), Factory = nameof(GetPrefabFactory))]
     //[Singleton(typeof(IPublisher<GameOverEvent>), typeof(Signal<GameOverEvent>))]
-    [Singleton(typeof(Subject<GameOverEvent>))]
-    [Singleton(typeof(Observable<GameOverEvent>), Factory = nameof(GetGameOverObservable))]
-    [Singleton(typeof(Subject<BallCountChangedEvent>))]
-    [Singleton(typeof(Observable<BallCountChangedEvent>), Factory = nameof(GetBallCountChangedObservable))]
-    [Singleton(typeof(Subject<AllBricksDestroyedEvent>))]
-    [Singleton(typeof(Observable<AllBricksDestroyedEvent>), Factory = nameof(GetAllBricksDestroyedObservable))]
+    // [Singleton(typeof(Subject<GameOverEvent>))]
+    // [Singleton(typeof(Observable<GameOverEvent>), Factory = nameof(GetGameOverObservable))]
+    // [Singleton(typeof(Subject<BallCountChangedEvent>))]
+    // [Singleton(typeof(Observable<BallCountChangedEvent>), Factory = nameof(GetBallCountChangedObservable))]
+    // [Singleton(typeof(Subject<AllBricksDestroyedEvent>))]
+    // [Singleton(typeof(Observable<AllBricksDestroyedEvent>), Factory = nameof(GetAllBricksDestroyedObservable))]
     public partial class MainCompositionRoot : BaseCompositionRoot
     {
         [SerializeField] PowerUpTable _powerUpTable;

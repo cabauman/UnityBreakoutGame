@@ -13,12 +13,28 @@ namespace BreakoutGame
          * - Load from json file
          */
     }
+    [Serializable]
+    public sealed class BrickData
+    {
+        public string Type { get; set; }
+        // Prefab ID
+        public string PrefabId { get; set; }
+        public Vector2 Position { get; set; }
+    }
+    [Serializable]
+    public sealed class LevelData
+    {
+        public string LevelName { get; set; }
+        public List<BrickData> Bricks { get; set; }
+    }
 
     public sealed class GameManager
     {
         /*
          * NOTES
-         * - 
+         * - load first level on game start
+         * - listen to Level.GameWon event: level transition UI; load next level
+         * - listen to Level.GameLost event: game over screen; restart from first level
          */
     }
 

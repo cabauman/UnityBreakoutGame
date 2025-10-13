@@ -10,7 +10,7 @@ namespace BreakoutGame
         protected override void ApplyEffect(Paddle paddle)
         {
             Debug.Log("Extra life!");
-            _game.NumLives.Value += 1;
+            //_game.NumLives.Value += 1;
         }
     }
 }
