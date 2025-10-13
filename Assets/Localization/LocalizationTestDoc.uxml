@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Label text="Label" selectable="false" focusable="false">
+        <Bindings>
+            <UnityEngine.Localization.LocalizedString property="text" table="GUID:8c8b7cdda4357b443854e254aca14fa9" entry="Id(474381930496)" />
+            <UnityEngine.Localization.LocalizedFont property="style.unityFontDefinition" table="GUID:24e3a12fb2e444a45aed2d0fed9acfde" entry="Id(12064772096)" />
+        </Bindings>
+    </ui:Label>
+</ui:UXML>
