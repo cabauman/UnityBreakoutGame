@@ -39,8 +39,10 @@ namespace GameCtor.DevToolbox.Editor
             var paramCustomizer = (MonoInjectParamCustomizer)target;
             var keysProperty = serializedObject.FindProperty("keys");
 
-            var monoInject = paramCustomizer.GetComponents<MonoBehaviour>().FirstOrDefault(x => x.GetType().GetInterfaces().Any(y => y.FullName.Equals("UniDig.IMonoInject")));
-            if (monoInject == null)
+            var monoInjects = paramCustomizer.GetComponents<MonoBehaviour>()
+                .Where(x => x.GetType().GetInterfaces().Any(y => y.FullName.Equals("UniDig.IMonoInject")))
+                .ToArray();
+            if (monoInjects.Length == 0)
             //if (!paramCustomizer.TryGetComponent<IMonoInject>(out var monoInject))
             {
                 var helpBox = new HelpBox(
@@ -50,86 +52,105 @@ namespace GameCtor.DevToolbox.Editor
                 return root;
             }
 
-            // NOTE: Could fail if the user implements an Inject method overload.
-            var monoInjectType = monoInject.GetType();
-            MethodInfo injectMethod = monoInjectType
-                .GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                .FirstOrDefault(m => m.Name == "Inject" && m.DeclaringType == monoInjectType);
-
-            if (injectMethod == null)
+            foreach (var monoInject in monoInjects)
             {
-                return root;
-            }
+                var label = new Label(monoInject.GetType().FullName);
+                label.style.unityFontStyleAndWeight = FontStyle.Bold;
+                root.Add(label);
 
-            ParameterInfo[] parameters = injectMethod.GetParameters();
-            var keysCopy = new List<MonoInjectParam>(paramCustomizer.Keys);
-            var actualParamNameHashSet = new HashSet<string>(keysCopy.Select(p => p.ParamName));
+                // NOTE: Could fail if the user implements an Inject method overload.
+                var monoInjectType = monoInject.GetType();
+                MethodInfo injectMethod = monoInjectType
+                    .GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                    .FirstOrDefault(m => m.Name == "Inject" && m.DeclaringType == monoInjectType);
 
-            foreach (var param in parameters)
-            {
-                if (!actualParamNameHashSet.Contains(param.Name))
+                if (injectMethod == null)
                 {
-                    keysProperty.InsertArrayElementAtIndex(keysCopy.Count);
-                    var key = keysProperty.GetArrayElementAtIndex(keysCopy.Count);
-                    key.FindPropertyRelative("ParamName").stringValue = param.Name;
-                    key.FindPropertyRelative("Key").objectReferenceValue = null;
-                    keysCopy.Add(new MonoInjectParam { ParamName = param.Name });
-                }
-            }
-
-            var indicesToRemove = new List<int>();
-            var expectedParamNameHashSet = new HashSet<string>(parameters.Select(p => p.Name));
-            for (int i = keysProperty.arraySize - 1; i >= 0; --i)
-            {
-                var pair = keysProperty.GetArrayElementAtIndex(i);
-                var key = pair.FindPropertyRelative("Key").objectReferenceValue;
-                var paramName = pair.FindPropertyRelative("ParamName").stringValue;
-
-                // NOTE: Only remove a key if it is "truly" null. MissingReference is not truly null.
-                // If it's a missing/existing reference, the user should review and delete it manually.
-                if (!expectedParamNameHashSet.Contains(paramName) && ReferenceEquals(key, null))
-                {
-                    indicesToRemove.Add(i);
-                    continue;
+                    return root;
                 }
 
-                var keyField = new ObjectField(paramName);
-                keyField.style.flexShrink = 1;
-                keyField.objectType = typeof(StringVariable);
-                var serializedKey = keysProperty.GetArrayElementAtIndex(i);
-                keyField.value = keysCopy[i].Key;
-                keyField.RegisterValueChangedCallback((evt) =>
-                {
-                    serializedKey.FindPropertyRelative("Key").objectReferenceValue = evt.newValue;
-                    serializedObject.ApplyModifiedProperties();
-                });
+                ParameterInfo[] parameters = injectMethod.GetParameters();
+                var keysCopy = new List<MonoInjectParam>(paramCustomizer.Keys);
+                var actualParamNameHashSet = new HashSet<string>(keysCopy.Select(p => p.ParamName));
 
-                VisualElement row = keyField;
-                if (!expectedParamNameHashSet.Contains(paramName))
+                foreach (var param in parameters)
                 {
-                    row = new VisualElement();
-                    keyField.SetEnabled(false);
-                    row.style.flexDirection = FlexDirection.Row;
-                    row.Add(keyField);
-                    MonoInjectParam realKey = keysCopy[i];
-                    var deleteButton = CreateButton("Toolbar Minus", () =>
+                    if (!actualParamNameHashSet.Contains(param.Name))
                     {
-                        var realIndex = keysCopy.IndexOf(realKey);
-                        keysCopy.RemoveAt(realIndex);
-                        keysProperty.DeleteArrayElementAtIndex(realIndex);
-                        root.Remove(row);
+                        keysProperty.InsertArrayElementAtIndex(keysCopy.Count);
+                        var key = keysProperty.GetArrayElementAtIndex(keysCopy.Count);
+                        key.FindPropertyRelative("ParamName").stringValue = param.Name;
+                        key.FindPropertyRelative("Key").objectReferenceValue = null;
+                        keysCopy.Add(new MonoInjectParam { ParamName = param.Name });
+                    }
+                }
+
+                var indicesToRemove = new List<int>();
+                var expectedParamNameHashSet = new HashSet<string>(parameters.Select(p => p.Name));
+                for (int i = keysProperty.arraySize - 1; i >= 0; --i)
+                {
+                    var pair = keysProperty.GetArrayElementAtIndex(i);
+                    var key = pair.FindPropertyRelative("Key").objectReferenceValue;
+                    var paramName = pair.FindPropertyRelative("ParamName").stringValue;
+
+                    // NOTE: Only remove a key if it is "truly" null. MissingReference is not truly null.
+                    // If it's a missing/existing reference, the user should review and delete it manually.
+                    if (!expectedParamNameHashSet.Contains(paramName) && ReferenceEquals(key, null))
+                    {
+                        indicesToRemove.Add(i);
+                        continue;
+                    }
+
+                    var keyField = new ObjectField(paramName);
+                    keyField.style.flexShrink = 1;
+                    keyField.objectType = typeof(StringVariable);
+                    var serializedKey = keysProperty.GetArrayElementAtIndex(i);
+                    keyField.value = keysCopy[i].Key;
+                    keyField.RegisterValueChangedCallback((evt) =>
+                    {
+                        serializedKey.FindPropertyRelative("Key").objectReferenceValue = evt.newValue;
                         serializedObject.ApplyModifiedProperties();
                     });
-                    row.Add(deleteButton);
+
+                    VisualElement row = keyField;
+                    if (!expectedParamNameHashSet.Contains(paramName))
+                    {
+                        row = new VisualElement();
+                        keyField.SetEnabled(false);
+                        row.style.flexDirection = FlexDirection.Row;
+                        row.Add(keyField);
+                        MonoInjectParam realKey = keysCopy[i];
+                        var deleteButton = CreateButton("Toolbar Minus", () =>
+                        {
+                            var realIndex = keysCopy.IndexOf(realKey);
+                            keysCopy.RemoveAt(realIndex);
+                            keysProperty.DeleteArrayElementAtIndex(realIndex);
+                            root.Remove(row);
+                            serializedObject.ApplyModifiedProperties();
+                        });
+                        row.Add(deleteButton);
+                    }
+
+                    root.Add(row);
                 }
 
-                root.Add(row);
-            }
+                // TODO: Fix this functionality
+                //foreach (var index in indicesToRemove)
+                //{
+                //    keysCopy.RemoveAt(index);
+                //    keysProperty.DeleteArrayElementAtIndex(index);
+                //}
 
-            foreach (var index in indicesToRemove)
-            {
-                keysCopy.RemoveAt(index);
-                keysProperty.DeleteArrayElementAtIndex(index);
+                var spacer = new VisualElement();
+                spacer.style.height = 10;
+                root.Add(spacer);
+
+                //var divider = new VisualElement();
+                //divider.style.height = 1;
+                //divider.style.marginTop = 10;
+                //divider.style.marginBottom = 10;
+                //divider.style.backgroundColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+                //root.Add(divider);
             }
 
             serializedObject.ApplyModifiedProperties();
