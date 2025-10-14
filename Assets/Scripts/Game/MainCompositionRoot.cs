@@ -28,6 +28,7 @@ namespace BreakoutGame
     [Singleton(typeof(HeavyBallGameWorldEffect))]
     //[Singleton(typeof(ExtraLifePowerUpAction), typeof(ExtraLifePowerUpAction))]
     [Singleton(typeof(PrefabFactory), Factory = nameof(GetPrefabFactory))]
+    [Transient(typeof(PrefabFactory1), Factory = nameof(GetPrefabFactory1))]
     //[Singleton(typeof(IPublisher<GameOverEvent>), typeof(Signal<GameOverEvent>))]
     // [Singleton(typeof(Subject<GameOverEvent>))]
     // [Singleton(typeof(Observable<GameOverEvent>), Factory = nameof(GetGameOverObservable))]
@@ -43,6 +44,15 @@ namespace BreakoutGame
         [SerializeField] private BallManager _ballManager;
         [SerializeField] private GameObject _projectilePrefab;
 
+        private void Start()
+        {
+            _paddle.TryGetComponent<Paddle>(out var paddle);
+            Debug.Log($"paddle found? {paddle != null}");
+            //var prefabFactory = GetService<PrefabFactory1>();
+            //prefabFactory.Create(_paddle.gameObject, Vector3.zero);
+            //prefabFactory.Create(_paddle.gameObject, Vector3.zero);
+        }
+
         private ProjectileCollisionStrategyDecorator GetProjectilePowerUp()
         {
             return new ProjectileCollisionStrategyDecorator(
@@ -53,6 +63,11 @@ namespace BreakoutGame
         private PrefabFactory GetPrefabFactory()
         {
             return new PrefabFactory(this);
+        }
+
+        private PrefabFactory1 GetPrefabFactory1()
+        {
+            return new PrefabFactory1(this);
         }
 
         private Observable<GameOverEvent> GetGameOverObservable(Subject<GameOverEvent> subject) => subject;

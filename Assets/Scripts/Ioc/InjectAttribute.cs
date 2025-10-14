@@ -6,4 +6,14 @@ namespace GameCtor.DevToolbox
     public sealed class InjectAttribute : Attribute
     {
     }
+
+    public interface IVisitor
+    {
+        void Visit(UnityEngine.Object obj);
+    }
+
+    public interface IMonoInject
+    {
+        void Accept(PrefabFactory1 visitor);
+    }
 }
