@@ -1,4 +1,5 @@
 using GameCtor.DevToolbox;
+using GameCtor.FuseDI;
 using UnityEngine;
 
 namespace BreakoutGame

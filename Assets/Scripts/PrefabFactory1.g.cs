@@ -1,4 +1,6 @@
+using GameCtor.FuseDI;
 using System.Collections.Generic;
+using UniDig;
 using UnityEngine;
 
 namespace GameCtor.DevToolbox
@@ -22,11 +24,11 @@ namespace GameCtor.DevToolbox
                 _monoInjectList.Clear();
                 if (instance is Component c)
                 {
-                    c.GetComponentsInChildren<DevToolbox.IMonoInject>(true, _monoInjectList);
+                    c.GetComponentsInChildren<IMonoInject>(true, _monoInjectList);
                 }
                 else if (instance is GameObject go)
                 {
-                    go.GetComponentsInChildren<DevToolbox.IMonoInject>(true, _monoInjectList);
+                    go.GetComponentsInChildren<IMonoInject>(true, _monoInjectList);
                 }
                 else
                 {
@@ -34,23 +36,23 @@ namespace GameCtor.DevToolbox
                 }
                 foreach (var component in _monoInjectList)
                 {
-                    component.Accept(this);
+                    //component.Accept(this);
                 }
             }
             else
             {
                 if (instance is Component c)
                 {
-                    if (c.TryGetComponent<DevToolbox.IMonoInject>(out var monoInject))
+                    if (c.TryGetComponent<IMonoInject>(out var monoInject))
                     {
-                        monoInject.Accept(this);
+                        //monoInject.Accept(this);
                     }
                 }
                 else if (instance is GameObject go)
                 {
-                    if (go.TryGetComponent<DevToolbox.IMonoInject>(out var monoInject))
+                    if (go.TryGetComponent<IMonoInject>(out var monoInject))
                     {
-                        monoInject.Accept(this);
+                        //monoInject.Accept(this);
                     }
                 }
             }

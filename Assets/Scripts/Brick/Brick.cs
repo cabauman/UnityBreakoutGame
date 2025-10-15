@@ -3,11 +3,12 @@ using UniDig;
 using R3;
 using R3.Triggers;
 using UnityEngine;
+using GameCtor.FuseDI;
 
 namespace BreakoutGame
 {
     [RequireComponent(typeof(BoxCollider2D))]
-    public sealed partial class Brick : MonoBehaviour, GameCtor.DevToolbox.IPostInject
+    public sealed partial class Brick : MonoBehaviour, IPostInject
     {
         //[Flatten]
         [SerializeField]

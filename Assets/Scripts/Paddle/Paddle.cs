@@ -3,10 +3,11 @@ using UniDig;
 using R3;
 using R3.Triggers;
 using UnityEngine;
+using GameCtor.FuseDI;
 
 namespace BreakoutGame
 {
-    public sealed partial class Paddle : MonoBehaviour, GameCtor.DevToolbox.IPostInject
+    public sealed partial class Paddle : MonoBehaviour, IPostInject
     {
         [Flatten]
         [SerializeField]

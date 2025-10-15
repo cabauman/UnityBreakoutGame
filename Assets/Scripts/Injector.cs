@@ -1,6 +1,8 @@
+using GameCtor.FuseDI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UniDig;
 using UnityEngine;
 
 namespace GameCtor.DevToolbox
@@ -65,7 +67,7 @@ namespace GameCtor.DevToolbox
 
         public void InjectSingle(GameObject go)
         {
-            if (go.TryGetComponent<DevToolbox.IMonoInject>(out var monoInject))
+            if (go.TryGetComponent<IMonoInject>(out var monoInject))
             {
                 //monoInject.Accept(this);
             }
@@ -74,7 +76,7 @@ namespace GameCtor.DevToolbox
         public void InjectObject(GameObject go)
         {
             _monoInjectList.Clear();
-            go.GetComponents<DevToolbox.IMonoInject>(_monoInjectList);
+            go.GetComponents<IMonoInject>(_monoInjectList);
             foreach (var component in _monoInjectList)
             {
                 //component.Accept(this);
@@ -84,7 +86,7 @@ namespace GameCtor.DevToolbox
         public void InjectRecursive(GameObject go)
         {
             _monoInjectList.Clear();
-            go.GetComponentsInChildren<DevToolbox.IMonoInject>(true, _monoInjectList);
+            go.GetComponentsInChildren<IMonoInject>(true, _monoInjectList);
             foreach (var component in _monoInjectList)
             {
                 //component.Accept(this);
@@ -92,13 +94,13 @@ namespace GameCtor.DevToolbox
         }
 
 #if UNITY_EDITOR
-        private List<DevToolbox.MonoInjectParamCustomizer> _paramCustomizers = new();
+        private List<MonoInjectParamCustomizer> _paramCustomizers = new();
         private Dictionary<string, string> _paramKeys = new();
         private Dictionary<string, string> GetParamKeys<T>(T monoInject)
             where T : Component
         {
             _paramCustomizers.Clear();
-            monoInject.GetComponents<DevToolbox.MonoInjectParamCustomizer>(_paramCustomizers);
+            monoInject.GetComponents<MonoInjectParamCustomizer>(_paramCustomizers);
             var paramCustomizer = _paramCustomizers
                 .FirstOrDefault(x => x.MonoInjectComponent != null && x.MonoInjectComponent.GetType() == typeof(T));
             if (paramCustomizer != null)

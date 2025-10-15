@@ -1,6 +1,7 @@
 ﻿//using UnityEngine;
 ////using Jab;
 using GameCtor.DevToolbox;
+using GameCtor.FuseDI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,8 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    [ServiceProvider]
-    [Singleton(typeof(uint), Factory = nameof(GetInt2))]
+    //[ServiceProvider]
+    //[Singleton(typeof(uint), Factory = nameof(GetInt2))]
     //[Singleton(typeof(object), Instance = nameof(TheInt))]
     //[Singleton(typeof(ServiceA))]
     ////[Singleton(typeof(ServiceB))]
@@ -94,6 +95,10 @@ namespace BreakoutGame
             }
 
             injectMethod.Invoke(obj, injectArgs);
+        }
+
+        public override void Dispose()
+        {
         }
     }
 }

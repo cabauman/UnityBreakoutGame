@@ -1,17 +1,14 @@
 ﻿//using GameCtor.DevToolbox;
+using GameCtor.FuseDI;
 using System;
-using System.Collections;
 using UniDig;
 using Unity.Profiling;
-using UnityEditor.SceneManagement;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Profiling;
 
 namespace BreakoutGame
 {
-    public partial class TestMono : MonoBehaviour, IDisposable, GameCtor.DevToolbox.IPostInject
+    public partial class TestMono : MonoBehaviour, IDisposable, IPostInject
     {
         readonly FrameTiming[] m_FrameTimings = new FrameTiming[1];
         private ProfilerRecorder gcAllocRecorder;

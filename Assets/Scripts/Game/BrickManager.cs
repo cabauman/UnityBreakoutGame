@@ -3,13 +3,14 @@ using UniDig;
 using R3;
 using UnityEngine;
 using UnityEngine.Assertions;
+using GameCtor.FuseDI;
 
 namespace BreakoutGame
 {
     public interface IBrickManager
     {
     }
-    public sealed partial class BrickManager : MonoBehaviour, GameCtor.DevToolbox.IPostInject, IBrickManager
+    public sealed partial class BrickManager : MonoBehaviour, IPostInject, IBrickManager
     {
         [SerializeField]
         private Brick[] _bricks;
@@ -26,11 +27,11 @@ namespace BreakoutGame
             BricksRemaining = new ReactiveProperty<int>(_bricks.Length);
         }
 
-        public void Inject(BreakoutGame.IRandom _random)
-        {
-            Debug.Log("BrickManager Inject");
-            this._random = _random;
-        }
+        //public void Inject(BreakoutGame.IRandom _random)
+        //{
+        //    Debug.Log("BrickManager Inject");
+        //    this._random = _random;
+        //}
 
         public void PostInject()
         {
