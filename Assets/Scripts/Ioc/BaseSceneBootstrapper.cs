@@ -11,7 +11,6 @@ namespace GameCtor.DevToolbox
     {
         [SerializeField] protected BaseCompositionRoot _compositionRoot;
         [HideInInspector] public MonoBehaviour[] monoInjectObjects;
-        [HideInInspector] public List<string> typeStrings;
 
         /// <summary>
         /// Finds all <see cref="IMonoInject"/> objects in the scene and injects their dependencies.

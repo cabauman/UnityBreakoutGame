@@ -7,8 +7,17 @@ namespace GameCtor.DevToolbox
     public sealed class MonoInjectParamCustomizer : MonoBehaviour
     {
         [SerializeField] private MonoInjectParam[] keys = new MonoInjectParam[0];
+        [SerializeField] private MonoBehaviour monoInjectComponent;
 
         public IReadOnlyList<MonoInjectParam> Keys => keys;
+
+        // Serialized reference to the IMonoInject component on this GameObject.
+        // Stored here so the editor persists the user's choice.
+        public MonoBehaviour MonoInjectComponent
+        {
+            get => monoInjectComponent;
+            set => monoInjectComponent = value;
+        }
     }
 
     [Serializable]
