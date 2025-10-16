@@ -2,7 +2,7 @@ using GameCtor.FuseDI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UniDig;
+using GameCtor.FuseDI;
 using UnityEngine;
 
 namespace GameCtor.DevToolbox

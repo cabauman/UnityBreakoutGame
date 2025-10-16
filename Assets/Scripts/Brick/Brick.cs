@@ -1,5 +1,5 @@
 ﻿using System;
-using UniDig;
+using GameCtor.FuseDI;
 using R3;
 using R3.Triggers;
 using UnityEngine;
@@ -34,7 +34,7 @@ namespace BreakoutGame
                 .AddTo(this);
 
             // TODO: Consider doing this in the bootstrapper instead
-            GameCtor.DevToolbox.StartupLifecycle.AddPostInjectListener(PostInject);
+            GameCtor.FuseDI.StartupLifecycle.AddPostInjectListener(PostInject);
         }
 
         public void PostInject()

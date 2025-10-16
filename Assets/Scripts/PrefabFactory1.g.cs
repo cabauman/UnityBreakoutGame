@@ -1,6 +1,6 @@
 using GameCtor.FuseDI;
 using System.Collections.Generic;
-using UniDig;
+using GameCtor.FuseDI;
 using UnityEngine;
 
 namespace GameCtor.DevToolbox

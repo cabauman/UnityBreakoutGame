@@ -1,9 +1,9 @@
 ﻿using System;
 using TMPro;
-using UniDig;
 using R3;
 using UnityEngine;
 using UnityEngine.UI;
+using GameCtor.FuseDI;
 
 namespace BreakoutGame
 {

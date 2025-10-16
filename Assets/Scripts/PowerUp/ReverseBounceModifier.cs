@@ -1,4 +1,4 @@
-﻿using UniDig;
+﻿using GameCtor.FuseDI;
 using UnityEngine;
 
 namespace BreakoutGame

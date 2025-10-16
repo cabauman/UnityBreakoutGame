@@ -2,7 +2,7 @@
 using GameCtor.FuseDI;
 using R3;
 using System;
-using UniDig;
+using GameCtor.FuseDI;
 using UnityEngine;
 
 namespace BreakoutGame

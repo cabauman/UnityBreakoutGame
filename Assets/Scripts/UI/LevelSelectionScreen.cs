@@ -1,6 +1,6 @@
 ﻿using System;
 using TMPro;
-using UniDig;
+using GameCtor.FuseDI;
 using R3;
 using UnityEngine;
 using UnityEngine.UI;

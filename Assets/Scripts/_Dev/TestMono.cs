@@ -1,7 +1,7 @@
 ﻿//using GameCtor.DevToolbox;
 using GameCtor.FuseDI;
 using System;
-using UniDig;
+using GameCtor.FuseDI;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.Profiling;

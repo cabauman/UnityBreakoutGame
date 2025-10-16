@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using UniDig;
+using GameCtor.FuseDI;
 using R3;
 using UnityEngine;
 using UnityEngine.Assertions;

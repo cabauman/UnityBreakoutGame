@@ -10,7 +10,7 @@
       "hash": "24d04125d68719816e24dfb79c60dd97ca396038"
     },
     "com.gamector.fuse-di": {
-      "version": "file:D:/UnityProjects/MyUpmPackages/Packages/FuseDI",
+      "version": "file:../../Unity.MyUpmPackages/Packages/FuseDI",
       "depth": 0,
       "source": "local",
       "dependencies": {}
