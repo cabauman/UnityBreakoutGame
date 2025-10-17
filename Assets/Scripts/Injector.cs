@@ -2,7 +2,6 @@ using GameCtor.FuseDI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameCtor.FuseDI;
 using UnityEngine;
 
 namespace GameCtor.DevToolbox
@@ -75,17 +74,15 @@ namespace GameCtor.DevToolbox
 
         public void InjectObject(GameObject go)
         {
-            _monoInjectList.Clear();
             go.GetComponents<IMonoInject>(_monoInjectList);
             foreach (var component in _monoInjectList)
             {
                 //component.Accept(this);
             }
         }
-        
+
         public void InjectRecursive(GameObject go)
         {
-            _monoInjectList.Clear();
             go.GetComponentsInChildren<IMonoInject>(true, _monoInjectList);
             foreach (var component in _monoInjectList)
             {
@@ -99,19 +96,19 @@ namespace GameCtor.DevToolbox
         private Dictionary<string, string> GetParamKeys<T>(T monoInject)
             where T : Component
         {
-            _paramCustomizers.Clear();
             monoInject.GetComponents<MonoInjectParamCustomizer>(_paramCustomizers);
             var paramCustomizer = _paramCustomizers
-                .FirstOrDefault(x => x.MonoInjectComponent != null && x.MonoInjectComponent.GetType() == typeof(T));
-            if (paramCustomizer != null)
+                .FirstOrDefault(static x => x.MonoInjectComponent != null && x.MonoInjectComponent.GetType() == typeof(T));
+            if (paramCustomizer == null)
             {
-                _paramKeys.Clear();
-                foreach (var key in paramCustomizer.Keys)
+                return null;
+            }
+            _paramKeys.Clear();
+            foreach (var key in paramCustomizer.Keys)
+            {
+                if (key.Key != null && key.ParamName != null)
                 {
-                    if (key.Key != null && key.ParamName != null)
-                    {
-                        _paramKeys[key.ParamName] = key.Key.Value;
-                    }
+                    _paramKeys[key.ParamName] = key.Key.Value;
                 }
             }
             return null;

@@ -1,9 +1,8 @@
 using GameCtor.FuseDI;
 using System.Collections.Generic;
-using GameCtor.FuseDI;
 using UnityEngine;
 
-namespace GameCtor.DevToolbox
+namespace GameCtor.FuseDI
 {
     public sealed class PrefabFactory1
     {

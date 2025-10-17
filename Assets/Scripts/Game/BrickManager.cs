@@ -3,7 +3,6 @@ using GameCtor.FuseDI;
 using R3;
 using UnityEngine;
 using UnityEngine.Assertions;
-using GameCtor.FuseDI;
 
 namespace BreakoutGame
 {

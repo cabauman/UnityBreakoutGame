@@ -1,14 +1,16 @@
 using GameCtor.DevToolbox;
 using GameCtor.FuseDI;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class NewMonoBehaviourScript : MonoBehaviour
 {
+    private List<Rigidbody2D> _rbs = new();
+
     private void Awake()
     {
         Debug.Log("NewMonoBehaviourScript Awake");
-        StartupLifecycle.Initialize();
         StartupLifecycle.AddPostInjectListener(PostInject);
     }
 
@@ -27,8 +29,10 @@ public class NewMonoBehaviourScript : MonoBehaviour
     {
         if (Keyboard.current.vKey.wasPressedThisFrame)
         {
-            Debug.Log("V key was pressed");
-            StartupLifecycle.AddPostInjectListener(PostInject);
+            GetComponents<Rigidbody2D>(_rbs);
+            Debug.Log($"Found {_rbs.Count} Rigidbody2D components on {gameObject.name}");
+            //Debug.Log("V key was pressed");
+            //StartupLifecycle.AddPostInjectListener(PostInject);
         }
     }
 
