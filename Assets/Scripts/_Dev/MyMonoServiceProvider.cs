@@ -20,7 +20,7 @@ namespace BreakoutGame
     ////[Singleton(typeof(ScoreKeeper))]
     //[Singleton(typeof(Paddle), Instance = nameof(_paddle))]
     ////[Singleton(typeof(PowerUpAction), typeof(ExtraLifePowerUpAction), Key = nameof(PowerUpKind.ExtraLife))]
-    public partial class MyMonoServiceProvider : BaseCompositionRoot
+    public partial class MyMonoServiceProvider : DIContainer
     {
         public TestMono _testMono;
         public PowerUpTable _powerUpTable;
@@ -52,7 +52,7 @@ namespace BreakoutGame
 
         private void InjectDependencies(object obj)
         {
-            var getServiceMethodBase = typeof(BaseCompositionRoot).GetMethod("Resolve");
+            var getServiceMethodBase = typeof(DIContainer).GetMethod("Resolve");
             var targetType = obj.GetType();
             var allMethods = targetType.GetMethods();
             var injectMethodsList = new List<MethodInfo>();

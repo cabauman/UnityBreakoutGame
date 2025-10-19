@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    public partial class MainSceneBootstrapper : BaseSceneBootstrapper
+    public partial class MainSceneCompositionRoot : CompositionRoot
     {
     }
 }

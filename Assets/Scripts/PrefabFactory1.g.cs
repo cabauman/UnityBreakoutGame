@@ -6,10 +6,10 @@ namespace GameCtor.FuseDI
 {
     public sealed class PrefabFactory1
     {
-        private BaseCompositionRoot _compositionRoot;
+        private DIContainer _compositionRoot;
         private List<IMonoInject> _monoInjectList = new();
 
-        public PrefabFactory1(BaseCompositionRoot compositionRoot)
+        public PrefabFactory1(DIContainer compositionRoot)
         {
             _compositionRoot = compositionRoot;
         }

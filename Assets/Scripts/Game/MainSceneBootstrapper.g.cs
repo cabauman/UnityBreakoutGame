@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    partial class MainSceneBootstrapper
+    partial class MainSceneCompositionRoot
     {
         #if !UNITY_EDITOR
         protected override void InjectSceneDependencies(MonoBehaviour[] behaviours)

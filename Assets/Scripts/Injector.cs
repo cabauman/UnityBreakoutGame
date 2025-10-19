@@ -15,10 +15,10 @@ namespace GameCtor.DevToolbox
 
     public sealed class Injector
     {
-        private BaseCompositionRoot _compositionRoot;
+        private DIContainer _compositionRoot;
         private List<IMonoInject> _monoInjectList = new();
 
-        public Injector(BaseCompositionRoot compositionRoot)
+        public Injector(DIContainer compositionRoot)
         {
             _compositionRoot = compositionRoot;
         }
@@ -79,6 +79,10 @@ namespace GameCtor.DevToolbox
             {
                 //component.Accept(this);
             }
+            // if (component is IMonoBehaviourInjectionTarget target)
+            // {
+            //     target.SelfInject(_resolver);
+            // }
         }
 
         public void InjectRecursive(GameObject go)
@@ -96,6 +100,12 @@ namespace GameCtor.DevToolbox
         private Dictionary<string, string> GetParamKeys<T>(T monoInject)
             where T : Component
         {
+            // MBInjectionTargetParamCustomizer
+            // InjectionParamCustomizer
+            // InjectionCustomizer
+            // KeyedInjectionCustomizer
+            // KeyedInjectionCustomizer
+            // DependencyCustomizer
             monoInject.GetComponents<MonoInjectParamCustomizer>(_paramCustomizers);
             var paramCustomizer = _paramCustomizers
                 .FirstOrDefault(static x => x.MonoInjectComponent != null && x.MonoInjectComponent.GetType() == typeof(T));

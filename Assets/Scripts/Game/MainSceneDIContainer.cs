@@ -1,5 +1,6 @@
 ﻿using GameCtor.FuseDI;
 using R3;
+using System;
 using UnityEngine;
 
 namespace BreakoutGame
@@ -31,13 +32,16 @@ namespace BreakoutGame
     // [Singleton(typeof(Observable<BallCountChangedEvent>), Factory = nameof(GetBallCountChangedObservable))]
     // [Singleton(typeof(Subject<AllBricksDestroyedEvent>))]
     // [Singleton(typeof(Observable<AllBricksDestroyedEvent>), Factory = nameof(GetAllBricksDestroyedObservable))]
-    public partial class MainCompositionRoot : BaseCompositionRoot
+    public partial class MainSceneDIContainer : DIContainer
     {
         [SerializeField] PowerUpTable _powerUpTable;
         [SerializeField] private Paddle _paddle;
         [SerializeField] private BrickManager _brickManager;
         [SerializeField] private BallManager _ballManager;
         [SerializeField] private GameObject _projectilePrefab;
+
+        //public T GetService<T>() => this is IServiceProvider<T> provider ? provider.GetService() : throw new InvalidOperationException();
+        //public T GetService<T>(string diKey) => this is INamedServiceProvider<T> provider ? provider.GetService(diKey) : throw new InvalidOperationException();
 
         private void Start()
         {
@@ -48,10 +52,10 @@ namespace BreakoutGame
             //prefabFactory.Create(_paddle.gameObject, Vector3.zero);
         }
 
-        private ProjectileCollisionStrategyDecorator GetProjectilePowerUp()
+        private ProjectileCollisionStrategyDecorator GetProjectilePowerUp(IBallPaddleCollisionStrategy collisionStrategy)
         {
             return new ProjectileCollisionStrategyDecorator(
-                GetService<IBallPaddleCollisionStrategy>(),
+                collisionStrategy,
                 _projectilePrefab);
         }
 
