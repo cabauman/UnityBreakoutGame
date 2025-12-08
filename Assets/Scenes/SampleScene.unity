@@ -2799,7 +2799,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22ea2171f58b5f94385e9524d23e7bfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BreakoutGame::GameCtor.DevToolbox.BaseSceneBootstrapper
-  _compositionRoot: {fileID: 874812034}
+  _container: {fileID: 874812034}
   monoInjectObjects:
   - {fileID: 512602519}
   - {fileID: 641725648}
@@ -2821,7 +2821,6 @@ MonoBehaviour:
   - {fileID: 484200241}
   - {fileID: 1804870414}
   - {fileID: 1691324712}
-  typeStrings: []
 --- !u!4 &874812036
 Transform:
   m_ObjectHideFlags: 0
@@ -4146,7 +4145,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1529737525
 RectTransform:
   m_ObjectHideFlags: 0

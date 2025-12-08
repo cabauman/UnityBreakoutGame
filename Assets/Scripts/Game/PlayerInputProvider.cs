@@ -8,8 +8,21 @@ namespace BreakoutGame
         [SerializeField] public InputActionReference _moveAction;
         [SerializeField] public InputActionReference _launchAction;
 
+        private void OnEnable()
+        {
+            _moveAction.action.Enable();
+            _launchAction.action.Enable();
+        }
+
+        private void OnDisable()
+        {
+            _moveAction.action.Disable();
+            _launchAction.action.Disable();
+        }
+
         public Vector2 GetHorizontalInput()
         {
+            _moveAction.action.Enable();
             return _moveAction.action.ReadValue<Vector2>();
         }
 

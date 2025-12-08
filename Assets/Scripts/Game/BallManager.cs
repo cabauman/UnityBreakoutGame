@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCtor.FuseDI;
 using R3;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class BallManager : MonoBehaviour
+    public sealed partial class BallManager : MonoBehaviour, IPostInject
     {
         [SerializeField]
         private Ball _ballPrefab;
 
         [SerializeField]
         private Ball _mainBall;
+
+        [Inject] private Observable<ExtraLifeUsedEvent> _extraLifeUsedObservable;
+        [Inject] private Observer<BallCountChangedEvent> _ballCountChangedObserver;
 
         private readonly List<GameObject> _bonusBalls = new();
         //private ObservableList<GameObject> _activeBalls = new();
@@ -32,6 +36,17 @@ namespace BreakoutGame
                 .Select(InstantiateBonusBall)
                 .SelectMany(DetectWhenBonusBallBecomesInactive)
                 .Subscribe(_ => NumBallsInPlay.Value -= 1);
+
+            StartupLifecycle.AddPostInjectListener(PostInject);
+        }
+
+        public void PostInject()
+        {
+            _extraLifeUsedObservable
+                .Subscribe(_ => UseExtraLife());
+
+            NumBallsInPlay
+                .Subscribe(x => _ballCountChangedObserver.OnNext(new BallCountChangedEvent { Count = x }));
         }
 
         public Ball Ball => _mainBall;

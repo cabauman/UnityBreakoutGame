@@ -106,7 +106,7 @@ namespace BreakoutGame
 
     public readonly struct BallCountChangedEvent
     {
-        public uint Count { get; init; }
+        public int Count { get; init; }
     }
     public readonly struct NumLivesChangedEvent
     {
