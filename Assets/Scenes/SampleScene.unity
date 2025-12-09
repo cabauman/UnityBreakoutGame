@@ -2683,6 +2683,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1559758604}
   - component: {fileID: 512602519}
+  - component: {fileID: 1559758605}
+  - component: {fileID: 1559758606}
   m_Layer: 0
   m_Name: Paddle
   m_TagString: Untagged
@@ -2708,6 +2710,38 @@ Transform:
   - {fileID: 780486887}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1559758605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559758603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 477c11a79ec4ca645bd09802dd87fd98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.ClampedMovement
+  _camera: {fileID: 519420031}
+  _leftWall: {fileID: 1637959251}
+  _rightWall: {fileID: 2076665258}
+  _renderer: {fileID: 45767442}
+--- !u!114 &1559758606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559758603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3ca789f1d20ba447a139ec786f2bb3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.PlayerInputProvider
+  _moveAction: {fileID: -1680190386980627800, guid: f12380cb8dd3d9745b315caecf8519e1,
+    type: 3}
+  _launchAction: {fileID: 1120369429361536294, guid: f12380cb8dd3d9745b315caecf8519e1,
+    type: 3}
 --- !u!1 &1637959248
 GameObject:
   m_ObjectHideFlags: 0

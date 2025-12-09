@@ -128,10 +128,10 @@
                 {
                     "name": "",
                     "id": "daf45b1e-4e7b-4d4a-92f8-00c428b74183",
-                    "path": "<Mouse>/delta",
+                    "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false

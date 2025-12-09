@@ -21,12 +21,6 @@ namespace BreakoutGame
 
             _screenWidth = Screen.width;
 
-            Observable
-                .EveryUpdate()
-                .Select(_ => Mouse.current.position.ReadValue())
-                .Subscribe(UpdateXPosition)
-                .AddTo(this);
-
             Paddle
                 .Width
                 .Subscribe(xScale => _graphicTrfm.localScale = new Vector3(xScale, _graphicTrfm.localScale.y))
@@ -39,13 +33,6 @@ namespace BreakoutGame
         }
 
         public Paddle Paddle { get; private set; }
-
-        private void UpdateXPosition(Vector2 mousePos)
-        {
-            mousePos.x = Mathf.Clamp(mousePos.x, 0, _screenWidth);
-            var xPos = Camera.main.ScreenToWorldPoint(mousePos).x;
-            transform.position = new Vector3(xPos, transform.position.y, transform.position.z);
-        }
 
         private void ResetBallPos()
         {
