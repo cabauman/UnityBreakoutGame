@@ -1,4 +1,4 @@
-﻿using UniRx;
+﻿using R3;
 
 namespace BreakoutGame
 {
@@ -10,7 +10,7 @@ namespace BreakoutGame
             ResetBallPos = new ReactiveCommand<Unit>();
         }
 
-        public IReactiveProperty<float> Width { get; }
+        public ReactiveProperty<float> Width { get; }
 
         public ReactiveCommand<Unit> ResetBallPos { get; }
     }

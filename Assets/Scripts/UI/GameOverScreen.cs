@@ -1,6 +1,6 @@
 ﻿using System;
 using TMPro;
-using UniRx;
+using R3;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,7 +40,15 @@ namespace BreakoutGame
                 .Subscribe(_ => _playAgainButton.gameObject.SetActive(true))
                 .AddTo(this);
 
-            _gamePresenter.Game.ResetGameCmd.BindToOnClick(_playAgainButton, _ => HideUI());
+            _playAgainButton.OnClickAsObservable()
+                .Subscribe(_ => OnPlayAgainClicked())
+                .AddTo(this);
+        }
+
+        private void OnPlayAgainClicked()
+        {
+            _gamePresenter.Game.ResetGameCmd.Execute(Unit.Default);
+            HideUI();
         }
 
         private void HideUI()

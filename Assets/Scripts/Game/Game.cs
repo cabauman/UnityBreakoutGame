@@ -1,7 +1,7 @@
-﻿using System;
+﻿using R3;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using UniRx;
 
 namespace BreakoutGame
 {
@@ -53,7 +53,7 @@ namespace BreakoutGame
             ResetGameCmd = new ReactiveCommand();
             ResetGameCmd.Subscribe(_ => ResetGame());
 
-            CreateBonusBall = new ReactiveCommand<Ball>(Observable.Defer(() => Observable.Return(!_gameOver)));
+            CreateBonusBall = new ReactiveCommand<Ball>(Observable.Defer(() => Observable.Return(!_gameOver)), false);
             CreateBonusBall
                 .Do(_ => NumBallsInPlay.Value += 1)
                 .SelectMany(bonusBall => DetectWhenBonusBallBecomesInactive(bonusBall))
@@ -66,15 +66,15 @@ namespace BreakoutGame
 
         public IReadOnlyList<Brick> Bricks { get; }
 
-        public IObservable<Unit> GameWon { get; }
+        public Observable<Unit> GameWon { get; }
 
-        public IObservable<Unit> GameLost { get; }
+        public Observable<Unit> GameLost { get; }
 
-        public IReactiveProperty<int> NumBallsInPlay { get; }
+        public ReactiveProperty<int> NumBallsInPlay { get; }
 
-        public IReactiveProperty<int> BricksRemaining { get; }
+        public ReactiveProperty<int> BricksRemaining { get; }
 
-        public IReactiveProperty<uint> NumLives { get; }
+        public ReactiveProperty<uint> NumLives { get; }
 
         public ReactiveCommand ResetGameCmd { get; }
 
@@ -103,7 +103,7 @@ namespace BreakoutGame
             NumBallsInPlay.Value = 1;
         }
 
-        private IObservable<Unit> DetectWhenBonusBallBecomesInactive(Ball ball)
+        private Observable<Unit> DetectWhenBonusBallBecomesInactive(Ball ball)
         {
             return ball.Active
                 .Where(active => !active)

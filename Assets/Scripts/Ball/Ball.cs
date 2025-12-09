@@ -1,4 +1,4 @@
-﻿using UniRx;
+﻿using R3;
 using UnityEngine;
 
 namespace BreakoutGame
@@ -19,6 +19,6 @@ namespace BreakoutGame
 
         public Vector3 StartPosition { get; }
 
-        public IReactiveProperty<bool> Active { get; }
+        public ReactiveProperty<bool> Active { get; }
     }
 }

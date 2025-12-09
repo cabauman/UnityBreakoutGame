@@ -1,4 +1,4 @@
-﻿using UniRx;
+﻿using R3;
 
 namespace BreakoutGame
 {
@@ -8,6 +8,6 @@ namespace BreakoutGame
 
         int Power { get; }
 
-        IReactiveProperty<bool> Active { get; }
+        ReactiveProperty<bool> Active { get; }
     }
 }

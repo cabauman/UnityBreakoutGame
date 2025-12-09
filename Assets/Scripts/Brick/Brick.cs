@@ -1,5 +1,5 @@
 ﻿using System;
-using UniRx;
+using R3;
 
 namespace BreakoutGame
 {
@@ -15,7 +15,7 @@ namespace BreakoutGame
 
             Hp = new ReactiveProperty<int>(_initialHp);
 
-            Active = Hp.Select(x => x > 0).ToReactiveProperty();
+            Active = Hp.Select(x => x > 0).ToReadOnlyReactiveProperty();
 
             ResetHp = new ReactiveCommand<Unit>();
             ResetHp.Subscribe(_ => Hp.Value = _initialHp);
@@ -28,15 +28,15 @@ namespace BreakoutGame
                 .Select(_ => CreateRandomPowerUp());
         }
 
-        public IObservable<PowerUp> PowerUpCreated { get; }
+        public Observable<PowerUp> PowerUpCreated { get; }
 
-        public IReactiveProperty<int> Hp { get; }
+        public ReactiveProperty<int> Hp { get; }
 
-        public IReadOnlyReactiveProperty<bool> Active { get; }
+        public ReadOnlyReactiveProperty<bool> Active { get; }
 
-        public IReactiveCommand<Unit> ResetHp { get; }
+        public ReactiveCommand<Unit> ResetHp { get; }
 
-        public IReactiveCommand<Ball> RespondToBallCollision { get; }
+        public ReactiveCommand<Ball> RespondToBallCollision { get; }
 
         private PowerUp CreateRandomPowerUp()
         {
