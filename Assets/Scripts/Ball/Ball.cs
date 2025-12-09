@@ -1,21 +1,24 @@
 ﻿using UniRx;
 using UnityEngine;
 
-public class Ball
+namespace BreakoutGame
 {
-    public Ball(float initialForce, int power, Vector3 startPosition)
+    public sealed class Ball
     {
-        InitialForce = initialForce;
-        Power = power;
-        StartPosition = startPosition;
-        Active = new ReactiveProperty<bool>(true);
+        public Ball(float initialForce, int power, Vector3 startPosition)
+        {
+            InitialForce = initialForce;
+            Power = power;
+            StartPosition = startPosition;
+            Active = new ReactiveProperty<bool>(true);
+        }
+
+        public float InitialForce { get; }
+
+        public int Power { get; }
+
+        public Vector3 StartPosition { get; }
+
+        public IReactiveProperty<bool> Active { get; }
     }
-
-    public float InitialForce { get; }
-
-    public int Power { get; }
-
-    public Vector3 StartPosition { get; }
-
-    public IReactiveProperty<bool> Active { get; }
 }

@@ -1,10 +1,13 @@
 ﻿using UniRx;
 
-public interface IBall
+namespace BreakoutGame
 {
-    float InitialForce { get; }
+    public interface IBall
+    {
+        float InitialForce { get; }
 
-    int Power { get; }
+        int Power { get; }
 
-    IReactiveProperty<bool> Active { get; }
+        IReactiveProperty<bool> Active { get; }
+    }
 }

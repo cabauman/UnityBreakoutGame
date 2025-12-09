@@ -1,52 +1,55 @@
 ﻿using UniRx;
 using UnityEngine;
 
-public class PaddlePresenter : MonoBehaviour
+namespace BreakoutGame
 {
-    [SerializeField]
-    private BallPresenter _ballPresenter;
-    [SerializeField]
-    private Transform _initialBallPosTrfm;
-    [SerializeField]
-    private Transform _graphicTrfm;
-
-    private float _screenWidth;
-
-    public void Init()
+    public sealed class PaddlePresenter : MonoBehaviour
     {
-        Paddle = new Paddle();
+        [SerializeField]
+        private BallPresenter _ballPresenter;
+        [SerializeField]
+        private Transform _initialBallPosTrfm;
+        [SerializeField]
+        private Transform _graphicTrfm;
 
-        _screenWidth = Screen.width;
+        private float _screenWidth;
 
-        Observable
-            .EveryUpdate()
-            .Select(_ => Input.mousePosition)
-            .Subscribe(UpdateXPosition)
-            .AddTo(this);
+        public void Init()
+        {
+            Paddle = new Paddle();
 
-        Paddle
-            .Width
-            .Subscribe(xScale => _graphicTrfm.localScale = new Vector3(xScale, _graphicTrfm.localScale.y))
-            .AddTo(this);
+            _screenWidth = Screen.width;
 
-        Paddle
-            .ResetBallPos
-            .Subscribe(_ => ResetBallPos())
-            .AddTo(this);
-    }
+            Observable
+                .EveryUpdate()
+                .Select(_ => Input.mousePosition)
+                .Subscribe(UpdateXPosition)
+                .AddTo(this);
 
-    public Paddle Paddle { get; private set; }
+            Paddle
+                .Width
+                .Subscribe(xScale => _graphicTrfm.localScale = new Vector3(xScale, _graphicTrfm.localScale.y))
+                .AddTo(this);
 
-    private void UpdateXPosition(Vector3 mousePos)
-    {
-        mousePos.x = Mathf.Clamp(mousePos.x, 0, _screenWidth);
-        var xPos = Camera.main.ScreenToWorldPoint(mousePos).x;
-        transform.position = new Vector3(xPos, transform.position.y, transform.position.z);
-    }
+            Paddle
+                .ResetBallPos
+                .Subscribe(_ => ResetBallPos())
+                .AddTo(this);
+        }
 
-    private void ResetBallPos()
-    {
-        _ballPresenter.transform.parent = transform;
-        _ballPresenter.transform.position = _initialBallPosTrfm.position;
+        public Paddle Paddle { get; private set; }
+
+        private void UpdateXPosition(Vector3 mousePos)
+        {
+            mousePos.x = Mathf.Clamp(mousePos.x, 0, _screenWidth);
+            var xPos = Camera.main.ScreenToWorldPoint(mousePos).x;
+            transform.position = new Vector3(xPos, transform.position.y, transform.position.z);
+        }
+
+        private void ResetBallPos()
+        {
+            _ballPresenter.transform.parent = transform;
+            _ballPresenter.transform.position = _initialBallPosTrfm.position;
+        }
     }
 }

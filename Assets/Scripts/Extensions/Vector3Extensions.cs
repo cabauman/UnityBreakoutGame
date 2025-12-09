@@ -1,6 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-public static class Vector3Extensions
+namespace BreakoutGame
 {
+    public static class Vector3Extensions
+    {
+    }
 }

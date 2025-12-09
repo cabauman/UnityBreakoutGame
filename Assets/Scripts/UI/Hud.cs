@@ -2,20 +2,23 @@
 using UniRx;
 using UnityEngine;
 
-public class Hud : MonoBehaviour
+namespace BreakoutGame
 {
-    private const string NUM_LIVES_FMT = "Lives: {0}";
-
-    [SerializeField]
-    private GamePresenter _gamePresenter;
-    [SerializeField]
-    private TextMeshProUGUI _numLivesLabel;
-
-    private void Start()
+    public sealed class Hud : MonoBehaviour
     {
-        _gamePresenter.Game
-            .NumLives
-            .Subscribe(numLives => _numLivesLabel.text = string.Format(NUM_LIVES_FMT, numLives))
-            .AddTo(this);
+        private const string NUM_LIVES_FMT = "Lives: {0}";
+
+        [SerializeField]
+        private GamePresenter _gamePresenter;
+        [SerializeField]
+        private TextMeshProUGUI _numLivesLabel;
+
+        private void Start()
+        {
+            _gamePresenter.Game
+                .NumLives
+                .Subscribe(numLives => _numLivesLabel.text = string.Format(NUM_LIVES_FMT, numLives))
+                .AddTo(this);
+        }
     }
 }

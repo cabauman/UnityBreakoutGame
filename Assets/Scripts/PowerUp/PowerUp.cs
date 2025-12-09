@@ -1,9 +1,12 @@
 ﻿using UniRx;
 using UnityEngine;
 
-public abstract class PowerUp
+namespace BreakoutGame
 {
-    public abstract string SpriteName { get; }
+    public abstract class PowerUp
+    {
+        public abstract string SpriteName { get; }
 
-    public abstract void ApplyEffect(Game game, Vector3 position);
+        public abstract void ApplyEffect(Game game, Vector3 position);
+    }
 }
