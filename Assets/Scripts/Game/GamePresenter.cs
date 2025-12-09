@@ -2,6 +2,7 @@
 using System.Linq;
 using R3;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace BreakoutGame
 {
@@ -46,7 +47,7 @@ namespace BreakoutGame
 
             Observable
                 .EveryUpdate()
-                .Where(_ => Input.GetButtonDown("Fire1") && Mathf.Abs(_ballPresenter.Velocity.y) < Mathf.Epsilon)
+                .Where(_ => Mouse.current.leftButton.wasPressedThisFrame && Mathf.Abs(_ballPresenter.Velocity.y) < Mathf.Epsilon)
                 .Subscribe(_ => _ballPresenter.AddInitialForce())
                 .AddTo(this);
         }

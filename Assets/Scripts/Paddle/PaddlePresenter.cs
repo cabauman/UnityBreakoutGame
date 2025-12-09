@@ -1,5 +1,6 @@
 ﻿using R3;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace BreakoutGame
 {
@@ -22,7 +23,7 @@ namespace BreakoutGame
 
             Observable
                 .EveryUpdate()
-                .Select(_ => Input.mousePosition)
+                .Select(_ => Mouse.current.position.ReadValue())
                 .Subscribe(UpdateXPosition)
                 .AddTo(this);
 
@@ -39,7 +40,7 @@ namespace BreakoutGame
 
         public Paddle Paddle { get; private set; }
 
-        private void UpdateXPosition(Vector3 mousePos)
+        private void UpdateXPosition(Vector2 mousePos)
         {
             mousePos.x = Mathf.Clamp(mousePos.x, 0, _screenWidth);
             var xPos = Camera.main.ScreenToWorldPoint(mousePos).x;
