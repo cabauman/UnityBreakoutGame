@@ -47,7 +47,10 @@ namespace BreakoutGame
 
             Observable
                 .EveryUpdate()
-                .Where(_ => Mouse.current.leftButton.wasPressedThisFrame && Mathf.Abs(_ballPresenter.Velocity.y) < Mathf.Epsilon)
+                .Where(_ => Mouse.current.leftButton.wasPressedThisFrame &&
+                    EventSystem.current != null &&
+                    !EventSystem.current.IsPointerOverGameObject() &&
+                    Mathf.Abs(_ballPresenter.Velocity.y) < Mathf.Epsilon)
                 .Subscribe(_ => _ballPresenter.AddInitialForce())
                 .AddTo(this);
         }
