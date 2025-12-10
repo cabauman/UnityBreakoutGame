@@ -12,17 +12,17 @@ namespace BreakoutGame
         [SerializeField]
         private TextMeshProUGUI _numLivesLabel;
         [SerializeField]
-        private LocalizedString livesString;
+        private LocalizedString _livesString;
 
         void OnEnable()
         {
-            livesString.Arguments = new object[] { 0 };
-            livesString.StringChanged += UpdateString;
+            _livesString.Arguments = new object[] { 0 };
+            _livesString.StringChanged += UpdateString;
         }
 
         void OnDisable()
         {
-            livesString.StringChanged -= UpdateString;
+            _livesString.StringChanged -= UpdateString;
         }
 
         private void Start()
@@ -35,8 +35,8 @@ namespace BreakoutGame
 
         private void UpdateLives(uint lives)
         {
-            livesString.Arguments[0] = lives;
-            livesString.RefreshString();
+            _livesString.Arguments[0] = lives;
+            _livesString.RefreshString();
         }
 
         private void UpdateString(string localizedString)
