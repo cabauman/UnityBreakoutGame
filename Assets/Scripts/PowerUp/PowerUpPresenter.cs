@@ -23,7 +23,7 @@ namespace BreakoutGame
 
             this
                 .OnTriggerEnter2DAsObservable()
-                .Where(collider => collider.CompareTag(Tags.DEAD_ZONE))
+                .Where(collider => collider.CompareTag(Tags.DeadZone))
                 .Subscribe(_ => Destroy(gameObject))
                 .AddTo(this);
         }

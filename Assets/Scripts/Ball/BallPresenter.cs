@@ -7,7 +7,7 @@ namespace BreakoutGame
     [RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D))]
     public sealed class BallPresenter : MonoBehaviour
     {
-        private const string PADDLE_COLLIDER_NAME = "PaddleGraphic";
+        private const string PaddleColliderName = "PaddleGraphic";
 
         [SerializeField]
         [Range(0f, 100f)]
@@ -34,13 +34,13 @@ namespace BreakoutGame
 
             this
                 .OnTriggerEnter2DAsObservable()
-                .Where(collider => collider.CompareTag(Tags.DEAD_ZONE))
+                .Where(collider => collider.CompareTag(Tags.DeadZone))
                 .Subscribe(_ => Ball.Active.Value = false)
                 .AddTo(this);
 
             this
                 .OnCollisionEnter2DAsObservable()
-                .Where(collision => collision.gameObject.name == PADDLE_COLLIDER_NAME)
+                .Where(collision => collision.gameObject.name == PaddleColliderName)
                 .Subscribe(CalculateBounceVelocity)
                 .AddTo(this);
 
