@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class PowerUpPresenter : MonoBehaviour
+    public abstract class PowerUpPresenter : MonoBehaviour
     {
+        [SerializeField] private Sprite _sprite;
+
         private void Start()
         {
-            var sprite = Resources.Load<Sprite>(string.Format("Sprites/{0}", PowerUp.SpriteName));
-            if (sprite != null)
-            {
-                GetComponent<SpriteRenderer>().sprite = sprite;
-            }
+            Ensure.NotNull(_sprite);
+
+            GetComponent<SpriteRenderer>().sprite = _sprite;
 
             this
                 .OnTriggerEnter2DAsObservable()
@@ -28,12 +28,12 @@ namespace BreakoutGame
                 .AddTo(this);
         }
 
-        public PowerUp PowerUp { get; set; }
+        public abstract void ApplyEffect(Game game, Vector3 position);
 
         private void ApplyAndDestroy()
         {
             var gamePresenter = FindAnyObjectByType<GamePresenter>();
-            PowerUp.ApplyEffect(gamePresenter.Game, transform.position);
+            ApplyEffect(gamePresenter.Game, transform.position);
             Destroy(gameObject);
         }
     }

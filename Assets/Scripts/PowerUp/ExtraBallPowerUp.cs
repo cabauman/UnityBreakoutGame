@@ -2,10 +2,8 @@
 
 namespace BreakoutGame
 {
-    public sealed class ExtraBallPowerUp : PowerUp
+    public sealed class ExtraBallPowerUp : PowerUpPresenter
     {
-        public override string SpriteName { get; } = "ExtraBallPowerUp";
-
         public override void ApplyEffect(Game game, Vector3 position)
         {
             UnityEngine.Debug.Log("Extra ball!");

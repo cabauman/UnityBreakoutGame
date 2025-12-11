@@ -13,7 +13,7 @@ namespace BreakoutGame
         [Range(0, 10)]
         private int _powerUpSpawnOdds = 3;
         [SerializeField]
-        private PowerUpPresenter _powerUpPrefab;
+        private PowerUpPresenter[] _powerUpPrefabs;
 
         public void Init()
         {
@@ -26,8 +26,8 @@ namespace BreakoutGame
                 .AddTo(this);
 
             Brick
-                .PowerUpCreated
-                .Subscribe(InstantiatePowerUp)
+                .CreatePowerUp
+                .Subscribe(_ => InstantiatePowerUp())
                 .AddTo(this);
 
             Brick
@@ -38,10 +38,11 @@ namespace BreakoutGame
 
         public Brick Brick { get; private set; }
 
-        private void InstantiatePowerUp(PowerUp powerUp)
+        private void InstantiatePowerUp()
         {
-            var powerUpPresenter = Instantiate(_powerUpPrefab, transform.position, Quaternion.identity);
-            powerUpPresenter.PowerUp = powerUp;
+            int randNum = RandomUtil.Random.Next(0, _powerUpPrefabs.Length);
+            PowerUpPresenter prefab = _powerUpPrefabs[randNum];
+            Instantiate(prefab, transform.position, Quaternion.identity);
         }
     }
 }

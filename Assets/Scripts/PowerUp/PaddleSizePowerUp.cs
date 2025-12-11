@@ -4,12 +4,10 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class PaddleSizePowerUp : PowerUp
+    public sealed class PaddleSizePowerUp : PowerUpPresenter
     {
         private readonly float _widthMultiplier = 1.5f;
         private readonly float _effectDuration = 5f;
-
-        public override string SpriteName { get; } = "PaddleWidthPowerUp";
 
         public override void ApplyEffect(Game game, Vector3 position)
         {

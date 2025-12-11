@@ -23,12 +23,12 @@ namespace BreakoutGame
             RespondToBallCollision = new ReactiveCommand<Ball>();
             RespondToBallCollision.Subscribe(ball => Hp.Value -= ball.Power);
 
-            PowerUpCreated = RespondToBallCollision
+            CreatePowerUp = RespondToBallCollision
                 .Where(_ => RandomUtil.Random.Next(0, 10) < _powerUpSpawnOdds)
-                .Select(_ => CreateRandomPowerUp());
+                .AsUnitObservable();
         }
 
-        public Observable<PowerUp> PowerUpCreated { get; }
+        public Observable<Unit> CreatePowerUp { get; }
 
         public ReactiveProperty<int> Hp { get; }
 
@@ -37,16 +37,5 @@ namespace BreakoutGame
         public ReactiveCommand<Unit> ResetHp { get; }
 
         public ReactiveCommand<Ball> RespondToBallCollision { get; }
-
-        private PowerUp CreateRandomPowerUp()
-        {
-            int randNum = RandomUtil.Random.Next(0, 3);
-            return randNum switch
-            {
-                0 => new ExtraLifePowerUp(),
-                1 => new ExtraBallPowerUp(),
-                _ => new PaddleSizePowerUp(),
-            };
-        }
     }
 }

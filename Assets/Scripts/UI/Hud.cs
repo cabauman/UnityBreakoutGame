@@ -1,5 +1,5 @@
-﻿using TMPro;
-using R3;
+﻿using R3;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 
