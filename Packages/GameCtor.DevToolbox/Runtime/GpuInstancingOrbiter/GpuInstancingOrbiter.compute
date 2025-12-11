@@ -1,0 +1,125 @@
+﻿#pragma kernel GpuInstancingOrbiter
+#pragma kernel GpuInstancingOrbiter_Billboarding
+
+RWStructuredBuffer<float3> _Positions;
+StructuredBuffer<float3> _RotationAxes;
+RWStructuredBuffer<float4x4> _Matrices;
+StructuredBuffer<float> _PointSize;
+StructuredBuffer<float> _Speeds;
+uint _PositionCount;
+float3 _OriginPosition;
+float3 _CameraPosition;
+float _DeltaTime;
+
+[numthreads(64, 1, 1)]
+void GpuInstancingOrbiter(uint id: SV_DispatchThreadID)
+{
+	if (id >= _PositionCount)
+	{
+		return;
+	}
+
+    float3 meshPos = _Positions[id];
+    float3 originToMesh = meshPos - _OriginPosition;
+    //float distanceFromOrigin = length(originToMesh);
+    float distanceFromOriginSquared = dot(originToMesh, originToMesh);
+    
+    float rotationAngle = _Speeds[id % _Speeds.Length] / distanceFromOriginSquared * _DeltaTime;
+    float3 rotationAxis = _RotationAxes[id];
+    float c = cos(rotationAngle);
+    float s = sin(rotationAngle);
+    float t = 1.0 - c;
+
+    float3x3 rotationMatrix = float3x3(
+        c + rotationAxis.x * rotationAxis.x * t,
+        rotationAxis.x * rotationAxis.y * t - rotationAxis.z * s,
+        rotationAxis.x * rotationAxis.z * t + rotationAxis.y * s,
+        rotationAxis.y * rotationAxis.x * t + rotationAxis.z * s,
+        c + rotationAxis.y * rotationAxis.y * t,
+        rotationAxis.y * rotationAxis.z * t - rotationAxis.x * s,
+        rotationAxis.z * rotationAxis.x * t - rotationAxis.y * s,
+        rotationAxis.z * rotationAxis.y * t + rotationAxis.x * s,
+        c + rotationAxis.z * rotationAxis.z * t
+    );
+
+    meshPos.xyz = mul(rotationMatrix, originToMesh.xyz) + _OriginPosition.xyz;
+    _Positions[id] = meshPos;
+    
+    float4x4 translationMatrix = float4x4(
+        float4(1, 0, 0, meshPos.x),
+        float4(0, 1, 0, meshPos.y),
+        float4(0, 0, 1, meshPos.z),
+        float4(0, 0, 0, 1)
+    );
+
+    float4x4 scaleMatrix = float4x4(
+        float4(_PointSize[id % _PointSize.Length], 0, 0, 0),
+        float4(0, _PointSize[id % _PointSize.Length], 0, 0),
+        float4(0, 0, _PointSize[id % _PointSize.Length], 0),
+        float4(0, 0, 0, 1)
+    );
+
+    _Matrices[id] = mul(translationMatrix, scaleMatrix);
+}
+
+[numthreads(64, 1, 1)]
+void GpuInstancingOrbiter_Billboarding(uint id: SV_DispatchThreadID)
+{
+	if (id >= _PositionCount)
+	{
+		return;
+	}
+
+    float3 meshPos = _Positions[id];
+    float3 originToMesh = meshPos - _OriginPosition;
+    float distanceFromOrigin = length(originToMesh);
+    
+    float rotationAngle = _Speeds[id % _Speeds.Length] / distanceFromOrigin * _DeltaTime;
+    float3 rotationAxis = _RotationAxes[id];
+    float c = cos(rotationAngle);
+    float s = sin(rotationAngle);
+    float t = 1.0 - c;
+
+    float3x3 rotationMatrix = float3x3(
+        c + rotationAxis.x * rotationAxis.x * t,
+        rotationAxis.x * rotationAxis.y * t - rotationAxis.z * s,
+        rotationAxis.x * rotationAxis.z * t + rotationAxis.y * s,
+        rotationAxis.y * rotationAxis.x * t + rotationAxis.z * s,
+        c + rotationAxis.y * rotationAxis.y * t,
+        rotationAxis.y * rotationAxis.z * t - rotationAxis.x * s,
+        rotationAxis.z * rotationAxis.x * t - rotationAxis.y * s,
+        rotationAxis.z * rotationAxis.y * t + rotationAxis.x * s,
+        c + rotationAxis.z * rotationAxis.z * t
+    );
+
+    meshPos.xyz = mul(rotationMatrix, originToMesh.xyz) + _OriginPosition.xyz;
+    _Positions[id] = meshPos;
+    
+    float4x4 translationMatrix = float4x4(
+        float4(1, 0, 0, meshPos.x),
+        float4(0, 1, 0, meshPos.y),
+        float4(0, 0, 1, meshPos.z),
+        float4(0, 0, 0, 1)
+    );
+
+    float4x4 scaleMatrix = float4x4(
+        float4(_PointSize[id % _PointSize.Length], 0, 0, 0),
+        float4(0, _PointSize[id % _PointSize.Length], 0, 0),
+        float4(0, 0, _PointSize[id % _PointSize.Length], 0),
+        float4(0, 0, 0, 1)
+    );
+
+    float3 meshToCam = meshPos - _CameraPosition;
+    float3 forward = normalize(meshToCam);
+    float3 up = float3(0, 1, 0);
+    float3 right = cross(up, forward);
+    up = cross(forward, right);
+    
+    float4x4 rotationMatrix2 = float4x4(
+        float4(right.x, up.x, forward.x, 0),
+        float4(right.y, up.y, forward.y, 0),
+        float4(right.z, up.z, forward.z, 0),
+        float4(0, 0, 0, 1)
+    );
+    _Matrices[id] = mul(translationMatrix, mul(rotationMatrix2, scaleMatrix));
+}

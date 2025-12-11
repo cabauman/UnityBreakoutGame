@@ -1,0 +1,22 @@
+{
+  "name": "com.gamector.devtoolbox",
+  "displayName": "GameCtor.DevToolbox",
+  "version": "0.1.0",
+  "unity": "2018.1",
+  "description": "Helpers and utilities for common use cases",
+  "keywords": [
+    "helpers",
+    "utils"
+  ],
+  "author": {
+    "name": "Colt Alan Bauman",
+    "url": "https://github.com/cabauman"
+  },
+  "samples": [
+    {
+      "displayName": "Ioc Sample",
+      "description": "Basic usage with various formatters and log levels",
+      "path": "Samples~/LoggingSample"
+    }
+  ]
+}

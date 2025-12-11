@@ -1,0 +1,19 @@
+{
+    "name": "GameCtor.ULogging.Samples",
+    "rootNamespace": "GameCtor.ULogging.Samples",
+    "references": [
+        "GUID:46c48b811d725bf4cb6765cf7e2fa739"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Handlebars.dll",
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

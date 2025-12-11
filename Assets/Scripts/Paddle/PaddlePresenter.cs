@@ -1,6 +1,5 @@
 ﻿using R3;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace BreakoutGame
 {
@@ -13,13 +12,9 @@ namespace BreakoutGame
         [SerializeField]
         private Transform _graphicTrfm;
 
-        private float _screenWidth;
-
         public void Init()
         {
             Paddle = new Paddle();
-
-            _screenWidth = Screen.width;
 
             Paddle
                 .Width

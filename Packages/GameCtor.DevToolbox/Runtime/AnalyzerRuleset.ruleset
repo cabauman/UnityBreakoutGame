@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="UnityRuleset" Description=" " ToolsVersion="17.0">
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.NetAnalyzers" RuleNamespace="Microsoft.CodeAnalysis.NetAnalyzers">
+    <Rule Id="CA1707" Action="Warning" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.Unity.Analyzers" RuleNamespace="Microsoft.Unity.Analyzers">
+    <Rule Id="UNT0001" Action="Warning" />
+    <Rule Id="UNT0002" Action="Warning" />
+    <Rule Id="UNT0003" Action="Warning" />
+    <Rule Id="UNT0004" Action="Warning" />
+    <Rule Id="UNT0006" Action="Warning" />
+    <Rule Id="UNT0007" Action="Warning" />
+    <Rule Id="UNT0008" Action="Warning" />
+    <Rule Id="UNT0009" Action="Warning" />
+    <Rule Id="UNT0010" Action="Warning" />
+    <Rule Id="UNT0011" Action="Warning" />
+    <Rule Id="UNT0012" Action="Warning" />
+    <Rule Id="UNT0013" Action="Warning" />
+    <Rule Id="UNT0014" Action="Warning" />
+    <Rule Id="UNT0015" Action="Warning" />
+    <Rule Id="UNT0016" Action="Warning" />
+    <Rule Id="UNT0017" Action="Warning" />
+    <Rule Id="UNT0018" Action="Warning" />
+    <Rule Id="UNT0019" Action="Warning" />
+    <Rule Id="UNT0020" Action="Warning" />
+    <Rule Id="UNT0022" Action="Warning" />
+    <Rule Id="UNT0023" Action="Warning" />
+    <Rule Id="UNT0024" Action="Warning" />
+    <Rule Id="UNT0025" Action="Warning" />
+    <Rule Id="UNT0026" Action="Warning" />
+    <Rule Id="UNT0027" Action="Warning" />
+    <Rule Id="UNT0028" Action="Warning" />
+    <Rule Id="UNT0029" Action="Warning" />
+    <Rule Id="UNT0030" Action="Warning" />
+    <Rule Id="UNT0031" Action="Warning" />
+  </Rules>
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SA1516" Action="None" />
+    <Rule Id="SA1200" Action="None" />
+    <Rule Id="SA1633" Action="None" />
+    <Rule Id="SA1600" Action="None" />
+    <Rule Id="SA1201" Action="Info" />
+    <Rule Id="SA1400" Action="Info" />
+    <Rule Id="SA1124" Action="Info" />
+    <Rule Id="SA1101" Action="None" />
+    <Rule Id="SA1513" Action="None" />
+    <Rule Id="SA1611" Action="None" />
+    <Rule Id="SA1503" Action="Info" />
+    <Rule Id="SA1629" Action="None" />
+    <Rule Id="SA1122" Action="Info" />
+    <Rule Id="SA1615" Action="None" />
+    <Rule Id="SA1515" Action="None" />
+    <Rule Id="SA1514" Action="Info" />
+    <Rule Id="SA1005" Action="Info" />
+    <Rule Id="SA1129" Action="Info" />
+    <Rule Id="SA1208" Action="None" />
+    <Rule Id="SA1207" Action="None" />
+    <Rule Id="SA1407" Action="None" />
+    <Rule Id="SA1202" Action="None" />
+    <Rule Id="SA1307" Action="None" />
+    <Rule Id="SX1309" Action="Error" />
+    <Rule Id="SA1309" Action="None" />
+    <Rule Id="SA1310" Action="Error" />
+    <Rule Id="SA1401" Action="Info" />
+    <Rule Id="SA1502" Action="None" />
+    <Rule Id="SA1602" Action="None" />
+    <Rule Id="SA1136" Action="Info" />
+    <Rule Id="SA1133" Action="Info" />
+    <Rule Id="SA1413" Action="None" />
+    <Rule Id="SA1601" Action="None" />
+    <Rule Id="SA1402" Action="None" />
+    <Rule Id="SA1134" Action="None" />
+    <Rule Id="SA1649" Action="None" />
+    <Rule Id="SA1210" Action="Info" />
+    <Rule Id="SA1618" Action="None" />
+  </Rules>
+</RuleSet>
