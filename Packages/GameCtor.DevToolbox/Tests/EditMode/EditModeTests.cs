@@ -1,19 +1,25 @@
+using NSubstitute;
 using NUnit.Framework;
-using UnityEngine.TestTools.Constraints;
+using System;
 using Is = UnityEngine.TestTools.Constraints.Is;
 
 namespace GameCtor.DevToolbox
 {
     public class EditModeTests
     {
-        [Test]
-        public void PlayModeTestsWithEnumeratorPasses()
+        public class MyClass
         {
-            var sut = new CoroutineUtil();
-            Assert.That(() => { sut.WaitForSeconds(0.05f); }, Is.AllocatingGCMemory());
-            Assert.That(() => { sut.WaitForSeconds(0.05f); }, Is.Not.AllocatingGCMemory());
-            Assert.That(() => { sut.WaitForSeconds(0.06f); }, Is.AllocatingGCMemory());
-            Assert.That(() => { sut.WaitForSeconds(0.06f); }, Is.Not.AllocatingGCMemory());
+            public virtual event Action<int> MyEvent;
+        }
+
+        [Test]
+        public void MockTest()
+        {
+            var mock = Substitute.For<MyClass>();
+            int receivedValue = 0;
+            mock.MyEvent += (value) => { receivedValue = value; };
+            mock.MyEvent += Raise.Event<Action<int>>(42);
+            Assert.That(receivedValue, Is.EqualTo(42));
         }
 
         //[UnityTest]
