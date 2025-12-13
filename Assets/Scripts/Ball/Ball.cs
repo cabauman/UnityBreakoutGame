@@ -1,24 +1,11 @@
 ﻿using R3;
+using R3.Triggers;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class Ball
+    [RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D))]
+    public sealed class Ball : MonoBehaviour
     {
-        public Ball(float initialForce, int power, Vector3 startPosition)
-        {
-            InitialForce = initialForce;
-            Power = power;
-            StartPosition = startPosition;
-            Active = new ReactiveProperty<bool>(true);
-        }
-
-        public float InitialForce { get; }
-
-        public int Power { get; }
-
-        public Vector3 StartPosition { get; }
-
-        public ReactiveProperty<bool> Active { get; }
     }
 }

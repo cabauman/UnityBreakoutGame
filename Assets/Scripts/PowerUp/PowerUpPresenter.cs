@@ -17,9 +17,9 @@ namespace BreakoutGame
 
             this
                 .OnTriggerEnter2DAsObservable()
-                .Select(collider => collider.transform.parent.GetComponent<PaddlePresenter>())
+                .Select(collider => collider.transform.parent.GetComponentInParent<PowerUpStateMachine>())
                 .Where(x => x != null)
-                .Subscribe(_ => ApplyAndDestroy())
+                .Subscribe(fsm => ApplyAndDestroy(fsm))
                 .AddTo(this);
 
             this
@@ -29,12 +29,11 @@ namespace BreakoutGame
                 .AddTo(this);
         }
 
-        public abstract void ApplyEffect(Game game, Vector3 position);
+        public abstract void ApplyEffect(PowerUpStateMachine fsm);
 
-        private void ApplyAndDestroy()
+        private void ApplyAndDestroy(PowerUpStateMachine fsm)
         {
-            var gamePresenter = FindAnyObjectByType<GamePresenter>();
-            ApplyEffect(gamePresenter.Game, transform.position);
+            ApplyEffect(fsm);
             Destroy(gameObject);
         }
     }

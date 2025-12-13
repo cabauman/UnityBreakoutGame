@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 212385208986771528}
   - component: {fileID: 61965762783396918}
   - component: {fileID: 114200545537051036}
+  - component: {fileID: 225337536034957937}
+  - component: {fileID: 2954265311678125817}
   m_Layer: 0
   m_Name: RedBrick
   m_TagString: Untagged
@@ -147,12 +149,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 1980295900810062}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 158059522dd73064bb0efbf2ae2295ea, type: 3}
+  m_Script: {fileID: 11500000, guid: d5528d2af47d78346aaa5b1874018aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _initialHp: 2
-  _powerUpSpawnOdds: 3
-  _powerUpPrefabs:
-  - {fileID: 1546018803684398318, guid: 06caf14477ed6cb43a3313170096501c, type: 3}
-  - {fileID: 6877391234145714667, guid: 21ac330a748308240bd5323deca95d02, type: 3}
-  - {fileID: -3790623952187242679, guid: c6794853b6e8c08449b0acb06615e5e8, type: 3}
+--- !u!114 &225337536034957937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980295900810062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05c9138bf2ee0fc4d9d6fa61ca5055de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.Health
+  _hp: 2
+  Destroyed:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &2954265311678125817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980295900810062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 880fcbe1915470f42af64b1f44332d7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.NormalBounceBehavior
