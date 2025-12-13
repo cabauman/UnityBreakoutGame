@@ -4,10 +4,11 @@ namespace BreakoutGame
 {
     public sealed class ExtraLifePowerUp : PowerUpPresenter
     {
-        public override void ApplyEffect(Game game, Vector3 position)
+        public override void ApplyEffect(PowerUpStateMachine fsm)
         {
             UnityEngine.Debug.Log("Extra life!");
-            game.NumLives.Value += 1;
+            //game.NumLives.Value += 1;
+            //target.GetComponent<LifeCounter>().Value += 1;
         }
     }
 }

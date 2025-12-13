@@ -24,21 +24,21 @@ namespace BreakoutGame
 
         private void Start()
         {
-            _gamePresenter.Game
-                .GameWon
-                .Subscribe(_ => _gameWonLabel.gameObject.SetActive(true))
-                .AddTo(this);
+            //_gamePresenter.Game
+            //    .GameWon
+            //    .Subscribe(_ => _gameWonLabel.gameObject.SetActive(true))
+            //    .AddTo(this);
 
-            _gamePresenter.Game
-                .GameLost
-                .Subscribe(_ => _gameLostLabel.gameObject.SetActive(true))
-                .AddTo(this);
+            //_gamePresenter.Game
+            //    .GameLost
+            //    .Subscribe(_ => _gameLostLabel.gameObject.SetActive(true))
+            //    .AddTo(this);
 
-            Observable
-                .Merge(_gamePresenter.Game.GameWon, _gamePresenter.Game.GameLost)
-                .Delay(TimeSpan.FromSeconds(_delayBeforeDisplayingPlayAgainButton))
-                .Subscribe(_ => _playAgainButton.gameObject.SetActive(true))
-                .AddTo(this);
+            //Observable
+            //    .Merge(_gamePresenter.Game.GameWon, _gamePresenter.Game.GameLost)
+            //    .Delay(TimeSpan.FromSeconds(_delayBeforeDisplayingPlayAgainButton))
+            //    .Subscribe(_ => _playAgainButton.gameObject.SetActive(true))
+            //    .AddTo(this);
 
             _playAgainButton.OnClickAsObservable()
                 .Subscribe(_ => OnPlayAgainClicked())
@@ -47,7 +47,7 @@ namespace BreakoutGame
 
         private void OnPlayAgainClicked()
         {
-            _gamePresenter.Game.ResetGameCmd.Execute(Unit.Default);
+            //_gamePresenter.Game.ResetGameCmd.Execute(Unit.Default);
             HideUI();
         }
 

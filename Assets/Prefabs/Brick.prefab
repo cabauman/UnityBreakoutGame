@@ -12,6 +12,10 @@ GameObject:
   - component: {fileID: 212962683432279368}
   - component: {fileID: 61303387145223984}
   - component: {fileID: 114053825654998382}
+  - component: {fileID: 1988379233556836875}
+  - component: {fileID: 8088578564873798403}
+  - component: {fileID: 8818908914460833578}
+  - component: {fileID: 5852876952459195666}
   m_Layer: 9
   m_Name: Brick
   m_TagString: Untagged
@@ -151,7 +155,80 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _initialHp: 1
-  _powerUpSpawnOdds: 3
-  _powerUpPrefabs:
-  - {fileID: 6877391234145714667, guid: 21ac330a748308240bd5323deca95d02, type: 3}
-  - {fileID: -3790623952187242679, guid: c6794853b6e8c08449b0acb06615e5e8, type: 3}
+--- !u!114 &1988379233556836875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014296972457434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 880fcbe1915470f42af64b1f44332d7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.NormalBounceBehavior
+--- !u!114 &8088578564873798403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014296972457434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05c9138bf2ee0fc4d9d6fa61ca5055de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.Health
+  _hp: 1
+  Destroyed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5852876952459195666}
+        m_TargetAssemblyTypeName: BreakoutGame.PowerUpSpawner, BreakoutGame
+        m_MethodName: SpawnPowerUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1014296972457434}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8818908914460833578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014296972457434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88f12bfd753e4174bbdc6d42c95ad45e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.DeactivateOnDeathAction
+--- !u!114 &5852876952459195666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014296972457434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0370ada8c889ea149a40f1b0065fe0a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.PowerUpSpawner
+  _dropTable: {fileID: 0}

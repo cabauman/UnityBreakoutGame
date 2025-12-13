@@ -27,10 +27,10 @@ namespace BreakoutGame
 
         private void Start()
         {
-            _gamePresenter.Game
-                .NumLives
-                .Subscribe(UpdateLives)
-                .AddTo(this);
+            //_gamePresenter.Game
+            //    .NumLives
+            //    .Subscribe(UpdateLives)
+            //    .AddTo(this);
         }
 
         private void UpdateLives(uint lives)

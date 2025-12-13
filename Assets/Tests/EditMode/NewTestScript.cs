@@ -23,5 +23,14 @@ namespace BreakoutGame
             // Use yield to skip a frame.
             yield return null;
         }
+
+        [Test]
+        public void Test1()
+        {
+            var sut = new GameObject().AddComponent<PowerUpStateMachine>();
+            var state = new ProjectileState();
+            sut.Transition(state);
+            Assert.AreEqual(sut.CollisionStrategy, state);
+        }
     }
 }
