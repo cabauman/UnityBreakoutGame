@@ -28,7 +28,7 @@ namespace BreakoutGame
         public void Test1()
         {
             var sut = new GameObject().AddComponent<PowerUpStateMachine>();
-            var state = new ProjectileState();
+            var state = new ProjectileState(null);
             sut.Transition(state);
             Assert.AreEqual(sut.CollisionStrategy, state);
         }

@@ -5,12 +5,12 @@ namespace BreakoutGame
 {
     public interface ICollisionStrategy
     {
-        // Or Resolve
-        void Execute(Collision2D collision);
+        void Resolve(Collision2D collision);
     }
+
     public sealed class StickySurfaceStrategy : ICollisionStrategy
     {
-        public void Execute(Collision2D collision)
+        public void Resolve(Collision2D collision)
         {
             throw new NotImplementedException();
         }
@@ -18,7 +18,7 @@ namespace BreakoutGame
 
     public sealed class NullCollisionStrategy : ICollisionStrategy
     {
-        public void Execute(Collision2D collision)
+        public void Resolve(Collision2D collision)
         {
         }
     }

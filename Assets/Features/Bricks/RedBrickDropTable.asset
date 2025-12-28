@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bd413be9ab0e3a49ab916b195e07500, type: 3}
+  m_Name: RedBrickDropTable
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.PowerUpTable
+  _dropChance: 0.1
+  _configs:
+  - Prefab: {fileID: 6877391234145714667, guid: 21ac330a748308240bd5323deca95d02,
+      type: 3}
+    Weight: 1
+  - Prefab: {fileID: -3790623952187242679, guid: c6794853b6e8c08449b0acb06615e5e8,
+      type: 3}
+    Weight: 1
+  - Prefab: {fileID: 1546018803684398318, guid: 06caf14477ed6cb43a3313170096501c,
+      type: 3}
+    Weight: 1

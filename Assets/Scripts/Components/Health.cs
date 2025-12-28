@@ -14,16 +14,16 @@ namespace BreakoutGame
         public event Action OnDied;
         public UnityEvent Destroyed;
 
-        private void Start()
-        {
-            this.OnDisableAsObservable()
-                .Subscribe(_ => Debug.Log("Disabled"));
-        }
+        //private void Start()
+        //{
+        //    this.OnDisableAsObservable()
+        //        .Subscribe(_ => ULog.Trace("Disabled"));
+        //}
 
-        private void OnDisable()
-        {
-            Debug.Log("OnDisable called");
-        }
+        //private void OnDisable()
+        //{
+        //    ULog.Trace("OnDisable called");
+        //}
 
         public void Reduce(int amount)
         {

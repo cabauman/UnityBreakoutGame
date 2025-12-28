@@ -1,19 +1,20 @@
-using System;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class ProjectilePowerUp : PowerUpPresenter//, IPowerUp
+    public sealed class ProjectilePowerUp : PowerUpPresenter
     {
-        public void Apply(GameObject target)
-        {
-            var state = new ProjectileState();
-            target.GetComponent<PowerUpStateMachine>().Transition(state);
-        }
+        [SerializeField]
+        private GameObject _prefab;
 
-        public override void ApplyEffect(PowerUpStateMachine fsm)
+        public override void ApplyEffect(GameObject go)
         {
-            var state = new ProjectileState();
+            if (!go.transform.parent.TryGetComponent<PowerUpStateMachine>(out var fsm))
+            {
+                return;
+            }
+
+            var state = new ProjectileState(_prefab);
             fsm.Transition(state);
         }
     }
@@ -21,10 +22,12 @@ namespace BreakoutGame
     public sealed class ProjectileState : IPowerUpState, ICollisionStrategy
     {
         private readonly ICollisionStrategy _strategy;
+        private readonly GameObject _prefab;
 
-        public ProjectileState()
+        public ProjectileState(GameObject prefab)
         {
             _strategy = ContactPointBounceStrategy.Instance;
+            _prefab = prefab;
         }
 
         public void Enter()
@@ -35,10 +38,15 @@ namespace BreakoutGame
         {
         }
 
-        public void Execute(Collision2D collision)
+        public void Resolve(Collision2D collision)
         {
-            _strategy.Execute(collision);
-            // TODO: spawn a projectile that moves in the direction of the normal
+            _strategy.Resolve(collision);
+
+            var position = collision.otherCollider.transform.position;
+            var targetDir = -collision.GetContact(0).normal;
+            float angle = Mathf.Atan2(targetDir.y, targetDir.x) * Mathf.Rad2Deg;
+            var rot = Quaternion.Euler(new Vector3(0, 0, angle - 90f));
+            GameObject.Instantiate(_prefab, position, rot);
         }
     }
 }

@@ -1,25 +1,32 @@
-using System;
+using GameCtor.DevToolbox;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class StickySurfacePowerUp : PowerUpPresenter//, IPowerUp
+    public sealed class StickySurfacePowerUp : PowerUpPresenter
     {
-        public void Apply(GameObject target)
+        public override void ApplyEffect(GameObject go)
         {
-            var state = new StickySurfaceState();
-            target.GetComponent<PowerUpStateMachine>().Transition(state);
-        }
+            if (!go.transform.parent.TryGetComponent<PowerUpStateMachine>(out var fsm))
+            {
+                return;
+            }
 
-        public override void ApplyEffect(PowerUpStateMachine fsm)
-        {
-            var state = new StickySurfaceState();
+            var state = new StickySurfaceState(fsm.BallParent);
             fsm.Transition(state);
         }
     }
 
     public sealed class StickySurfaceState : IPowerUpState, ICollisionStrategy
     {
+        private readonly Transform _ballParent;
+
+        public StickySurfaceState(Transform ballParent)
+        {
+            Ensure.NotNull(ballParent);
+            _ballParent = ballParent;
+        }
+
         public void Enter()
         {
         }
@@ -28,10 +35,13 @@ namespace BreakoutGame
         {
         }
 
-        public void Execute(Collision2D collision)
+        public void Resolve(Collision2D collision)
         {
-            // TODO: Set the other object to be a child of this object to simulate "sticking"
-            // The object will be accessible from the launcher component of the paddle
+            collision.rigidbody.linearVelocity = Vector2.zero;
+            collision.transform.SetParent(_ballParent);
+            var pos = collision.transform.localPosition;
+            pos.y = 0;
+            collision.transform.localPosition = pos;
         }
     }
 }

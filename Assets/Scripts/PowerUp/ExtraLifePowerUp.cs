@@ -1,14 +1,16 @@
-﻿using UnityEngine;
+﻿using GameCtor.DevToolbox;
+using UnityEngine;
 
 namespace BreakoutGame
 {
     public sealed class ExtraLifePowerUp : PowerUpPresenter
     {
-        public override void ApplyEffect(PowerUpStateMachine fsm)
+        public override void ApplyEffect(GameObject go)
         {
-            UnityEngine.Debug.Log("Extra life!");
-            //game.NumLives.Value += 1;
-            //target.GetComponent<LifeCounter>().Value += 1;
+            ULog.Trace("Extra life!");
+            var lifeTracker = GameObject.FindAnyObjectByType<LifeTracker>();
+            Ensure.NotNull(lifeTracker);
+            lifeTracker.AddLife();
         }
     }
 }

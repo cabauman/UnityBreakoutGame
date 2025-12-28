@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 58092384203437350}
   - component: {fileID: 50696475277762082}
   - component: {fileID: 114606524586847714}
-  - component: {fileID: 1041016091789358075}
+  - component: {fileID: 7566611921049597063}
   m_Layer: 10
   m_Name: Ball
   m_TagString: Untagged
@@ -138,7 +138,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1707160519486024}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 1
   m_UseAutoMass: 1
@@ -155,7 +155,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &114606524586847714
 MonoBehaviour:
@@ -166,10 +166,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1707160519486024}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da897800948560e4f957be049e6ae3fc, type: 3}
+  m_Script: {fileID: 11500000, guid: 136665147c083be49b4c446cfac81394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1041016091789358075
+  _power: {fileID: 7566611921049597063}
+--- !u!114 &7566611921049597063
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -178,7 +179,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1707160519486024}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fe5663d1d4e3d74f986e97c6f883236, type: 3}
+  m_Script: {fileID: 11500000, guid: 175b52a50d77c494e96abb4c769be9bc, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.DamageOnContact
-  _damage: 1
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.Power
+  _value: 1

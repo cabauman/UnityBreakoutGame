@@ -4,20 +4,24 @@ namespace BreakoutGame
 {
     public sealed class ContactPointBounceBehavior : MonoBehaviour, ICollisionStrategy
     {
-        private void OnCollisionEnter2D(Collision2D collision)
+        [SerializeField]
+        private float _maxBounceAngleRad = 1.30899692f; // 75 degrees
+
+        public void Resolve(Collision2D collision)
         {
-            var other = collision.rigidbody;
+            var ball = collision.rigidbody;
             var contactPoint = collision.GetContact(0);
-            other.linearVelocity = Vector2.Reflect(
-                other.linearVelocity,
-                contactPoint.normal);
-        }
-        public void Execute(Collision2D collision)
-        {
-            var other = collision.otherCollider.attachedRigidbody;
-            other.linearVelocity = Vector2.Reflect(
-                other.linearVelocity,
-                collision.GetContact(0).normal);
+
+            var planeCenter = transform.position;
+            var planeWidth = GetComponent<Collider2D>().bounds.size.x;
+            var bounceDirection = PlaneBouncingUtility.CalculateBounceDirection(
+                planeCenter,
+                planeNormal: -contactPoint.normal,
+                planeWidth,
+                contactPoint.point,
+                _maxBounceAngleRad);
+
+            ball.linearVelocity = bounceDirection * ball.linearVelocity.magnitude;
         }
     }
     // Or WeightedBounceStrategy
@@ -25,14 +29,29 @@ namespace BreakoutGame
     {
         public static readonly ContactPointBounceStrategy Instance = new();
 
-        private ContactPointBounceStrategy() { }
+        private readonly float _maxBounceAngleRad;
 
-        public void Execute(Collision2D collision)
+        private ContactPointBounceStrategy(float maxBounceAngleRad = 1.30899692f)
         {
-            var other = collision.otherCollider.attachedRigidbody;
-            other.linearVelocity = Vector2.Reflect(
-                other.linearVelocity,
-                collision.GetContact(0).normal);
+            _maxBounceAngleRad = maxBounceAngleRad;
+        }
+
+        public void Resolve(Collision2D collision)
+        {
+            var ball = collision.rigidbody;
+            var contactPoint = collision.GetContact(0);
+
+            var planeCollider = collision.otherCollider;
+            var planeCenter = planeCollider.transform.position;
+            var planeWidth = planeCollider.GetComponent<Collider2D>().bounds.size.x;
+            var bounceDirection = PlaneBouncingUtility.CalculateBounceDirection(
+                planeCenter,
+                planeNormal: -contactPoint.normal,
+                planeWidth,
+                contactPoint.point,
+                _maxBounceAngleRad);
+
+            ball.linearVelocity = bounceDirection * ball.linearVelocity.magnitude;
         }
     }
 }

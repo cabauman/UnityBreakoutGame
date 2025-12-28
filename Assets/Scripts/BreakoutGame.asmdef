@@ -2,11 +2,15 @@
     "name": "BreakoutGame",
     "rootNamespace": "BreakoutGame",
     "references": [
+        "GUID:a75edf448ca49d04f9fc862216d512ec",
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
         "GUID:77221876cc6b8244180b96e320b1bcd4",
         "GUID:eec0964c48f6f4e40bc3ec2257ccf8c5",
         "GUID:75469ad4d38634e559750d17036d5f7c",
-        "GUID:a75edf448ca49d04f9fc862216d512ec"
+        "GUID:9e24947de15b9834991c9d8411ea37cf",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:84651a3751eca9349aac36a66bba901b",
+        "GUID:80ecb87cae9c44d19824e70ea7229748"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

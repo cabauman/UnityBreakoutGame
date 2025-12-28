@@ -1,17 +1,17 @@
+using GameCtor.DevToolbox;
 using UnityEngine;
 
 namespace BreakoutGame
 {
     public class ArmoredBallPowerUp : PowerUpPresenter
     {
-        public void Apply(GameObject target)
+        public override void ApplyEffect(GameObject go)
         {
-            var state = new ArmoredBallState();
-            target.GetComponent<PowerUpStateMachine>().Transition(state);
-        }
+            if (!go.transform.parent.TryGetComponent<PowerUpStateMachine>(out var fsm))
+            {
+                return;
+            }
 
-        public override void ApplyEffect(PowerUpStateMachine fsm)
-        {
             var state = new ArmoredBallState();
             fsm.Transition(state);
         }
@@ -19,26 +19,39 @@ namespace BreakoutGame
 
     public sealed class ArmoredBallState : IPowerUpState
     {
+        private int _previousPower;
+
         public void Enter()
         {
-            // set all destructible objects (bricks) to ignore collisions with the ball (NullCollisionStrategy)
-            // set ball's DamageOnContact to very high value to ensure it can destroy any brick it touches
-            // Either access BrickManager and BallManager OR do a global search for DamageOnContact and ICollisionStrategy
-            // (or a tag or something) to identify bricks and balls indirectly.
+            ULog.Trace("Armored Ball Power-Up Activated");
+            var ballManager = GameObject.FindAnyObjectByType<BallManager>();
+            Ensure.NotNull(ballManager);
 
-            // if (collision.otherCollider.TryGetComponent<DamageOnContact>(out var component))
-            // {
-            //     component.SetDamageOverride(1_000);
-            // }
-            // if (collision.otherCollider.TryGetComponent<Health>(out var health))
-            // {
-            //     health.Reduce(1_000);
-            // }
+            if (ballManager.Balls.Count == 0)
+            {
+                return;
+            }
+
+            var mainBall = ballManager.Balls[0];
+            _previousPower = mainBall.Power;
+            mainBall.Power = 100;
+            ULog.Trace($"Armored Ball Power-Up Applied: Ball power set to 100 from {_previousPower}");
         }
 
         public void Exit()
         {
-            // NEXT: revert damage override and all destructible objects (bricks) to normal collisions with the ball
+            ULog.Trace("Armored Ball Power-Up Deactivated");
+            var ballManager = GameObject.FindAnyObjectByType<BallManager>();
+            Ensure.NotNull(ballManager);
+
+            if (ballManager.Balls.Count == 0)
+            {
+                return;
+            }
+
+            var mainBall = ballManager.Balls[0];
+            mainBall.Power = _previousPower;
+            ULog.Trace($"Armored Ball Power-Up Removed: Ball power restored to {_previousPower}");
         }
     }
 }

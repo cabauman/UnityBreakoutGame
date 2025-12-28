@@ -8,9 +8,23 @@ namespace BreakoutGame
     public sealed class Hud : MonoBehaviour
     {
         [SerializeField]
-        private GamePresenter _gamePresenter;
+        private LifeTracker _lifeTracker;
+
+        [SerializeField]
+        private GameManager _gameManager;
+
+        [SerializeField]
+        private LevelManager _levelManager;
+
         [SerializeField]
         private TextMeshProUGUI _numLivesLabel;
+
+        [SerializeField]
+        private TextMeshProUGUI _levelLabel;
+
+        [SerializeField]
+        private TextMeshProUGUI _bestTimeLabel;
+
         [SerializeField]
         private LocalizedString _livesString;
 
@@ -27,13 +41,23 @@ namespace BreakoutGame
 
         private void Start()
         {
-            //_gamePresenter.Game
-            //    .NumLives
-            //    .Subscribe(UpdateLives)
-            //    .AddTo(this);
+            _lifeTracker
+                .NumLives
+                .Subscribe(UpdateLives)
+                .AddTo(this);
+
+            _gameManager
+                .Level
+                .Subscribe(level => _levelLabel.text = $"Level: {level}")
+                .AddTo(this);
+
+            _levelManager
+                .LevelStarted
+                .Subscribe(level => UpdateBestTime(level))
+                .AddTo(this);
         }
 
-        private void UpdateLives(uint lives)
+        private void UpdateLives(int lives)
         {
             _livesString.Arguments[0] = lives;
             _livesString.RefreshString();
@@ -42,6 +66,20 @@ namespace BreakoutGame
         private void UpdateString(string localizedString)
         {
             _numLivesLabel.text = localizedString;
+        }
+
+        private void UpdateBestTime(int level)
+        {
+            var bestTimeKey = $"BestTime_Level_{level}";
+            if (PlayerPrefs.HasKey(bestTimeKey))
+            {
+                var bestTime = PlayerPrefs.GetFloat(bestTimeKey);
+                _bestTimeLabel.text = $"Best Time: {bestTime:F2}";
+            }
+            else
+            {
+                _bestTimeLabel.text = "Best Time: N/A";
+            }
         }
     }
 }

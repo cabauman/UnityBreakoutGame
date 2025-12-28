@@ -2,38 +2,54 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class NormalBounceBehavior : MonoBehaviour, ICollisionStrategy
+    public sealed class NormalBounceBehavior : MonoBehaviour
     {
-        //private void OnTriggerEnter2D(Collider2D collider)
-        //{
-        //    Debug.Log("OnTriggerEnter2D");
-        //    var other = collider.attachedRigidbody;
-        //    var contactPoints = new ContactPoint2D[1];
-        //    collider.GetContacts(contactPoints);
-        //    other.linearVelocity = Vector2.Reflect(
-        //        other.linearVelocity,
-        //        contactPoints[0].normal);
-        //}
+        private Health _health;
+
+        private void Awake()
+        {
+            _health = GetComponent<Health>();
+        }
+
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            var other = collision.rigidbody;
+            if (!collision.gameObject.TryGetComponent<Power>(out var power))
+            {
+                return;
+            }
+
+            if (_health != null)
+            {
+                var planeHealthValue = _health.Current;
+                _health.Reduce(power.Value);
+                if (power.Value > planeHealthValue)
+                {
+                    return;
+                }
+            }
+
+            if (!collision.gameObject.TryGetComponent<Ball>(out var ball))
+            {
+                return;
+            }
+
             var contactPoint = collision.GetContact(0);
-            other.linearVelocity = Vector2.Reflect(
-                other.linearVelocity,
-                contactPoint.normal);
-        }
-        public void Execute(Collision2D collision)
-        {
-            var other = collision.otherCollider.attachedRigidbody;
-            other.linearVelocity = Vector2.Reflect(
-                other.linearVelocity,
-                collision.GetContact(0).normal);
+            var planeNormal = -contactPoint.normal;
+            var ballRb = collision.rigidbody;
+            //Debug.DrawRay(contactPoint.point, planeNormal, Color.red, 2f);
+            if (Vector2.Dot(ballRb.linearVelocity, planeNormal) < 0f)
+            {
+                ballRb.linearVelocity = Vector2.Reflect(
+                    ballRb.linearVelocity,
+                    planeNormal);
+            }
         }
     }
+
     // Or ReflectBounceStrategy
     public sealed class NormalBounceStrategy : ICollisionStrategy
     {
-        public void Execute(Collision2D collision)
+        public void Resolve(Collision2D collision)
         {
             var other = collision.otherCollider.attachedRigidbody;
             other.linearVelocity = Vector2.Reflect(

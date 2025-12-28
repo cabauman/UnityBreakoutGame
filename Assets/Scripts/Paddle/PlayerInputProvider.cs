@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using R3;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace BreakoutGame
@@ -13,6 +14,14 @@ namespace BreakoutGame
     {
         [SerializeField] private InputActionReference _moveAction;
         [SerializeField] private InputActionReference _launchAction;
+        [SerializeField] private GameManager _gameManager;
+
+        private void Start()
+        {
+            _gameManager.GameLost.Subscribe(_ => this.enabled = false);
+            _gameManager.GameWon.Subscribe(_ => this.enabled = false);
+            _gameManager.GameStarted.Subscribe(_ => this.enabled = true);
+        }
 
         private void OnEnable()
         {

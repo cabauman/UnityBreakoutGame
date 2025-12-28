@@ -10,7 +10,8 @@ namespace BreakoutGame
 
     public sealed class PowerUpSpawner : MonoBehaviour
     {
-        [SerializeField] private PowerUpTable _dropTable;
+        [SerializeField]
+        private PowerUpTable _dropTable;
 
         private PowerUpFactory _factory;
         private IRandom _random;
@@ -29,8 +30,8 @@ namespace BreakoutGame
 
         public void SpawnPowerUp()
         {
-            Debug.Log("PowerUpSpawner: SpawnPowerUp called.");
-            return;
+            //ULog.Trace("PowerUpSpawner: SpawnPowerUp called.");
+            //return;
 
             float chance = _random.Next(0f, 1f);
             if (chance > _dropTable.DropChance)

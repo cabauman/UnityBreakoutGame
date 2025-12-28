@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 
 #nullable enable
 
@@ -8,6 +9,7 @@ namespace GameCtor.DevToolbox
 {
     public static class Ensure
     {
+        [HideInCallstack]
         public static void NotNull<T>([NotNull] T? obj, [CallerArgumentExpression("obj")] string paramName = "")
             where T : class
         {

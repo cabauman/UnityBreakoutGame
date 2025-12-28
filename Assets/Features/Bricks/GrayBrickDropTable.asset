@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bd413be9ab0e3a49ab916b195e07500, type: 3}
+  m_Name: GrayBrickDropTable
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.PowerUpTable
+  _dropChance: 1
+  _configs:
+  - Prefab: {fileID: 6877391234145714667, guid: 21ac330a748308240bd5323deca95d02,
+      type: 3}
+    Weight: 1
+  - Prefab: {fileID: 45971652226469939, guid: defc842080b61df449b79055c02dc1c7, type: 3}
+    Weight: 1
+  - Prefab: {fileID: 5396324220269979774, guid: 4b6f452d3135616478fd6b4fb56e6a1f,
+      type: 3}
+    Weight: 1
+  - Prefab: {fileID: 6725000941380026821, guid: e1097c7af85a0fe45861fa41cbe60523,
+      type: 3}
+    Weight: 1
