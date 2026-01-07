@@ -1,44 +1,71 @@
+using GameCtor.DevToolbox;
+using GameCtor.FuseDI;
+using R3;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class PowerUpStateMachine : MonoBehaviour
+    public sealed partial class PowerUpStateMachine : MonoBehaviour, IPostInject
     {
         [SerializeField]
         private Transform _ballParent;
 
-        private IPowerUpState _currentState;
+        [Inject]
+        private IReadOnlyLevelEvents _levelEvents;
+
+        private readonly ReactiveProperty<IPowerUpState> _currentState = new();
+
         private ICollisionStrategy _defaultCollisionStrategy;
 
         public Transform BallParent => _ballParent;
 
-        private ICollisionStrategy CollisionStrategyOverride => _currentState as ICollisionStrategy;
+        public ReadOnlyReactiveProperty<IPowerUpState> CurrentState => _currentState;
+
+        private ICollisionStrategy CollisionStrategyOverride => _currentState.Value as ICollisionStrategy;
+
         public ICollisionStrategy CollisionStrategy => CollisionStrategyOverride == null
             ? _defaultCollisionStrategy
             : CollisionStrategyOverride;
 
         private void Awake()
         {
-            //_defaultCollisionStrategy = ContactPointBounceStrategy.Instance;
+            ULog.Trace("");
             _defaultCollisionStrategy = GetComponentInChildren<ICollisionStrategy>();
-        }
-
-        public void Transition(IPowerUpState state)
-        {
-            _currentState?.Exit();
-            _currentState = state;
-            _currentState.Enter();
-        }
-
-        public void ClearMode()
-        {
-            _currentState?.Exit();
-            _currentState = null;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            ULog.Trace(collision.gameObject.name);
             CollisionStrategy.Resolve(collision);
+        }
+
+        void IPostInject.PostInject()
+        {
+            ULog.Trace("");
+            _levelEvents.LevelReady.Subscribe(isReady =>
+            {
+                if (!isReady)
+                {
+                    ClearMode();
+                }
+            })
+            .AddTo(this);
+        }
+
+        public void Transition(IPowerUpState state)
+        {
+            ULog.Trace("");
+            Ensure.NotNull(state);
+            _currentState.Value?.Exit();
+            _currentState.Value = state;
+            _currentState.Value.Enter();
+        }
+
+        public void ClearMode()
+        {
+            ULog.Trace("");
+            _currentState.Value?.Exit();
+            _currentState.Value = null;
         }
     }
 }

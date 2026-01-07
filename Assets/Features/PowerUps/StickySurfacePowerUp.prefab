@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 212538846116020936}
   - component: {fileID: 58401200314826384}
   - component: {fileID: 50682446515051932}
-  - component: {fileID: 45971652226469939}
+  - component: {fileID: 5396324220269979774}
   m_Layer: 8
-  m_Name: ArmoredBallPowerUp
+  m_Name: StickySurfacePowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1439413112383232}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.84, y: -2.64, z: -0.003187871}
+  m_LocalPosition: {x: 1.84, y: -2.64, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -37,6 +37,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &212538846116020936
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -82,6 +83,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -91,7 +93,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!58 &58401200314826384
 CircleCollider2D:
@@ -156,7 +157,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &45971652226469939
+--- !u!114 &5396324220269979774
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -165,7 +166,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1439413112383232}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 688a86616f90b5848a3e0d1ec90d2aa9, type: 3}
+  m_Script: {fileID: 11500000, guid: af24af799ba6c134cab1dfecdc31fdb9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.ArmoredBallPowerUp
-  _sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  m_EditorClassIdentifier: BreakoutGame::BreakoutGame.StickySurfacePowerUp

@@ -21,7 +21,12 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8af08ff11971055428702b443a0d16f6
-    m_Address: Assets/Features/Bricks/RedBrick.prefab
+    m_Address: brick.red
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ffa88a9bb3d6dfc4e80a873828c00347
+    m_Address: brick.metal
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

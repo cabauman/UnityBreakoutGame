@@ -1,20 +1,23 @@
 ﻿using GameCtor.DevToolbox;
+using GameCtor.FuseDI;
 using R3;
 using R3.Triggers;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace BreakoutGame
 {
     [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
-    public abstract class PowerUpPresenter : MonoBehaviour
+    public abstract partial class PowerUp : MonoBehaviour, IPostInject
     {
-        [SerializeField] private Sprite _sprite;
+        [Inject]
+        private IReadOnlyLevelEvents _levelEvents;
 
-        private void Start()
+        public ObjectPool<PowerUp> Pool { get; set; }
+
+        private void Awake()
         {
-            Ensure.NotNull(_sprite);
-
-            GetComponent<SpriteRenderer>().sprite = _sprite;
+            ULog.Trace("");
             var tag = TagHandle.GetExistingTag("Player");
             this
                 .OnTriggerEnter2DAsObservable()
@@ -23,20 +26,34 @@ namespace BreakoutGame
                 .AddTo(this);
         }
 
+        private void OnDisable()
+        {
+            ULog.Trace("");
+            Ensure.NotNull(Pool);
+            Pool.Release(this);
+        }
+
+        void IPostInject.PostInject()
+        {
+            _levelEvents.LevelReady.Subscribe(isReady =>
+            {
+                if (!isReady && this != null)
+                {
+                    gameObject.SetActive(isReady);
+                }
+            });
+        }
+
         public abstract void ApplyEffect(GameObject go);
 
-        private static void ApplyAndDestroy(PowerUpPresenter @this, Collider2D collider)
+        private static void ApplyAndDestroy(PowerUp @this, Collider2D collider)
         {
-            // TODO: Replace this with a bool getter
-            var ballManager = FindAnyObjectByType<BallManager>();
-            Ensure.NotNull(ballManager);
-
-            if (ballManager.Balls.Count > 0)
+            if (@this._levelEvents.LevelReady.CurrentValue)
             {
                 @this.ApplyEffect(collider.gameObject);
             }
 
-            Destroy(@this.gameObject);
+            @this.gameObject.SetActive(false);
         }
     }
 }

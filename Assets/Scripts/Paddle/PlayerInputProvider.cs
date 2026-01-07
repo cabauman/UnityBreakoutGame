@@ -1,4 +1,6 @@
-﻿using R3;
+﻿using GameCtor.DevToolbox;
+using GameCtor.FuseDI;
+using R3;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,42 +9,47 @@ namespace BreakoutGame
     public interface IPlayerInputProvider
     {
         Vector2 GetHorizontalInput();
-        bool IsLaunchPressed();
     }
 
-    public sealed class PlayerInputProvider : MonoBehaviour, IPlayerInputProvider
+    // TODO: Consider removing this abstraction
+    public sealed partial class PlayerInputProvider : MonoBehaviour, IPlayerInputProvider, IPostInject
     {
-        [SerializeField] private InputActionReference _moveAction;
-        [SerializeField] private InputActionReference _launchAction;
-        [SerializeField] private GameManager _gameManager;
+        [SerializeField]
+        private InputActionReference _moveAction;
 
-        private void Start()
+        [Inject]
+        private GameEvents _gameEvents;
+
+        [Inject]
+        private LevelEvents _levelEvents;
+
+        private void Awake()
         {
-            _gameManager.GameLost.Subscribe(_ => this.enabled = false);
-            _gameManager.GameWon.Subscribe(_ => this.enabled = false);
-            _gameManager.GameStarted.Subscribe(_ => this.enabled = true);
+            Ensure.NotNull(_moveAction);
         }
 
         private void OnEnable()
         {
             _moveAction.action.Enable();
-            _launchAction.action.Enable();
         }
 
         private void OnDisable()
         {
             _moveAction.action.Disable();
-            _launchAction.action.Disable();
+        }
+
+        void IPostInject.PostInject()
+        {
+            Ensure.NotNull(_gameEvents);
+            Ensure.NotNull(_levelEvents);
+
+            _levelEvents.LevelReady.Subscribe(isReady => this.enabled = isReady);
+            _gameEvents.IsPaused.Subscribe(isPaused => this.enabled = !isPaused);
         }
 
         public Vector2 GetHorizontalInput()
         {
             return _moveAction.action.ReadValue<Vector2>();
-        }
-
-        public bool IsLaunchPressed()
-        {
-            return _launchAction.action.triggered;
         }
     }
 }

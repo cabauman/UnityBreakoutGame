@@ -1,20 +1,19 @@
-﻿using R3;
+﻿using GameCtor.FuseDI;
+using R3;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 
 namespace BreakoutGame
 {
-    public sealed class Hud : MonoBehaviour
+    public sealed partial class Hud : MonoBehaviour
     {
         [SerializeField]
         private LifeTracker _lifeTracker;
 
+        // TODO: Consider replacing this with a GameState or similar
         [SerializeField]
         private GameManager _gameManager;
-
-        [SerializeField]
-        private LevelManager _levelManager;
 
         [SerializeField]
         private TextMeshProUGUI _numLivesLabel;
@@ -27,6 +26,9 @@ namespace BreakoutGame
 
         [SerializeField]
         private LocalizedString _livesString;
+
+        [Inject]
+        private LevelEvents _levelEvents;
 
         void OnEnable()
         {
@@ -51,7 +53,7 @@ namespace BreakoutGame
                 .Subscribe(level => _levelLabel.text = $"Level: {level}")
                 .AddTo(this);
 
-            _levelManager
+            _levelEvents
                 .LevelStarted
                 .Subscribe(level => UpdateBestTime(level))
                 .AddTo(this);

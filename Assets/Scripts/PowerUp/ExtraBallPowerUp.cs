@@ -1,38 +1,41 @@
 ﻿using GameCtor.DevToolbox;
+using GameCtor.FuseDI;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class ExtraBallPowerUp : PowerUpPresenter
+    public sealed partial class ExtraBallPowerUp : PowerUp
     {
+        [Inject]
+        private BallManager _ballManager;
+
         public override void ApplyEffect(GameObject go)
         {
-            ULog.Trace("Extra ball!");
+            ULog.Trace("");
 
-            var ballManager = FindAnyObjectByType<BallManager>();
-            Ensure.NotNull(ballManager);
+            Ensure.NotNull(_ballManager);
 
-            if (ballManager.Balls.Count == 0)
+            if (_ballManager.Balls.Count == 0)
             {
                 return;
             }
 
-            var mainBall = ballManager.Balls[0];
+            var mainBall = _ballManager.Balls[0];
             var ballSpawnData = new BallSpawnData
             {
                 Position = mainBall.transform.position,
                 Parent = null,
             };
 
-            ballManager.SpawnBallCmd.Execute(ballSpawnData);
+            _ballManager.SpawnBallCmd.Execute(ballSpawnData);
 
-            var ballLauncher = go.GetComponent<BallLauncher>();
+            var ballLauncher = go.transform.parent.GetComponent<BallLauncher>();
             if (ballLauncher != null && ballLauncher.IsAttached(mainBall.transform))
             {
                 ballLauncher.Launch();
             }
 
-            var bonusBall = ballManager.Balls[ballManager.Balls.Count - 1];
+            var bonusBall = _ballManager.Balls[_ballManager.Balls.Count - 1];
             var mainVelocity = mainBall.GetComponent<Rigidbody2D>().linearVelocity;
             var angleOffsetRad = Mathf.Deg2Rad * 10f;
             var cosAngle = Mathf.Cos(angleOffsetRad);
@@ -40,6 +43,7 @@ namespace BreakoutGame
             var rotatedVelocity = new Vector2(
                 mainVelocity.x * cosAngle - mainVelocity.y * sinAngle,
                 mainVelocity.x * sinAngle + mainVelocity.y * cosAngle);
+
             bonusBall.GetComponent<Rigidbody2D>().linearVelocity = rotatedVelocity;
         }
     }

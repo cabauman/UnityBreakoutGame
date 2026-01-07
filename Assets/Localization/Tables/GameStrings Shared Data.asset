@@ -19,6 +19,66 @@ MonoBehaviour:
     m_Key: hud.lives
     m_Metadata:
       m_Items: []
+  - m_Id: 7815871516758016
+    m_Key: ui.resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7816040207470592
+    m_Key: ui.pause
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7816434916642816
+    m_Key: hud.level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7816889784717312
+    m_Key: ui.retry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7817023553654784
+    m_Key: ui.play-again
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7817288163905536
+    m_Key: ui.play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7817386310619136
+    m_Key: ui.exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7817529411883008
+    m_Key: ui.best-times
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7818078530162688
+    m_Key: ui.return-to-main-menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7818456088825856
+    m_Key: power-up.magnet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7818696036569088
+    m_Key: power-up.grow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7818884587311104
+    m_Key: power-up.shrink
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7819048806895616
+    m_Key: power-up.projectile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7819198669377536
+    m_Key: power-up.attach
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7819291518685184
+    m_Key: power-up.clone
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

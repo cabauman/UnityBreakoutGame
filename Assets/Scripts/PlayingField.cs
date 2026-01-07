@@ -1,5 +1,4 @@
-﻿using R3;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace BreakoutGame
 {
@@ -7,10 +6,13 @@ namespace BreakoutGame
     {
         [SerializeField]
         private Transform _leftWall;
+
         [SerializeField]
         private Transform _rightWall;
+
         [SerializeField]
         private Transform _topWall;
+
         [SerializeField]
         private Transform _deadZone;
 

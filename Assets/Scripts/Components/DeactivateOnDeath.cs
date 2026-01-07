@@ -1,5 +1,4 @@
 using GameCtor.DevToolbox;
-using System;
 using UnityEngine;
 
 namespace BreakoutGame
@@ -7,7 +6,12 @@ namespace BreakoutGame
     [RequireComponent(typeof(Health))]
     public sealed class DeactivateOnDeathAction : MonoBehaviour
     {
-        private void Start()
+        public void Execute(GameObject victim)
+        {
+            victim.SetActive(false);
+        }
+
+        private void Awake()
         {
             var health = GetComponent<Health>();
             Ensure.NotNull(health);
@@ -17,11 +21,6 @@ namespace BreakoutGame
         private void OnDied()
         {
             gameObject.SetActive(false);
-        }
-
-        public void Execute(GameObject victim)
-        {
-            victim.SetActive(false);
         }
     }
 }

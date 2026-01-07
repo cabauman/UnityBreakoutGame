@@ -22,6 +22,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.gamector.fuse-di": {
+      "version": "file:C:/Users/colt45/Desktop/Dev/Unity/Scratch/Unity.MyUpmPackages/Packages/FuseDI",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.github-glitchenzo.nugetforunity": {
       "version": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
       "depth": 0,

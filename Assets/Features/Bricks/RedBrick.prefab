@@ -67,6 +67,12 @@ PrefabInstance:
       propertyPath: m_Color.g
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5852876952459195666, guid: 3a1f9fc061536dd4d826c3affda54aba,
+        type: 3}
+      propertyPath: _dropTable
+      value: 
+      objectReference: {fileID: 11400000, guid: ed23919ffcec2a049b2795ba70dc9a3a,
+        type: 2}
     - target: {fileID: 8088578564873798403, guid: 3a1f9fc061536dd4d826c3affda54aba,
         type: 3}
       propertyPath: _hp

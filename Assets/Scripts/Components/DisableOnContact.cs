@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace BreakoutGame
@@ -7,6 +6,12 @@ namespace BreakoutGame
     {
         private void OnTriggerEnter2D(Collider2D collider)
         {
+            // Only disable objects that are moving downwards
+            if (collider.attachedRigidbody.linearVelocityY >= 0f)
+            {
+                return;
+            }
+
             if (!collider.CompareTag("Player"))
             {
                 collider.gameObject.SetActive(false);

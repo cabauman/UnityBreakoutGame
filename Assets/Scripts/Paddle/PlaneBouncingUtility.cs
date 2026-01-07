@@ -1,34 +1,7 @@
 ﻿using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace BreakoutGame
 {
-    //public interface IBallPaddleCollisionStrategy
-    //{
-    //    void HandleCollision(Ball ball, Paddle paddle, Vector2 point);
-    //}
-
-    //public class NormalBounceStrategy : IBallPaddleCollisionStrategy
-    //{
-    //    //private readonly float _maxBounceAngleDeg = 80f;
-    //    private readonly float _maxBounceAngleRad = 75f * Mathf.Deg2Rad;
-    //    private readonly float _bounceForceMag = 1f;
-
-    //    public void HandleCollision(Ball ball, Paddle paddle, Vector2 point)
-    //    {
-    //        var paddleCenter = (Vector2)paddle.GraphicTrfm.position;
-    //        var bounceForce = PlaneBouncingUtility.CalculateBounceDirection(
-    //            paddleCenter,
-    //            Vector2.up,
-    //            paddle.Width,
-    //            point,
-    //            _maxBounceAngleRad,
-    //            _bounceForceMag
-    //        );
-    //        ball.SetForce(bounceForce);
-    //    }
-    //}
-
     /// <summary>
     /// Utility class for calculating bounce directions off arbitrarily oriented planes.
     /// Generalizes the bounce calculation based on signed distance from plane center.

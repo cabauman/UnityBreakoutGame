@@ -12,6 +12,10 @@ namespace BreakoutGame
         private void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
+        }
+
+        private void OnEnable()
+        {
             _rb.linearVelocity = transform.up * _speed;
         }
     }

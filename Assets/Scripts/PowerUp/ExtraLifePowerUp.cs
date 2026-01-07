@@ -1,16 +1,19 @@
 ﻿using GameCtor.DevToolbox;
+using GameCtor.FuseDI;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class ExtraLifePowerUp : PowerUpPresenter
+    public sealed partial class ExtraLifePowerUp : PowerUp
     {
+        [Inject]
+        private LifeTracker _lifeTracker;
+
         public override void ApplyEffect(GameObject go)
         {
-            ULog.Trace("Extra life!");
-            var lifeTracker = GameObject.FindAnyObjectByType<LifeTracker>();
-            Ensure.NotNull(lifeTracker);
-            lifeTracker.AddLife();
+            ULog.Trace("");
+            Ensure.NotNull(_lifeTracker);
+            _lifeTracker.AddLife();
         }
     }
 }

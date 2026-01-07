@@ -1,19 +1,21 @@
-﻿using R3;
+﻿using GameCtor.DevToolbox;
+using GameCtor.FuseDI;
+using R3;
 using TMPro;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class StopwatchUI : MonoBehaviour
+    public sealed partial class StopwatchUI : MonoBehaviour
     {
         [SerializeField]
         private TextMeshProUGUI _label;
 
         [SerializeField]
-        private LevelManager _levelManager;
-
-        [SerializeField]
         private float _refreshInterval = 0.1f;
+
+        [Inject]
+        private LevelEvents _levelEvents;
 
         private bool _isRunning;
         private float _elapsedSeconds;
@@ -57,14 +59,20 @@ namespace BreakoutGame
             _label.text = $"{_elapsedSeconds:F2}s";
         }
 
+        private void Awake()
+        {
+            ULog.Trace("");
+        }
+
         private void Start()
         {
-            Begin();
-            _levelManager.LevelStarted.Subscribe(_ => Begin());
+            ULog.Trace("");
+            //Begin();
+            _levelEvents.LevelStarted.Subscribe(_ => Begin());
             //_levelManager.LevelResumed.Subscribe(_ => Resume());
             //_levelManager.LifeLost.Subscribe(_ => Stop());
-            _levelManager.LevelPassed.Subscribe(_ => Stop());
-            _levelManager.LevelFailed.Subscribe(_ => Stop());
+            _levelEvents.LevelPassed.Subscribe(_ => Stop());
+            _levelEvents.LevelFailed.Subscribe(_ => Stop());
         }
 
         private void Update() => Tick(Time.deltaTime);

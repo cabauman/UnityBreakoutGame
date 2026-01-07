@@ -11,5 +11,20 @@ namespace GameCtor.DevToolbox
         {
             return new Vector3(x ?? original.x, y ?? original.y, z ?? original.z);
         }
+
+        public static void SetX(this Transform original, float x)
+        {
+            original.position = new Vector3(x, original.position.y, original.position.z);
+        }
+
+        public static void SetY(this Transform original, float y)
+        {
+            original.position = new Vector3(original.position.x, y, original.position.z);
+        }
+
+        public static void SetZ(this Transform original, float z)
+        {
+            original.position = new Vector3(original.position.x, original.position.y, z);
+        }
     }
 }

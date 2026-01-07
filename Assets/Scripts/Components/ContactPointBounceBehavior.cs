@@ -24,7 +24,8 @@ namespace BreakoutGame
             ball.linearVelocity = bounceDirection * ball.linearVelocity.magnitude;
         }
     }
-    // Or WeightedBounceStrategy
+
+    // TODO: Or WeightedBounceStrategy
     public sealed class ContactPointBounceStrategy : ICollisionStrategy
     {
         public static readonly ContactPointBounceStrategy Instance = new();

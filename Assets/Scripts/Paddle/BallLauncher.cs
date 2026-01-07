@@ -1,11 +1,12 @@
 ﻿using GameCtor.DevToolbox;
-using System;
+using GameCtor.FuseDI;
+using R3;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace BreakoutGame
 {
-    public sealed class BallLauncher : MonoBehaviour
+    public sealed partial class BallLauncher : MonoBehaviour, IPostInject
     {
         [SerializeField]
         private InputActionReference _launchInput;
@@ -15,6 +16,9 @@ namespace BreakoutGame
 
         [SerializeField]
         private float _launchSpeed = 6f;
+
+        [Inject]
+        private LevelEvents _levelEvents;
 
         public void Launch()
         {
@@ -26,16 +30,27 @@ namespace BreakoutGame
             return trfm.parent == _ballParent;
         }
 
-        private void OnEnable()
+        private void Awake()
         {
             Ensure.NotNull(_launchInput);
             Ensure.NotNull(_ballParent);
+        }
+
+        private void OnEnable()
+        {
+            _launchInput.action.Enable();
             _launchInput.action.performed += OnLaunchPerformed;
         }
 
         private void OnDisable()
         {
+            _launchInput.action.Disable();
             _launchInput.action.performed -= OnLaunchPerformed;
+        }
+
+        void IPostInject.PostInject()
+        {
+            _levelEvents.LevelReady.Subscribe(value => this.enabled = value).AddTo(this);
         }
 
         private void OnLaunchPerformed(InputAction.CallbackContext context)
@@ -44,9 +59,9 @@ namespace BreakoutGame
             {
                 Transform ballTransform = _ballParent.GetChild(i);
                 ballTransform.SetParent(null);
+
                 if (ballTransform.TryGetComponent<Rigidbody2D>(out var rb))
                 {
-                    //rb.linearVelocity = _velocity;
                     var planeWidth = GetComponentInChildren<Collider2D>().bounds.size.x;
                     var direction = PlaneBouncingUtility.CalculateBounceDirection(
                         planeCenter: transform.position,

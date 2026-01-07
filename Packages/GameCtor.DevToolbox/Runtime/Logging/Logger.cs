@@ -1,11 +1,8 @@
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 #nullable enable
 
@@ -84,6 +81,7 @@ namespace GameCtor.DevToolbox
     {
         [ThreadStatic]
         private static StringBuilder _sb = new(256);
+
         public InterpolatedStringHandler(
             int literalLength,
             int formattedCount,
@@ -191,7 +189,7 @@ namespace GameCtor.DevToolbox
         [Conditional("ULOG_LEVEL_TRACE")]
         public static void Trace(
             string message,
-            UnityEngine.Object context = null,
+            UnityEngine.Object? context = null,
             [CallerFilePath] string callerFilePath = "",
             [CallerMemberName] string callerMemberName = "",
             [CallerLineNumber] int callerLineNumber = 0)
@@ -211,7 +209,7 @@ namespace GameCtor.DevToolbox
         [Conditional("ULOG_LEVEL_DEBUG")]
         public static void Debug(
             string message,
-            UnityEngine.Object context = null,
+            UnityEngine.Object? context = null,
             [CallerFilePath] string callerFilePath = "",
             [CallerMemberName] string callerMemberName = "",
             [CallerLineNumber] int callerLineNumber = 0)
@@ -220,20 +218,20 @@ namespace GameCtor.DevToolbox
         }
 
         [HideInCallstack]
-        //[Conditional("ULOG_LEVEL_TRACE")]
-        //[Conditional("ULOG_LEVEL_DEBUG")]
-        //[Conditional("ULOG_LEVEL_INFO")]
+        [Conditional("ULOG_LEVEL_TRACE")]
+        [Conditional("ULOG_LEVEL_DEBUG")]
+        [Conditional("ULOG_LEVEL_INFO")]
         public static void Info(InterpolatedStringHandler handler)
         {
             UnityEngine.Debug.Log(handler.ToString());
         }
         [HideInCallstack]
-        //[Conditional("ULOG_LEVEL_TRACE")]
-        //[Conditional("ULOG_LEVEL_DEBUG")]
-        //[Conditional("ULOG_LEVEL_INFO")]
+        [Conditional("ULOG_LEVEL_TRACE")]
+        [Conditional("ULOG_LEVEL_DEBUG")]
+        [Conditional("ULOG_LEVEL_INFO")]
         public static void Info(
             string message,
-            UnityEngine.Object context = null,
+            UnityEngine.Object? context = null,
             [CallerFilePath] string callerFilePath = "",
             [CallerMemberName] string callerMemberName = "",
             [CallerLineNumber] int callerLineNumber = 0)
@@ -257,7 +255,7 @@ namespace GameCtor.DevToolbox
         [Conditional("ULOG_LEVEL_WARN")]
         public static void Warn(
             string message,
-            UnityEngine.Object context = null,
+            UnityEngine.Object? context = null,
             [CallerFilePath] string callerFilePath = "",
             [CallerMemberName] string callerMemberName = "",
             [CallerLineNumber] int callerLineNumber = 0)
@@ -283,7 +281,7 @@ namespace GameCtor.DevToolbox
         [Conditional("ULOG_LEVEL_ERROR")]
         public static void Error(
             string message,
-            UnityEngine.Object context = null,
+            UnityEngine.Object? context = null,
             [CallerFilePath] string callerFilePath = "",
             [CallerMemberName] string callerMemberName = "",
             [CallerLineNumber] int callerLineNumber = 0)

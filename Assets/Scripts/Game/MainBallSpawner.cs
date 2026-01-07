@@ -1,6 +1,6 @@
 ﻿using GameCtor.DevToolbox;
+using GameCtor.FuseDI;
 using R3;
-using System;
 using UnityEngine;
 
 namespace BreakoutGame
@@ -11,43 +11,53 @@ namespace BreakoutGame
         public Transform Parent;
     }
 
-    public sealed class MainBallSpawner : MonoBehaviour
+    public sealed partial class MainBallSpawner : MonoBehaviour, IPostInject
     {
         [SerializeField]
         private Transform _spawnPoint;
 
-        [SerializeField]
-        private LifeTracker _lifeTracker;
+        [Inject]
+        private LevelEvents _levelEvents;
 
         [SerializeField]
         private BallManager _ballManager;
 
         [SerializeField]
-        private GameManager _gameManager;
+        private LifeTracker _lifeTracker;
 
-        [SerializeField]
-        private LevelManager _levelManager;
+        private void Awake()
+        {
+            _lifeTracker.NumLives
+                .Pairwise()
+                .Where(static x => x.Current > 0 && x.Current < x.Previous)
+                .Subscribe(_ =>
+                {
+                    var data = new BallSpawnData
+                    {
+                        Position = _spawnPoint.position,
+                        Parent = _spawnPoint
+                    };
 
-        //private void Awake()
-        //{
-        //    return;
-        //    _lifeTracker.NumLives
-        //        .Pairwise()
-        //        .Where(static x => x.Current > 0 && x.Current < x.Previous)
-        //        .AsUnitObservable()
-        //        .Delay(TimeSpan.FromSeconds(1))
-        //        .Merge(_levelManager.Started)
-        //        //.Prepend(Unit.Default)
-        //        .Subscribe(_ =>
-        //        {
-        //            ULog.Trace("MainBallSpawner: Spawning ball.");
-        //            var data = new BallSpawnData
-        //            {
-        //                Position = _spawnPoint.position,
-        //                Parent = _spawnPoint
-        //            };
-        //            _ballManager.SpawnBallCmd.Execute(data);
-        //        });
-        //}
+                    ULog.Trace("Spawning ball.");
+                    _ballManager.SpawnBallCmd.Execute(data);
+                });
+        }
+
+        void IPostInject.PostInject()
+        {
+            ULog.Trace("Subscribing to LevelStarted event to spawn main ball.");
+            _levelEvents.LevelStarted
+                .Subscribe(_ =>
+                {
+                    var data = new BallSpawnData
+                    {
+                        Position = _spawnPoint.position,
+                        Parent = _spawnPoint
+                    };
+
+                    ULog.Trace($"Spawning ball at {data.Position}");
+                    _ballManager.SpawnBallCmd.Execute(data);
+                });
+        }
     }
 }

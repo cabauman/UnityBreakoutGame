@@ -1,19 +1,20 @@
 using GameCtor.DevToolbox;
+using GameCtor.FuseDI;
 using R3;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class Respawner : MonoBehaviour
+    public sealed partial class Respawner : MonoBehaviour
     {
-        [SerializeField]
-        private IReadOnlyLevelEvents _levelEvents;
-
         [SerializeField]
         private BallManager _ballManager;
 
         [SerializeField]
         private LifeTracker _lifeTracker;
+
+        [Inject]
+        private LevelEvents _levelEvents;
 
         private void Awake()
         {

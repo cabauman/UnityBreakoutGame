@@ -1,37 +1,32 @@
 using GameCtor.DevToolbox;
+using GameCtor.FuseDI;
 using R3;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class BestTimeSaver : MonoBehaviour
+    public sealed partial class BestTimeSaver : MonoBehaviour, IPostInject
     {
-        [SerializeField]
-        private IReadOnlyLevelEvents _levelEvents;
-
-        [SerializeField]
-        private LevelManager _levelManager;
+        [Inject]
+        private LevelEvents _levelEvents;
 
         [SerializeField]
         private StopwatchUI _stopwatch;
 
-        public ReactiveProperty<float> BestTime { get; } = new();
-
-        private void Start()
+        void IPostInject.PostInject()
         {
+            Ensure.NotNull(_levelEvents);
+            Ensure.NotNull(_stopwatch);
+
             //_levelEvents.LevelPassed
             //    .Subscribe(level => SaveBestTime(level))
             //    .AddTo(this);
-
-            _levelManager.LevelPassed
-                .Subscribe(level => SaveBestTime(level))
-                .AddTo(this);
         }
 
-        private void SaveBestTime(int level)
+        public bool SaveBestTime(int level)
         {
             var bestTimeKey = $"BestTime_Level_{level}";
-            Debug.Log($"Checking best time for level {level}");
+            ULog.Trace($"Checking best time for level {level}");
             var currentTime = _stopwatch.ElapsedSeconds;
             if (PlayerPrefs.HasKey(bestTimeKey))
             {
@@ -40,13 +35,17 @@ namespace BreakoutGame
                 {
                     PlayerPrefs.SetFloat(bestTimeKey, currentTime);
                     ULog.Info($"New best time for level {level}: {currentTime} seconds");
+                    return true;
                 }
             }
             else
             {
                 PlayerPrefs.SetFloat(bestTimeKey, currentTime);
                 ULog.Info($"First recorded time for level {level}: {currentTime} seconds");
+                return true;
             }
+
+            return false;
         }
     }
 }

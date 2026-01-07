@@ -16,12 +16,18 @@ MonoBehaviour:
   _configs:
   - Prefab: {fileID: 6877391234145714667, guid: 21ac330a748308240bd5323deca95d02,
       type: 3}
-    Weight: 1
+    Weight: 0
   - Prefab: {fileID: 45971652226469939, guid: defc842080b61df449b79055c02dc1c7, type: 3}
-    Weight: 1
+    Weight: 0
   - Prefab: {fileID: 5396324220269979774, guid: 4b6f452d3135616478fd6b4fb56e6a1f,
       type: 3}
-    Weight: 1
+    Weight: 0
   - Prefab: {fileID: 6725000941380026821, guid: e1097c7af85a0fe45861fa41cbe60523,
       type: 3}
+    Weight: 0
+  - Prefab: {fileID: -3790623952187242679, guid: c6794853b6e8c08449b0acb06615e5e8,
+      type: 3}
     Weight: 1
+  - Prefab: {fileID: -3790623952187242679, guid: acb90c87bde69614d9e83e4ddcf24bfd,
+      type: 3}
+    Weight: 2

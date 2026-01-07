@@ -15,12 +15,10 @@ namespace BreakoutGame
         private Ball _ballPrefab;
 
         [SerializeField]
-        private Ball _mainBall;
-
-        [SerializeField]
         private LifeTracker _lifeTracker;
 
         private ObjectPool<Ball> _ballPool;
+        private bool _isQuitting = false;
 
         public ReadOnlyReactiveProperty<int> NumBallsInPlay { get; private set; }
 
@@ -28,6 +26,7 @@ namespace BreakoutGame
 
         public IReadOnlyList<Ball> Balls => _balls;
 
+        // TODO: Remove if not used
         public Ball Spawn(Vector3 position)
         {
             var ball = _ballPool.Get();
@@ -86,12 +85,18 @@ namespace BreakoutGame
                     o1.Select(static _ => 1),
                     o2.Select(static _ => -1))
                 .Scan(static (acc, val) => acc + val)
+                .Where(_ => !_isQuitting)
                 .ToReadOnlyReactiveProperty(1);
+        }
+
+        private void OnApplicationQuit()
+        {
+            _isQuitting = true;
         }
 
         private Ball SpawnBall(BallSpawnData data)
         {
-            ULog.Trace($"BallManager: Instantiating bonus ball at {data.Position}.");
+            ULog.Trace($"Position: {data.Position}");
             var ball = _ballPool.Get();
             ball.transform.position = data.Position;
             ball.transform.SetParent(data.Parent, true);

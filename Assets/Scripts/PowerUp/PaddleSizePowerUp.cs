@@ -1,56 +1,58 @@
 ﻿using GameCtor.DevToolbox;
-using R3;
-using System;
 using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class PaddleSizePowerUp : PowerUpPresenter
+    public sealed class PaddleSizePowerUp : PowerUp
     {
-        private readonly float _widthMultiplier = 1.5f;
-        private readonly float _effectDuration = 5f;
+        [SerializeField]
+        private float _widthMultiplier = 1.4f;
+
+        [SerializeField]
+        private float _effectDuration = 5f;
 
         public override void ApplyEffect(GameObject go)
         {
-            ULog.Trace("Paddle size increased!");
+            ULog.Trace("");
+
+            if (!go.transform.parent.TryGetComponent<PowerUpStateMachine>(out var fsm))
+            {
+                return;
+            }
+
             var renderer = go.GetComponentInChildren<SpriteRenderer>();
-            var scale = renderer.transform.localScale;
-            scale.x *= _widthMultiplier;
-            renderer.transform.localScale = scale;
-            Observable
-                .Timer(TimeSpan.FromSeconds(_effectDuration))
-                .Subscribe(_ =>
-                {
-                    scale = renderer.transform.localScale;
-                    scale.x /= _widthMultiplier;
-                    renderer.transform.localScale = scale;
-                });
-
-            //target.AddComponent<IncreaseWidthModifier>().Duration = _effectDuration;
+            var state = new PaddleSizeState(renderer.transform, _widthMultiplier);
+            fsm.Transition(state);
         }
     }
 
-    // Or IncreaseWidthAttachment
-    // Or IncreaseWidthEffect
-    // Or IncreaseWidthBehavior
-    public class IncreaseWidthModifier : TemporaryEffect
+    public sealed class PaddleSizeState : IPowerUpState
     {
-        protected void OnEnable()
+        private readonly Transform _transform;
+        private readonly float _widthMultiplier;
+
+        public PaddleSizeState(Transform transform, float widthMultiplier)
         {
-            transform.localScale *= 1.3f;
+            _transform = transform;
+            _widthMultiplier = widthMultiplier;
         }
 
-        protected void OnDestroy()
+        public string Name => "Grow";
+
+        public void Enter()
         {
-            transform.localScale /= 1.3f;
+            ULog.Trace("");
+            var scale = _transform.localScale;
+            scale.x *= _widthMultiplier;
+            _transform.localScale = scale;
+        }
+
+        public void Exit()
+        {
+            ULog.Trace("");
+            var scale = _transform.localScale;
+            scale.x /= _widthMultiplier;
+            _transform.localScale = scale;
         }
     }
-
-    // public class IncreaseWidthPowerUp : MonoBehaviour, IPowerUpItem
-    // {
-    //     public void Apply(GameObject target)
-    //     {
-    //         target.AddComponent<IncreaseWidthModifier>().Duration = 10f;
-    //     }
-    // }
 }

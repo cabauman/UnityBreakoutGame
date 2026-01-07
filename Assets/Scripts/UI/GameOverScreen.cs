@@ -4,10 +4,11 @@ using R3;
 using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
+using GameCtor.FuseDI;
 
 namespace BreakoutGame
 {
-    public sealed class GameOverScreen : MonoBehaviour
+    public sealed partial class GameOverScreen : MonoBehaviour
     {
         [Header("Object References")]
 
@@ -15,7 +16,7 @@ namespace BreakoutGame
         private GameObject _screen;
 
         [SerializeField]
-        private GameManager _gamePresenter;
+        private GameManager _gameManager;
 
         [SerializeField]
         private TextMeshProUGUI _gameWonLabel;
@@ -31,25 +32,28 @@ namespace BreakoutGame
         [SerializeField]
         private float _delayBeforeDisplayingPlayAgainButton = 3f;
 
+        [Inject]
+        private GameEvents _gameEvents;
+
         private void Start()
         {
-            _gamePresenter
+            _gameEvents
                 .GameWon
                 .Subscribe(_ => _gameWonLabel.gameObject.SetActive(true))
                 .AddTo(this);
 
-            _gamePresenter
+            _gameEvents
                 .GameLost
                 .Subscribe(_ => _gameLostLabel.gameObject.SetActive(true))
                 .AddTo(this);
 
             Observable
-                .Merge(_gamePresenter.GameWon, _gamePresenter.GameLost)
+                .Merge(_gameEvents.GameWon, _gameEvents.GameLost)
                 .Subscribe(_ => _screen.SetActive(true))
                 .AddTo(this);
 
             Observable
-                .Merge(_gamePresenter.GameWon, _gamePresenter.GameLost)
+                .Merge(_gameEvents.GameWon, _gameEvents.GameLost)
                 .Delay(TimeSpan.FromSeconds(_delayBeforeDisplayingPlayAgainButton))
                 .Subscribe(_ => _playAgainButton.gameObject.SetActive(true))
                 .AddTo(this);
@@ -61,7 +65,7 @@ namespace BreakoutGame
 
         private void OnPlayAgainClicked()
         {
-            _gamePresenter.Play().Forget();
+            _gameManager.Play().Forget();
             HideUI();
         }
 

@@ -6,7 +6,7 @@ namespace BreakoutGame
     public class PowerUpConfig
     {
         [SearchContext("p: t:PowerUp", "asset")]
-        public PowerUpPresenter Prefab;
+        public PowerUp Prefab;
         public int Weight;
     }
 }

@@ -1,5 +1,3 @@
-using R3;
-using R3.Triggers;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,22 +6,26 @@ namespace BreakoutGame
 {
     public sealed class Health : MonoBehaviour
     {
-        [SerializeField] private int _hp = 1;
+        [SerializeField]
+        private int _hp = 1;
+
+        private int _maxHp;
+
         public int Current => _hp;
 
+        // TODO: Choose one
         public event Action OnDied;
         public UnityEvent Destroyed;
 
-        //private void Start()
-        //{
-        //    this.OnDisableAsObservable()
-        //        .Subscribe(_ => ULog.Trace("Disabled"));
-        //}
+        private void Awake()
+        {
+            _maxHp = _hp;
+        }
 
-        //private void OnDisable()
-        //{
-        //    ULog.Trace("OnDisable called");
-        //}
+        private void OnDisable()
+        {
+            _hp = _maxHp;
+        }
 
         public void Reduce(int amount)
         {

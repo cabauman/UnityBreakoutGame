@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using GameCtor.DevToolbox;
+using GameCtor.FuseDI;
+using System.Linq;
 using UnityEngine;
 
 namespace BreakoutGame
@@ -8,49 +10,45 @@ namespace BreakoutGame
         void SpawnPowerUp(PowerUpTable spawnTable, Vector3 position);
     }
 
-    public sealed class PowerUpSpawner : MonoBehaviour
+    public sealed partial class PowerUpSpawner : MonoBehaviour
     {
         [SerializeField]
         private PowerUpTable _dropTable;
 
+        [Inject]
         private PowerUpFactory _factory;
+
+        [Inject]
         private IRandom _random;
-
-        private void Awake()
-        {
-            _factory = new PowerUpFactory();
-            _random = new UnityRandom();
-        }
-
-        //public PowerUpSpawner(PowerUpFactory factory, IRandom random)
-        //{
-        //    _factory = factory;
-        //    _random = random;
-        //}
 
         public void SpawnPowerUp()
         {
-            //ULog.Trace("PowerUpSpawner: SpawnPowerUp called.");
-            //return;
-
+            ULog.Trace("");
             float chance = _random.Next(0f, 1f);
             if (chance > _dropTable.DropChance)
             {
                 return;
             }
 
-            PowerUpPresenter prefab = GetRandomPowerUpConfig();
+            PowerUp prefab = GetRandomPowerUpConfig();
             if (prefab != null)
             {
                 _factory.Create(prefab, transform.position);
             }
         }
 
-        private PowerUpPresenter GetRandomPowerUpConfig()
+        private void Awake()
+        {
+            Ensure.NotNull(_dropTable);
+        }
+
+        private PowerUp GetRandomPowerUpConfig()
         {
             int totalWeight = _dropTable.Configs.Sum(item => item.Weight);
             int randomValue = _random.Next(0, totalWeight);
             int cumulative = 0;
+
+            ULog.Trace($"totalWeight={totalWeight}, randomValue={randomValue}");
 
             foreach (var item in _dropTable.Configs)
             {

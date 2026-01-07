@@ -3,10 +3,12 @@ using UnityEngine;
 
 namespace BreakoutGame
 {
-    public sealed class StickySurfacePowerUp : PowerUpPresenter
+    public sealed class StickySurfacePowerUp : PowerUp
     {
         public override void ApplyEffect(GameObject go)
         {
+            ULog.Trace("");
+
             if (!go.transform.parent.TryGetComponent<PowerUpStateMachine>(out var fsm))
             {
                 return;
@@ -27,12 +29,16 @@ namespace BreakoutGame
             _ballParent = ballParent;
         }
 
+        public string Name => "Sticky Surface";
+
         public void Enter()
         {
+            ULog.Trace("");
         }
 
         public void Exit()
         {
+            ULog.Trace("");
         }
 
         public void Resolve(Collision2D collision)
